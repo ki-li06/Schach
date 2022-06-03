@@ -1,0 +1,11 @@
+Spiel
+ - Attribut Feld[][] felder
+
+
+GUI
+ - Spielfeld
+ - verschiedene Schritte (siehe GUIMain)
+
+Schnittstellen
+ - siehe GUIMain
+ -

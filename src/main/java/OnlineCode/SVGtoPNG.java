@@ -1,10 +1,5 @@
 package OnlineCode;
 
-import org.apache.batik.transcoder.TranscoderException;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.PNGTranscoder;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.color.ColorSpace;

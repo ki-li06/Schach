@@ -1,5 +1,8 @@
 package GUI;
 
+import GUI.Teile.Eingabefeld;
+import GUI.Teile.MainGameAnzeige;
+
 public class GUIMain {
     public static void main(String[] args) {
         Eingabefeld e = new Eingabefeld();

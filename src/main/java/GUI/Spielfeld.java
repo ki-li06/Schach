@@ -1,11 +1,14 @@
 package GUI;
 
+import Spiel.TeilvonSpiel.Feld;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.Buffer;
 
 public class Spielfeld {
     public static final int BREITE = 600;
@@ -49,5 +52,8 @@ public class Spielfeld {
         }
         ImagePanel ip = new ImagePanel(feld);
         return (JPanel) ip;
+    }
+    public static BufferedImage spielfeld(Feld[][] felder){
+        return null;
     }
 }

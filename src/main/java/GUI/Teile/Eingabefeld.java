@@ -1,6 +1,5 @@
-package GUI;
+package GUI.Teile;
 
-import org.apache.regexp.RE;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +9,9 @@ import java.awt.image.BufferedImage;
 
 import static util.Delay.delay;
 
+/**
+ * Das Eingabefeld sorgt für die Eingabefläche der Spielernamen
+ */
 public class Eingabefeld {
     private JFrame frame;
     private JPanel panel;
@@ -24,6 +26,7 @@ public class Eingabefeld {
 
     private String Spielername_weiß;
     private String Spielername_schwarz;
+
     public Eingabefeld(){
         erstellen();
         while(!pressedbutton){
@@ -32,7 +35,9 @@ public class Eingabefeld {
         }
     }
 
-
+    /**
+     * zeigt das Eingabefeld an
+     */
     public void erstellen(){
         frame = new JFrame("Schach");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -51,7 +56,7 @@ public class Eingabefeld {
         button.setText("Finish");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                finish(evt);
+                finish();
             }
         });
         pressedbutton = false;
@@ -115,8 +120,10 @@ public class Eingabefeld {
 
     }
 
-
-    private void finish (ActionEvent event){
+    /**
+     * dieser Code wird ausgeführt, wenn der Button geklickt wird
+     */
+    private void finish (){
         Spielername_weiß = weißeingabe.getText();
         Spielername_schwarz = schwarzeingabe.getText();
 
@@ -142,6 +149,9 @@ public class Eingabefeld {
 
     }
 
+    /**
+     * macht das Eingabefeld nicht mehr sichtbar
+     */
     private void CleanAndFillFrame (){
         weiß.setVisible(false);
         weißeingabe.setVisible(false);
@@ -153,23 +163,37 @@ public class Eingabefeld {
 
     }
 
-
+    /**
+     * gibt den Spielernamen von schwarz aus
+     */
     public String getSpielername_schwarz() {
         return Spielername_schwarz;
     }
 
+    /**
+     * gibt den Spielernamen von weiß aus
+     */
     public String getSpielername_weiß() {
         return Spielername_weiß;
     }
 
+    /**
+     * gibt den zugehörigen JFrame (also das Fenster an sich) aus -> siehe MainGameAnzeige Konstruktor
+     */
     public JFrame getFrame() {
         return frame;
     }
 
+    /**
+     * gibt das zugehörige GroupLayout (also eine Vorlage zur Formatierung) aus -> siehe MainGameAnzeige Konstruktor
+     */
     public GroupLayout getGroupLayout() {
         return groupLayout;
     }
 
+    /**
+     * gibt das zugehörige JPanel aus (ein Teil des JFrames) aus -> siehe MainGameAnzeige Konstruktor
+     */
     public JPanel getPanel() {
         return panel;
     }

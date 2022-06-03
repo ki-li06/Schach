@@ -41,7 +41,7 @@ public class SVGtoPNG {
 
         try
         {
-            ImageIO.write(bi, "png", new File("output.png"));
+            ImageIO.write(bi, "png", new File("bild.png"));
         }
         catch(IOException ioe)
         {

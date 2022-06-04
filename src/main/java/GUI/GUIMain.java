@@ -38,6 +38,7 @@ public class GUIMain {
         }
         felder[3][4].setStatus(Feld.Status.MOVE());
         mga.updateBrett(felder, false);
+        e.getPanel().addMouseListener(new MausListener());
         //Kommentar
 
 

@@ -2,12 +2,15 @@ package GUI;
 
 import GUI.Teile.Eingabefeld;
 import GUI.Teile.MainGameAnzeige;
+import Spiel.TeilvonSpiel.Feld;
+import Spiel.TeilvonSpiel.Figuren.Dame;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import static util.Delay.delay;
+import static util.Random.random;
 
 public class GUIMain {
     public static void main(String[] args) {
@@ -21,11 +24,23 @@ public class GUIMain {
                 e.getPanel(),
                 e.getGroupLayout());
         //test
-        System.out.println(mga.BrettKoordinaten());
-        e.getPanel().addMouseListener(new MausListener());
-        System.out.println("width:  " + Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-        System.out.println("height: " + Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-        delay(5000L);
+        delay(2000L);
+        Feld[][] felder = new Feld[8][8];
+        for (int i1 = 0; i1 < 8; i1++) {
+            for (int i2 = 0; i2 < 8; i2++) {
+                String farbe = "w";
+                if(random(0, 1) == 1){
+                    farbe = "b";
+                }
+                felder[i1][i2] = new Feld();
+                felder[i1][i2].setFigur(new Dame(farbe));
+            }
+        }
+        felder[3][4].setStatus(Feld.Status.MOVE());
+        mga.updateBrett(felder, false);
 
+
+
+        System.out.println("ENDE GUI-MAIN");
     }
 }

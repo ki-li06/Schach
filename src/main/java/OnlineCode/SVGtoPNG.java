@@ -1,5 +1,8 @@
 package OnlineCode;
 
+import GUI.Spielfeld;
+import org.apache.bcel.generic.IF_ACMPEQ;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.color.ColorSpace;
@@ -15,34 +18,28 @@ public class SVGtoPNG {
     public static String[] farben = new String[]{"b", "w"};
     public static String[] namen = new String[]{"B", "K", "N", "Q", "P", "R"};
     public static void main(String[] args) {
-
-        BufferedImage bi = new BufferedImage(800, 800, ColorSpace.TYPE_RGB);
-        Graphics2D g2 = bi.createGraphics();
-        g2.setColor(new Color(119, 78, 19));
-        g2.fillRect(0, 0, bi.getWidth(), bi.getHeight());
-
-        g2.setColor(Color.white);
-        g2.fillRect(100, 100, 100, 100);
-
-        BufferedImage dame = null;
-        try{
-            File f = new File("Figuren\\bQ.png");
-            dame = ImageIO.read(f);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        for (String f : farben) {
+            for (String n : namen) {
+                String path = "Figuren\\" + f + n + ".png";
+                System.out.println(path);
+                File file = new File(path);
+                BufferedImage bi = null;
+                try{
+                    bi = ImageIO.read(file);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                System.out.println("height: " + bi.getHeight());
+                System.out.println("width: " + bi.getWidth());
+                double factor = (double) 65/45;
+                bi = scale(bi, factor);
+                try{
+                    ImageIO.write(bi, "png", file);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
         }
-
-        g2.drawImage(dame, 100, 100, null);
-
-        try
-        {
-            ImageIO.write(bi, "png", new File("bild.png"));
-        }
-        catch(IOException ioe)
-        {
-            System.out.println("write: " + ioe.getMessage());
-        }
-        System.out.println("done");
 
     }
     public static BufferedImage scale (BufferedImage eingabe, double factor){

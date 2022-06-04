@@ -3,5 +3,8 @@
 4.6 - K:
  - Figuren Ordner erstellt
  - GUI verbessert
- - MausListener hinzugefügt
+ - Figuren sichtbar gemacht
+ - Stati sichtbar gemacht
+ - util Classes Circle, ShowInJFrame und StringFormat erstellt
+
 

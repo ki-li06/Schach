@@ -48,6 +48,11 @@ public abstract class Figur {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Figur{" +
+                "name='" + name + '\'' +
+                ", farbe='" + farbe + '\'' +
+                '}';
+    }
 }

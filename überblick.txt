@@ -1,5 +1,8 @@
 Spiel
  - Attribut Feld[][] felder
+   * [0][0] ist oben links, also das Feld a8
+   * der erste Index steht für den eigentlichen Buchstaben, der zweite für die Zahl
+      (also [2][3] ist das Feld b3)
 
 
 GUI

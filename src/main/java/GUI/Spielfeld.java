@@ -1,17 +1,24 @@
 package GUI;
 
 import Spiel.TeilvonSpiel.Feld;
+import Spiel.TeilvonSpiel.Figuren.Dame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
 
+import static util.ShowInJFrame.show;
+
 public class Spielfeld {
-    public static final int BREITE = 500;
+    public static final int BREITE = 520;
+    public static final Color FARBE_DUNKEL = new Color(131, 84, 17);
+    public static final Color FARBE_HELL = new Color(250, 197, 118);
+
     private BufferedImage feld;
     public Spielfeld(){
         final int breitefeld = BREITE/8;
@@ -20,9 +27,9 @@ public class Spielfeld {
             for (int vertikal = 0; vertikal < 8; vertikal++) {
                 for (int x = vertikal * breitefeld; x < (vertikal+1) * breitefeld; x++) {
                     for (int y = horizontal * breitefeld; y < (horizontal + 1) * breitefeld ; y++) {
-                        Color c = new Color(93, 59, 11);
+                        Color c = FARBE_DUNKEL;
                         if((horizontal + vertikal)%2 == 0){
-                            c = new Color(250, 186, 88);
+                            c = FARBE_HELL;
                         }
                         feld.setRGB(x, y, c.getRGB());
                     }
@@ -34,13 +41,33 @@ public class Spielfeld {
     public BufferedImage getFeld(){
         return feld;
     }
-    public static BufferedImage bild(Feld[][] felder){
-        BufferedImage bi = new BufferedImage(BREITE, BREITE, BufferedImage.TYPE_INT_ARGB);
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, Color.red.getRGB());
+    public static int BreiteEinFeld(){
+        return BREITE/8;
+    }
+    public static BufferedImage bild(Feld[][] felder, boolean gedreht){
+        int einfeldbreite = BREITE/8;
+        Spielfeld sf = new Spielfeld();
+        BufferedImage bi = sf.getFeld();
+        Graphics2D g2D = bi.createGraphics();
+        for (int i1 = 0; i1 < felder.length; i1++) {
+            for (int i2 = 0; i2 < felder[i1].length; i2++) {
+                if(felder[i1][i2].getStatus() != null){
+                    g2D.drawImage(
+                            felder[i1][i2].getStatus().getBild(),
+                            einfeldbreite * i1,
+                            einfeldbreite * i2,
+                            null
+                    );
+                }
+                if(felder[i1][i2].getFigur() != null) {
+                    g2D.drawImage(felder[i1][i2].getFigur().getBild(),
+                            einfeldbreite * i1,
+                            einfeldbreite * i2, null);
+                }
             }
         }
+        g2D.dispose();
         return bi;
     }
+
 }

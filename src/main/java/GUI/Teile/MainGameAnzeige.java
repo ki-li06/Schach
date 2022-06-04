@@ -13,7 +13,7 @@ import static GUI.Spielfeld.BREITE;
 
 public class MainGameAnzeige {
     private static Color PlayerNames_BackgroundColour = Color.blue;
-    private static int PlayerNames_Height = 50;
+    private static int PlayerNames_Height = 40;
     private JFrame frame;
     private JPanel panel;
     private GroupLayout groupLayout;
@@ -105,8 +105,8 @@ public class MainGameAnzeige {
      * zeigt das neue Spielfeld an
      * @param felder das Array an Felder (das Attribut aus Spiel)
      */
-    public void updateFeld(Feld[][] felder){
-        BufferedImage bi = Spielfeld.bild(felder);
+    public void updateBrett(Feld[][] felder, boolean gedreht){
+        BufferedImage bi = Spielfeld.bild(felder, gedreht);
         brett.setIcon(new ImageIcon(bi));
     }
     public Point BrettKoordinaten(){

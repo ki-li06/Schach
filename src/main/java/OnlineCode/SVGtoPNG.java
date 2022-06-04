@@ -1,7 +1,6 @@
 package OnlineCode;
 
 import GUI.Spielfeld;
-import org.apache.bcel.generic.IF_ACMPEQ;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

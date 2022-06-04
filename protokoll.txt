@@ -6,5 +6,6 @@
  - Figuren sichtbar gemacht
  - Stati sichtbar gemacht
  - util Classes Circle, ShowInJFrame und StringFormat erstellt
-
+-D:
+- Restliche Figuren erstellt
 

@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.nio.Buffer;
 
 public class Spielfeld {
-    public static final int BREITE = 600;
+    public static final int BREITE = 500;
     private BufferedImage feld;
     public Spielfeld(){
         final int breitefeld = BREITE/8;
-        feld = new BufferedImage(BREITE, BREITE, BufferedImage.TYPE_INT_RGB);
+        feld = new BufferedImage(BREITE, BREITE, BufferedImage.TYPE_INT_ARGB);
         for (int horizontal = 0; horizontal < 8; horizontal++) {
             for (int vertikal = 0; vertikal < 8; vertikal++) {
                 for (int x = vertikal * breitefeld; x < (vertikal+1) * breitefeld; x++) {
@@ -34,26 +34,13 @@ public class Spielfeld {
     public BufferedImage getFeld(){
         return feld;
     }
-    public JPanel asJPanel(){
-        class ImagePanel extends JPanel{
-
-            private BufferedImage image;
-
-            public ImagePanel(BufferedImage bi) {
-                image = bi;
+    public static BufferedImage bild(Feld[][] felder){
+        BufferedImage bi = new BufferedImage(BREITE, BREITE, BufferedImage.TYPE_INT_ARGB);
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, Color.red.getRGB());
             }
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters
-            }
-
         }
-        ImagePanel ip = new ImagePanel(feld);
-        return (JPanel) ip;
-    }
-    public static BufferedImage spielfeld(Feld[][] felder){
-        return null;
+        return bi;
     }
 }

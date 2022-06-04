@@ -1,3 +1,7 @@
-3.6.-k:
+3.6.- K:
  Struktur erstellt
+4.6 - K:
+ - Figuren Ordner erstellt
+ - GUI verbessert
+ - MausListener hinzugefügt
 

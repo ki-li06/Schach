@@ -51,18 +51,29 @@ public class Spielfeld {
         Graphics2D g2D = bi.createGraphics();
         for (int i1 = 0; i1 < felder.length; i1++) {
             for (int i2 = 0; i2 < felder[i1].length; i2++) {
+                int x = 0;
+                int y = 0;
+                if(gedreht){
+                    x = BREITE - einfeldbreite * (i1 + 1);
+                    y = BREITE - einfeldbreite * (i2 + 1);
+                }
+                else{
+                    x = einfeldbreite * i1;
+                    y = einfeldbreite * i2;
+                }
                 if(felder[i1][i2].getStatus() != null){
                     g2D.drawImage(
                             felder[i1][i2].getStatus().getBild(),
-                            einfeldbreite * i1,
-                            einfeldbreite * i2,
+                            x,
+                            y,
                             null
                     );
                 }
                 if(felder[i1][i2].getFigur() != null) {
                     g2D.drawImage(felder[i1][i2].getFigur().getBild(),
-                            einfeldbreite * i1,
-                            einfeldbreite * i2, null);
+                            x,
+                            y,
+                            null);
                 }
             }
         }

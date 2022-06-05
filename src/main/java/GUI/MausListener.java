@@ -1,15 +1,25 @@
 package GUI;
 
+import Spiel.Spiel;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import static GUI.Spielfeld.BreiteEinFeld;
+
 public class MausListener implements MouseListener {
+    private Spiel spiel;
+    public MausListener(Spiel s){
+        spiel = s;
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("mouse clicked");
-        System.out.println("X: " + e.getX());
-        System.out.println("y: " + e.getY());
+        int x = e.getX();
+        int y = e.getY();
+        x = (x-x%BreiteEinFeld())/BreiteEinFeld();
+        y = (y-y%BreiteEinFeld())/BreiteEinFeld();
+        spiel.aufFeldGeklickt(x, y);
     }
 
     @Override

@@ -1,14 +1,18 @@
 package util;
 
+import Spiel.TeilvonSpiel.Feld;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 import static util.ShowInJFrame.show;
 import static util.StringFormat.getFormat;
 
 /**
- * erzeugt verbleichende Kreise (für die Stati von Feldern)
+ * erzeugt verschiedene Bilder mit Kreisen (für die Stati von Feldern)
  */
 public class Circle {
     /**
@@ -67,11 +71,52 @@ public class Circle {
     }
 
     /**
+     * Gibt ein Viereck aus, bei dem nur runde Ecken gefärbt sind. Also so als würde man einen transparenten Kreis mitten auf dieses gefärbte Viereck legen.
+     * @param breite Breite des Vierecks
+     * @param color Farbe der Ecken
+     * @param radius Radius des Kreises
+     */
+    public static BufferedImage rundeEcken (int breite, Color color, int radius){
+        String format = getFormat(4, true);
+        int rgb = color.getRGB();
+
+        double mitte = (double) (breite-1)/2;
+        BufferedImage bi = new BufferedImage(breite, breite, BufferedImage.TYPE_INT_ARGB);
+
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                int distance = (int) Math.sqrt(Math.pow(y - mitte, 2) + Math.pow(x - mitte, 2));
+                if(distance > radius){
+                    bi.setRGB(x, y, rgb);
+                }
+            }
+        }
+        return bi;
+    }
+
+    /**
+     * gibt eine Kreis in einem genau so großen Bild
+     * @param radius der Radius des Kreises
+     */
+    public static BufferedImage kreis (double radius, Color color){
+        int breite = (int) (radius * 2);
+        System.out.println("breite: " + breite);
+        BufferedImage bi = new BufferedImage(breite, breite, BufferedImage.TYPE_INT_ARGB);
+        Ellipse2D ellipse = new Ellipse2D.Double(0, 0, breite, breite);
+        Graphics2D g2 = bi.createGraphics();
+        g2.setColor(color);
+        g2.fill(ellipse);
+        g2.dispose();
+        return bi;
+    }
+
+    /**
      * ein Beispiel für ein Circle
      */
     public static void main(String[] args) {
-        int breite = 300;
-        BufferedImage circle = circle(breite, Color.red, false, 2, 1.1);
-        show(circle);
+        int breite = 65;
+        Color color = new Color(201, 29, 49, 255);
+        BufferedImage bi = kreis(breite, color);
+        show(Feld.Status.MÖGLICH_SCHLAGEN().getBild());
     }
 }

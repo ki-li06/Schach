@@ -6,6 +6,10 @@
  - Figuren sichtbar gemacht
  - Stati sichtbar gemacht
  - util Classes Circle, ShowInJFrame und StringFormat erstellt
--D:
-- Restliche Figuren erstellt
+4.6 - D:
+ - Restliche Figuren erstellt
+5.6 - K:
+ - MainGameAnzeige fertig gestellt
+ - MausListener fertig gestellt
+ - > GUI fertig gestellt
 

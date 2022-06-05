@@ -5,11 +5,12 @@
  - GUI verbessert
  - Figuren sichtbar gemacht
  - Stati sichtbar gemacht
- - util Classes Circle, ShowInJFrame und StringFormat erstellt
+ - util Klassen Circle, ShowInJFrame und StringFormat erstellt
 4.6 - D:
  - Restliche Figuren erstellt
 5.6 - K:
  - MainGameAnzeige fertig gestellt
  - MausListener fertig gestellt
+ - Feld.Status Klasse fertig gestellt
  -> GUI fertig gestellt
 

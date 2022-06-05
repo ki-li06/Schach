@@ -1,4 +1,4 @@
-package GUI.Teile;
+package GUI;
 
 import GUI.Spielfeld;
 import Spiel.TeilvonSpiel.Feld;

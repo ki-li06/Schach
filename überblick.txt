@@ -10,5 +10,15 @@ GUI
  - verschiedene Schritte (siehe GUIMain)
 
 Schnittstellen
- - siehe GUIMain
- -
+ - Eingabefeld (Eingabefeld der Spielernamen)
+   + new Eingabefeld() --> erstellt ein Eingabefeld und wartet auf Drücken des "Finish"-Buttons
+   + getSpielername_... --> gibt den eingegeben Spielername
+ - MainGameAnzeige (Anzeige des Spielfelds)
+   + new MainGameAnzeige(...) --> erstellt ein Brett mit den Namen (Parameter siehe genauere Beschreibung)
+   + updateBrett() --> updated das Brett, um Stati anzuzeigen
+   + dreheBrett() --> dreht das Spielfeld (inkl. updateBrett)
+   + setzeSieger(...) --> setzt den Sieger und ändert die Textfelder
+ - MausListener (MouseListener, benötigt ein zugehöriges Spiel)
+   + new MausListener(Spiel) --> erzeugt einen MouseListener für das zugehörige Spiel
+   + mouseClicked() --> ruft die Methode aufBrettgeklickt() im zugehörigen Spiel ab (Position schon überprüft)
+     und übergibt die x- & y-Koordinate an die Methode

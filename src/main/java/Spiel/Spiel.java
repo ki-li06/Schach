@@ -9,7 +9,7 @@ public class Spiel {
         felder = new Feld[8][8];
     }
 
-    public void aufFeldGeklickt(int x, int y){
-        System.out.println("Es wurde auf das Feld " + x + " | " + y + " geklickt");
+    public void aufFeldGeklickt(int feldx, int feldy){
+        System.out.println("Es wurde auf das Feld " + feldx + " | " + feldy + " geklickt");
     }
 }

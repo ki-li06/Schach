@@ -1,18 +1,10 @@
 package GUI;
 
-import GUI.Teile.Eingabefeld;
-import GUI.Teile.MainGameAnzeige;
 import Spiel.Spiel;
 import Spiel.TeilvonSpiel.Feld;
 import Spiel.TeilvonSpiel.Figuren.*;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import static util.Delay.delay;
-import static util.Random.random;
-import static util.ShowInJFrame.show;
 
 public class GUIMain {
     public static void main(String[] args) {

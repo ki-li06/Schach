@@ -14,6 +14,9 @@ public abstract class Figur {
     protected String name;
     protected String farbe;
 
+    public int positionX;
+    public int positionY;
+
     public String getName() {
         return name;
     }

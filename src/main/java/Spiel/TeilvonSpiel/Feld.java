@@ -38,8 +38,10 @@ public class Feld {
         return status;
     }
 
-    public void setFigur(Figur figur) {
+    public void setFigur(Figur figur, int feldX, int feldY) {
         this.figur = figur;
+        figur.positionX = feldX;
+        figur.positionX = feldY;
     }
     public void setStatus(Status status) {
         this.status = status;

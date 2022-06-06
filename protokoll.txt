@@ -18,3 +18,11 @@
  - Turm MöglicheZüge_ohneSchach erstellt
  - MöglicheZüge versucht
 
+
+
+
+
+
+To Do - K:
+ - Figuren 2D array copy 
+ - Figuren copy

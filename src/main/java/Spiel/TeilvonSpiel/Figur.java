@@ -14,8 +14,6 @@ public abstract class Figur {
     protected String name;
     protected String farbe;
 
-    public int positionX;
-    public int positionY;
 
     public String getName() {
         return name;
@@ -50,6 +48,10 @@ public abstract class Figur {
             System.out.println("FEHLER - UNGÜLTIGE FARBEN-EINGABE: " + farbe);
         }
     }
+
+   // public Feld möglicherZug (Feld [][] feld , int positionX, int positionY){
+
+    //}
 
     @Override
     public String toString() {

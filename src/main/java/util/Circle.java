@@ -100,7 +100,6 @@ public class Circle {
      */
     public static BufferedImage kreis (double radius, Color color){
         int breite = (int) (radius * 2);
-        System.out.println("breite: " + breite);
         BufferedImage bi = new BufferedImage(breite, breite, BufferedImage.TYPE_INT_ARGB);
         Ellipse2D ellipse = new Ellipse2D.Double(0, 0, breite, breite);
         Graphics2D g2 = bi.createGraphics();

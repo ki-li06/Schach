@@ -19,8 +19,8 @@ public class Turm extends Figur {
     protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, Zug letzterZug, int xfeld, int yfeld) {
         List<Point> ausgabe = new ArrayList<>();
         String farbe = figuren[xfeld][yfeld].getFarbe();
-
-        for (int i = xfeld; i < 8; i++) {
+        //alle rechts davon
+        for (int i = xfeld + 1; i < 8; i++) {
             if(figuren[i][yfeld] == null){
                 ausgabe.add(new Point(i, yfeld));
             }
@@ -32,6 +32,46 @@ public class Turm extends Figur {
                 break;
             }
         }
+        //alle links davon
+        for (int i = xfeld - 1; i >= 0; i--) {
+            if(figuren[i][yfeld] == null){
+                ausgabe.add(new Point(i, yfeld));
+            }
+            else if(figuren[i][yfeld].getFarbe().equals(farbe)){
+                break;
+            }
+            else if(figuren[i][yfeld].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(i, yfeld));
+                break;
+            }
+        }
+        //alle unterhalb
+        for (int i = yfeld + 1; i < 8; i++) {
+            if(figuren[xfeld][i] == null){
+                ausgabe.add(new Point(xfeld, i));
+            }
+            else if(figuren[xfeld][i].getFarbe().equals(farbe)){
+                break;
+            }
+            else if(figuren[xfeld][i].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(xfeld, i));
+                break;
+            }
+        }
+        //alle oberhalb
+        for (int i = yfeld - 1; i >= 0; i--) {
+            if(figuren[xfeld][i] == null){
+                ausgabe.add(new Point(xfeld, i));
+            }
+            else if(figuren[xfeld][i].getFarbe().equals(farbe)){
+                break;
+            }
+            else if(figuren[xfeld][i].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(xfeld, i));
+                break;
+            }
+        }
+
         return ausgabe;
     }
 }

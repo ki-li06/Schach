@@ -2,6 +2,8 @@ package Spiel.TeilvonSpiel;
 
 import java.awt.*;
 
+import static util.FormatPoint.format;
+
 public class Zug {
     public Point alt;
     public Point neu;
@@ -13,5 +15,10 @@ public class Zug {
     public Zug(Point alt, Point neu) {
         this.alt = alt;
         this.neu = neu;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + format(alt) + " -> " + format(neu) + "]";
     }
 }

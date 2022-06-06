@@ -143,6 +143,11 @@ public class MainGameAnzeige {
      * @param felder das Array an Felder (das Attribut aus Spiel)
      */
     public void updateBrett(Feld[][] felder){
+        if(felder.length != 8 || felder[0].length != 8){
+            System.out.println("FEHLER - MainGameAnzeige");
+            System.out.println("Falsche Array Länge: " + felder.length + " | " + felder[0].length);
+            return;
+        }
         BufferedImage bi = Spielfeld.bild(felder, gedreht);
         brett.setIcon(new ImageIcon(bi));
     }

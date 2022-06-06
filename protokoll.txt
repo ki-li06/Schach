@@ -13,4 +13,8 @@
  - MausListener fertig gestellt
  - Feld.Status Klasse fertig gestellt
  -> GUI fertig gestellt
+6.6 - K:
+ - MöglicheZüge_ohneSchach erstellt
+ - Turm MöglicheZüge_ohneSchach erstellt
+ - MöglicheZüge versucht
 

@@ -67,7 +67,8 @@ public class MainGameAnzeige {
         );
 
         this.frame.pack();
-        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //Vollbild
+        //this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.frame.setVisible(true);
     }
 

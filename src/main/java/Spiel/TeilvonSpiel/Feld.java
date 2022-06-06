@@ -3,6 +3,7 @@ package Spiel.TeilvonSpiel;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.List;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -38,15 +39,18 @@ public class Feld {
         return status;
     }
 
-    public void setFigur(Figur figur, int feldX, int feldY) {
+    public void setFigur(Figur figur) {
         this.figur = figur;
-        figur.positionX = feldX;
-        figur.positionX = feldY;
     }
     public void setStatus(Status status) {
         this.status = status;
     }
 
+    public static Figur[][] getFiguren(Feld[][] felder){
+        return  Arrays.stream(felder).map(
+                i->Arrays.stream(i).map(Feld::getFigur).toArray(Figur[]::new)
+        ).toArray(Figur[][]::new);
+    }
     /**
      * gibt den Status des Feldes an, also ob auf diesem Feld ein Schach, ein Zug oder ähnliches ist
      */

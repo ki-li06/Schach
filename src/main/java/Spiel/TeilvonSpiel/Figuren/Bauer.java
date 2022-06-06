@@ -11,6 +11,7 @@ public class Bauer extends Figur {
         this.farbe = farbe;
         name = "P";
     }
+    /*
     public boolean möglicherZug (int feldx, int feldy)
     {
         if (farbe == "w "){
@@ -27,4 +28,5 @@ public class Bauer extends Figur {
 
 
     }
+     */
 }

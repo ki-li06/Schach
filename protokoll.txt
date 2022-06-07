@@ -20,6 +20,9 @@
 7.6 - K:
  - MöglicheZüge fertig gestellt
  - Springer MöglicheZüge_OhneSchach fertig gestellt
+ - Methode MöglicheZüge_OhneSchach Methodenkopf geändert
+ - Springer MöglicheZüge_OhneSchach fertig gestellt
+ - König MöglicheZüge_OhneSchach angefangen
 
 
 

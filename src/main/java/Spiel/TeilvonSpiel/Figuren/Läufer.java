@@ -15,68 +15,86 @@ public class Läufer extends Figur {
     }
 
     @Override
-    protected List<Point> möglicheZüge_ohneSchach(Figur [][] figuren, Zug letzterZug, int xfeld, int yfeld){
+    protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld) {
         List<Point> ausgabe = new ArrayList<>();
         String farbe = figuren[xfeld][yfeld].getFarbe();
+
+        int xi = 0;         // xindex
+        int yi = 0;         // yindex
+
         //links oben
-        for (int i = xfeld +1; i >= 0 ; i--) {
-            yfeld--;
-            if(figuren[i][yfeld]== null){
-                ausgabe.add(new Point(i,yfeld));
+        xi = xfeld - 1;
+        yi = yfeld - 1;
+        while ((xi < 8) && (xi >= 0) && (yi < 8) && (yi >= 0)){
+            if(figuren[xi][yi]== null){
+                ausgabe.add(new Point(xi,yi));
             }
-            else if (figuren[i][yfeld].getFarbe().equals(andereFarbe(farbe))){
-                ausgabe.add(new Point(i,yfeld));
+            else if (figuren[xi][yi].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(xi,yi));
                 break;
             }
-            else if (figuren[i][yfeld].getFarbe().equals(farbe)){
+            else if (figuren[xi][yi].getFarbe().equals(farbe)){
                 break;
             }
+            xi--;
+            yi--;
+        }
+
+        //links unten
+        xi = xfeld - 1;
+        yi = yfeld + 1;
+        while ((xi < 8) && (xi >= 0) && (yi < 8) && (yi >= 0)){
+            if(figuren[xi][yi]== null){
+                ausgabe.add(new Point(xi,yi));
+            }
+            else if (figuren[xi][yi].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(xi,yi));
+                break;
+            }
+            else if (figuren[xi][yi].getFarbe().equals(farbe)){
+                break;
+            }
+            xi--;
+            yi++;
         }
 
         //rechts oben
-        for (int i = xfeld + 1; i < 8; i++) {
-            yfeld--;
-            if(figuren[i][yfeld]== null){
-                ausgabe.add(new Point(i,yfeld));
+        xi = xfeld + 1;
+        yi = yfeld - 1;
+        while ((xi < 8) && (xi >= 0) && (yi < 8) && (yi >= 0)){
+            if(figuren[xi][yi]== null){
+                ausgabe.add(new Point(xi,yi));
             }
-            else if (figuren[i][yfeld].getFarbe().equals(andereFarbe(farbe))){
-                ausgabe.add(new Point(i,yfeld));
+            else if (figuren[xi][yi].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(xi,yi));
                 break;
             }
-            else if (figuren[i][yfeld].getFarbe().equals(farbe)){
+            else if (figuren[xi][yi].getFarbe().equals(farbe)){
                 break;
             }
+            xi++;
+            yi--;
         }
-        //links unten
-        for (int i = xfeld +1; i >= 0 ; i--) {
-            yfeld++;
-            if(figuren[i][yfeld]== null){
-                ausgabe.add(new Point(i,yfeld));
-            }
-            else if (figuren[i][yfeld].getFarbe().equals(andereFarbe(farbe))){
-                ausgabe.add(new Point(i,yfeld));
-                break;
-            }
-            else if (figuren[i][yfeld].getFarbe().equals(farbe)){
-                break;
-            }
-        }
-        //rechts unten
-        for (int i = xfeld +1; i < 8; i++) {
-            yfeld++;
-            if(figuren[i][yfeld]== null){
-                ausgabe.add(new Point(i,yfeld));
-            }
-            else if (figuren[i][yfeld].getFarbe().equals(andereFarbe(farbe))){
-                ausgabe.add(new Point(i,yfeld));
-                break;
-            }
-            else if (figuren[i][yfeld].getFarbe().equals(farbe)){
-                break;
-            }
-        }
-        return ausgabe;
 
+        //rechts unten
+        xi = xfeld + 1;
+        yi = yfeld + 1;
+        while ((xi < 8) && (xi >= 0) && (yi < 8) && (yi >= 0)){
+            if(figuren[xi][yi]== null){
+                ausgabe.add(new Point(xi,yi));
+            }
+            else if (figuren[xi][yi].getFarbe().equals(andereFarbe(farbe))){
+                ausgabe.add(new Point(xi,yi));
+                break;
+            }
+            else if (figuren[xi][yi].getFarbe().equals(farbe)){
+                break;
+            }
+            xi++;
+            yi++;
+        }
+
+        return ausgabe;
     }
 
 }

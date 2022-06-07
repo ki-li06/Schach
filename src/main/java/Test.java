@@ -21,7 +21,7 @@ public class Test {
         figuren[referenz.x][referenz.y] = new Turm("w");
         figuren[1][7] = new Turm("b");
         ausgeben(figuren);
-        List<Point> points = MöglicheZüge(figuren, null, referenz.x, referenz.y);
+        List<Point> points = MöglicheZüge(figuren, null, null, referenz.x, referenz.y);
         System.out.println("points: " + format(points));
 
     }

@@ -32,7 +32,7 @@ public class Spiel {
     }
 
     public static void main(String[] args) {
-        Point ref = new Point(2, 5);
+        Point ref = new Point(5, 2);
         Spiel s = new Spiel();
         s.mga = new MainGameAnzeige("s1", "s2");
         s.felder[ref.x][ref.y].setFigur(new Läufer("w"));
@@ -48,7 +48,8 @@ public class Spiel {
         List<Point> möglicheZüge = new ArrayList<>(
                 s.felder[ref.x][ref.y].getFigur().möglicheZüge(
                     getFiguren(s.felder),
-                    null,                   //nicht relevant für den Turm
+                    null,
+                        null,
                         ref.x, ref.y));
 
         //markiere alle Mögliche Züge

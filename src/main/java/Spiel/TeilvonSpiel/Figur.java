@@ -66,12 +66,13 @@ public abstract class Figur {
      * gibt alle Koordinaten von Felder aus, auf die die angegebene Figur rein theoretisch ziehen kann
      * Dabei wird ignoriert ob der Spieler im Schach steht oder die Figur vor dem König gefesselt ist
      * @param figuren das Spiefeld an Figuren (ein Feld[][] kann mit getFiguren(Feld[][]) umgewandelt werden)
-     * @param letzterZug der letzte Zug, den der Gegner gemacht hat (nur für 'En Passant' relevant)
+     * @param WeißZüge alle Züge, die Weiß bisher gespielt hat
+     * @param SchwarzZüge alle Züge, die Schwarz bisher gespielt hat  (beide nur für En Passant und Rochade relevant)
      * @param xfeld die x-Koordinate der Figur auf dem Brett
      * @param yfeld die y-Koordinate der Figur auf dem Brett
      * @return eine Liste an allen Möglichen Feldern
      */
-    protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, Zug letzterZug, int xfeld, int yfeld){
+    protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         Figur f = figuren[xfeld][yfeld];
         System.out.println("FEHLER - MÖGLICHEZÜGE_OHNESCHACH");
         System.out.println("IN DER KLASSE " + f.getClass().getSimpleName() + " NICHT DEKLARIERT");
@@ -83,10 +84,10 @@ public abstract class Figur {
      * hierbei werden alle Züge nach denen der Gegner den König schlagen kann gestrichen
      * @return diese Liste kann auf dem Spielbrett angezeigt werden
      */
-    public List<Point> möglicheZüge (Figur[][] figuren, Zug letzerZug, int xfeld, int yfeld){
+    public List<Point> möglicheZüge (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         //System.out.println("ausgangssituation: ");
         String farbe = figuren[xfeld][yfeld].getFarbe();
-        List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, letzerZug, xfeld, yfeld));
+        List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld));
         System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
 
         List<Point> GegnerKoordinaten = new ArrayList<>();
@@ -118,7 +119,7 @@ public abstract class Figur {
                 if(!GegnerKoordinaten.get(j).equals(möglich_ohneSchach.get(i))) {
                     //System.out.println("gegnerkoordinaten: " + format(GegnerKoordinaten.get(j)) + " -> " + get(neuefiguren, GegnerKoordinaten.get(j)));
                     List<Point> GegnerKoordinateMöglicheZüge = new ArrayList<>(
-                            MöglicheZüge_OhneSchach(neuefiguren, zug, GegnerKoordinaten.get(j).x, GegnerKoordinaten.get(j).y)
+                            MöglicheZüge_OhneSchach(neuefiguren, WeißZüge, SchwarzZüge, GegnerKoordinaten.get(j).x, GegnerKoordinaten.get(j).y)
                     );
                     //System.out.println("  mögliche züge: " + format(GegnerKoordinateMöglicheZüge));
                     GegnerMöglicheZüge.addAll(
@@ -156,11 +157,11 @@ public abstract class Figur {
      * macht das gleiche wie die gleichnamige nicht static Methode.
      * Diese Methode ist aber static, weil sie ja an sich nicht von einer Figur abhängig ist
      */
-    public static List<Point> MöglicheZüge (Figur[][] figuren, Zug letzterZug, int xfeld, int yfeld){
-        return figuren[xfeld][yfeld].möglicheZüge(figuren, letzterZug, xfeld, yfeld);
+    public static List<Point> MöglicheZüge (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
+        return figuren[xfeld][yfeld].möglicheZüge(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
-    private static List<Point> MöglicheZüge_OhneSchach (Figur[][] figuren, Zug letzterZug, int xfeld, int yfeld){
-        return figuren[xfeld][yfeld].möglicheZüge_ohneSchach(figuren, letzterZug, xfeld, yfeld);
+    private static List<Point> MöglicheZüge_OhneSchach (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
+        return figuren[xfeld][yfeld].möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
 
     /**

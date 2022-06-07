@@ -18,7 +18,7 @@ public class Springer extends Figur {
     }
 
     @Override
-    protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, Zug letzterZug, int xfeld, int yfeld) {
+    protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld) {
         System.out.println("springer möglich");
         String farbe = figuren[xfeld][yfeld].getFarbe();
 
@@ -46,4 +46,5 @@ public class Springer extends Figur {
         }
         return möglich;
     }
+
 }

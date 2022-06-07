@@ -11,6 +11,9 @@ public class Zug {
     /**
      * @param alt Die alten Koordinaten der Figur auf dem Brett
      * @param neu Die neuen Koordinaten der Figur auf dem Brett
+     *
+     * Sonderfall Rochade:
+     * nur der Zug des Königs wird gewertet
      */
     public Zug(Point alt, Point neu) {
         this.alt = alt;

@@ -35,12 +35,12 @@ public class Spiel {
         Point ref = new Point(2, 5);
         Spiel s = new Spiel();
         s.mga = new MainGameAnzeige("s1", "s2");
-        s.felder[ref.x][ref.y].setFigur(new Springer("w"));
+        s.felder[ref.x][ref.y].setFigur(new Läufer("w"));
         s.felder[ref.x][ref.y].setStatus(Feld.Status.AUSGEWÄHLT());
         //erstelle eine theoretische Spielsituation
-        s.felder[0][0].setFigur(new König("w"));
-        s.felder[3][7].setFigur(new Turm("w"));
-        s.felder[3][3].setFigur(new Turm("b"));
+        //s.felder[0][0].setFigur(new König("w"));
+        //s.felder[3][7].setFigur(new Turm("w"));
+
         //s.felder[7][1].setFigur(new Turm("b"));
 
         //zeige sie an

@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static util.FormatPoint.format;
+import static util.ArrayPoint.get;
+import static util.StringFormat.getFormat;
 
 
 public abstract class Figur {
@@ -82,10 +84,11 @@ public abstract class Figur {
      * @return diese Liste kann auf dem Spielbrett angezeigt werden
      */
     public List<Point> möglicheZüge (Figur[][] figuren, Zug letzerZug, int xfeld, int yfeld){
+        //System.out.println("ausgangssituation: ");
         String farbe = figuren[xfeld][yfeld].getFarbe();
         List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, letzerZug, xfeld, yfeld));
+        System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
 
-        /*
         List<Point> GegnerKoordinaten = new ArrayList<>();
         for (int x = 0; x < figuren.length; x++) {
             for (int y = 0; y < figuren[x].length; y++) {
@@ -94,42 +97,45 @@ public abstract class Figur {
                 }
             }
         }
-        System.out.println("Gegner Koordinaten: \n" + format(GegnerKoordinaten));
+        //System.out.println("Gegner Koordinaten: \n" + format(GegnerKoordinaten));
         Point königkoordinaten = indexOf(figuren, "K", farbe);
-        System.out.println("königskordinaten: " + format(königkoordinaten));
+        //System.out.println("königskordinaten: " + format(königkoordinaten));
+        //System.out.println("\n\n");
         for (int i = 0; i < möglich_ohneSchach.size(); i++) {
-            System.out.println("möglicher zug: " + format(möglich_ohneSchach.get(i)));
+            //System.out.println("möglicher zug: " + format(möglich_ohneSchach.get(i)));
             List<Point> GegnerMöglicheZüge = new ArrayList<>();
             Zug zug = new Zug(
                     new Point(xfeld, yfeld),
                     new Point(möglich_ohneSchach.get(i).x, möglich_ohneSchach.get(i).y)
             );
-            Figur[][] neuefiguren = figuren.clone();
-            neuefiguren[zug.neu.x][zug.neu.y] = clone(figuren[zug.alt.x][zug.alt.y]);
+            Figur[][] neuefiguren = kopieren(figuren);
+            neuefiguren[zug.neu.x][zug.neu.y] = neuefiguren[zug.alt.x][zug.alt.y];
             neuefiguren[zug.alt.x][zug.alt.y] = null;
-            System.out.println("zug: " + zug);
+            //System.out.println("zug: " + zug);
+            //System.out.println(" -> ");
+            //ausgeben(neuefiguren);
             for (int j = 0; j < GegnerKoordinaten.size(); j++) {
                 if(!GegnerKoordinaten.get(j).equals(möglich_ohneSchach.get(i))) {
-                    System.out.println("gegnerkoordinaten: " + format(GegnerKoordinaten.get(j)) + " -> " + get(neuefiguren, GegnerKoordinaten.get(j)));
+                    //System.out.println("gegnerkoordinaten: " + format(GegnerKoordinaten.get(j)) + " -> " + get(neuefiguren, GegnerKoordinaten.get(j)));
                     List<Point> GegnerKoordinateMöglicheZüge = new ArrayList<>(
                             MöglicheZüge_OhneSchach(neuefiguren, zug, GegnerKoordinaten.get(j).x, GegnerKoordinaten.get(j).y)
                     );
-                    System.out.println("  mögliche züge: " + format(GegnerKoordinateMöglicheZüge));
+                    //System.out.println("  mögliche züge: " + format(GegnerKoordinateMöglicheZüge));
                     GegnerMöglicheZüge.addAll(
                             GegnerKoordinateMöglicheZüge
                     );
                 }
                 else{
-                    System.out.println("gegner geschlagen");
+                    //System.out.println("gegner geschlagen");
                 }
             }
             if(GegnerMöglicheZüge.contains(königkoordinaten)){
                 möglich_ohneSchach.set(i, new Point(-1, -1));
             }
-            System.out.println("--> " + format(möglich_ohneSchach.get(i)));
+            //System.out.println("--> " + format(möglich_ohneSchach.get(i)));
         }
         möglich_ohneSchach.removeIf(i->i.x == -1 || i.y == -1);
-        */
+
         //NOCH FALSCHE AUSGABE
         return möglich_ohneSchach;
     }
@@ -170,8 +176,28 @@ public abstract class Figur {
         }
         return new Point(-1, -1);
     }
-    public static Figur get (Figur[][] figuren, Point p){
-        return figuren[p.x][p.y];
+
+    public static void ausgeben(Figur[][] figuren){
+        String format = getFormat(30, true);
+        System.out.print(" ".repeat(11));
+        for (int x = 0; x < figuren[0].length; x++) {
+            System.out.printf(format, "x - " + x);
+        }
+        System.out.println();
+        for (int y = 0; y < figuren.length; y++) {
+            System.out.print("y - " + y + "   ");
+            for (int x = 0; x < figuren[y].length; x++) {
+                System.out.printf(format, figuren[x][y]);
+            }
+            System.out.println();
+        }
+    }
+    public static Figur[][] kopieren (Figur[][] figuren){
+        Figur[][] ausgabe = new Figur[figuren.length][figuren[0].length];
+        for (int i = 0; i < figuren.length; i++) {
+            System.arraycopy(figuren[i], 0, ausgabe[i], 0, figuren[i].length);
+        }
+        return ausgabe;
     }
 
     @Override

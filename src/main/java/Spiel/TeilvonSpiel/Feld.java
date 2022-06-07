@@ -55,7 +55,7 @@ public class Feld {
      * gibt den Status des Feldes an, also ob auf diesem Feld ein Schach, ein Zug oder ähnliches ist
      */
     public static class Status{
-        private static final Color MÖGLICH = new Color(25, 96, 17, 134);
+        private static final Color MÖGLICH = new Color(22, 96, 14, 118);
         private BufferedImage bild;
         private String name;
         public Status(String name) {
@@ -84,6 +84,17 @@ public class Feld {
             ausgabe.bild = circle(
                     BreiteEinFeld(),
                     FARBE_MOVE);
+            return ausgabe;
+        }
+        public static Status AUSGEWÄHLT(){
+            BufferedImage bi = new BufferedImage(BreiteEinFeld(), BreiteEinFeld(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = bi.createGraphics();
+            g2.setColor(MÖGLICH);
+            g2.fillRect(0, 0, BreiteEinFeld(), BreiteEinFeld());
+            g2.dispose();
+
+            Status ausgabe = new Status("AUSGEWÄHLT");
+            ausgabe.bild = bi;
             return ausgabe;
         }
         public static Status MÖGLICH_ZUG (){

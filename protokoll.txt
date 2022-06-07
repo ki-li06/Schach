@@ -17,12 +17,11 @@
  - MöglicheZüge_ohneSchach erstellt
  - Turm MöglicheZüge_ohneSchach erstellt
  - MöglicheZüge versucht
+7.6 - K:
+ - MöglicheZüge fertig gestellt
+ - Springer MöglicheZüge_OhneSchach fertig gestellt
 
 
 
 
 
-
-To Do - K:
- - Figuren 2D array copy 
- - Figuren copy

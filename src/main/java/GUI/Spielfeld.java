@@ -16,8 +16,8 @@ import static util.ShowInJFrame.show;
 
 public class Spielfeld {
     public static final int BREITE = 520;
-    public static final Color FARBE_DUNKEL = new Color(131, 84, 17);
-    public static final Color FARBE_HELL = new Color(250, 197, 118);
+    public static final Color FARBE_DUNKEL = new Color(159, 101, 19);
+    public static final Color FARBE_HELL = new Color(253, 204, 132);
 
     private BufferedImage feld;
     public Spielfeld(){

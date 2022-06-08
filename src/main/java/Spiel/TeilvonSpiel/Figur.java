@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static Spiel.TeilvonSpiel.Zug.ziehe;
 import static util.FormatPoint.format;
 import static util.ArrayPoint.get;
 import static util.StringFormat.getFormat;
@@ -88,7 +89,7 @@ public abstract class Figur {
         //System.out.println("ausgangssituation: ");
         String farbe = figuren[xfeld][yfeld].getFarbe();
         List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld));
-        System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
+        //System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
 
         List<Point> GegnerKoordinaten = new ArrayList<>();
         for (int x = 0; x < figuren.length; x++) {
@@ -99,7 +100,6 @@ public abstract class Figur {
             }
         }
         //System.out.println("Gegner Koordinaten: \n" + format(GegnerKoordinaten));
-        Point königkoordinaten = indexOf(figuren, "K", farbe);
         //System.out.println("königskordinaten: " + format(königkoordinaten));
         //System.out.println("\n\n");
         for (int i = 0; i < möglich_ohneSchach.size(); i++) {
@@ -109,28 +109,23 @@ public abstract class Figur {
                     new Point(xfeld, yfeld),
                     new Point(möglich_ohneSchach.get(i).x, möglich_ohneSchach.get(i).y)
             );
-            Figur[][] neuefiguren = kopieren(figuren);
-            neuefiguren[zug.neu.x][zug.neu.y] = neuefiguren[zug.alt.x][zug.alt.y];
-            neuefiguren[zug.alt.x][zug.alt.y] = null;
+            Figur[][] neuefiguren = ziehe(figuren, zug);
+            Point königkoordinaten = indexOf(neuefiguren, "K", farbe);
             //System.out.println("zug: " + zug);
             //System.out.println(" -> ");
+            //System.out.println("neuefiguren: ");
             //ausgeben(neuefiguren);
-            for (int j = 0; j < GegnerKoordinaten.size(); j++) {
-                if(!GegnerKoordinaten.get(j).equals(möglich_ohneSchach.get(i))) {
-                    //System.out.println("gegnerkoordinaten: " + format(GegnerKoordinaten.get(j)) + " -> " + get(neuefiguren, GegnerKoordinaten.get(j)));
-                    List<Point> GegnerKoordinateMöglicheZüge = new ArrayList<>(
-                            MöglicheZüge_OhneSchach(neuefiguren, WeißZüge, SchwarzZüge, GegnerKoordinaten.get(j).x, GegnerKoordinaten.get(j).y)
-                    );
-                    //System.out.println("  mögliche züge: " + format(GegnerKoordinateMöglicheZüge));
-                    GegnerMöglicheZüge.addAll(
-                            GegnerKoordinateMöglicheZüge
-                    );
-                }
-                else{
-                    //System.out.println("gegner geschlagen");
-                }
+            if(farbe.equals(WHITE)){
+                WeißZüge.add(zug);
             }
-            if(GegnerMöglicheZüge.contains(königkoordinaten)){
+            else {
+                SchwarzZüge.add(zug);
+            }
+            List<Point> alleMöglich = new ArrayList<>(
+                    AlleMöglicheZügeEinerFarbe(neuefiguren, WeißZüge, SchwarzZüge, andereFarbe(farbe))
+            );
+            //System.out.println("alle möglich: " + format(alleMöglich));
+            if(alleMöglich.contains(königkoordinaten)){
                 möglich_ohneSchach.set(i, new Point(-1, -1));
             }
             //System.out.println("--> " + format(möglich_ohneSchach.get(i)));
@@ -154,6 +149,26 @@ public abstract class Figur {
     }
 
     /**
+     * Gibt alle Punkte aus, auf die eine Farbe ziehen kann (MöglicheZüge_ohneSchach)
+     * (relevant für MöglicheZüge(...) und Rochade)
+     */
+    protected static List<Point> AlleMöglicheZügeEinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        List<Point> koordinaten = new ArrayList<>();
+        for (int x = 0; x < figuren.length; x++) {
+            for (int y = 0; y < figuren[x].length; y++) {
+                if(figuren[x][y] != null && figuren[x][y].getFarbe().equals(farbe)){
+                    koordinaten.add(new Point(x, y));
+                }
+            }
+        }
+        List<Point> ausgabe = new ArrayList<>();
+        for (Point p : koordinaten) {
+            ausgabe.addAll(MöglicheZüge_OhneSchach(figuren, WeißZüge, SchwarzZüge, p.x, p.y));
+        }
+        return ausgabe;
+    }
+
+    /**
      * macht das gleiche wie die gleichnamige nicht static Methode.
      * Diese Methode ist aber static, weil sie ja an sich nicht von einer Figur abhängig ist
      */
@@ -163,6 +178,7 @@ public abstract class Figur {
     private static List<Point> MöglicheZüge_OhneSchach (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         return figuren[xfeld][yfeld].möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
+
 
     /**
      * gibt den Index der gesuchten Figur
@@ -177,6 +193,7 @@ public abstract class Figur {
         }
         return new Point(-1, -1);
     }
+
 
     public static void ausgeben(Figur[][] figuren){
         String format = getFormat(30, true);

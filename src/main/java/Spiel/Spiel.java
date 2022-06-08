@@ -32,14 +32,14 @@ public class Spiel {
     }
 
     public static void main(String[] args) {
-        Point ref = new Point(5, 2);
+        Point ref = new Point(4, 7);
         Spiel s = new Spiel();
         s.mga = new MainGameAnzeige("s1", "s2");
-        s.felder[ref.x][ref.y].setFigur(new Läufer("w"));
+        s.felder[ref.x][ref.y].setFigur(new König("w"));
         s.felder[ref.x][ref.y].setStatus(Feld.Status.AUSGEWÄHLT());
         //erstelle eine theoretische Spielsituation
-        //s.felder[0][0].setFigur(new König("w"));
-        //s.felder[3][7].setFigur(new Turm("w"));
+        //s.felder[3][0].setFigur(new König("w"));
+        s.felder[1][1].setFigur(new Turm("b"));
 
         //s.felder[7][1].setFigur(new Turm("b"));
 
@@ -48,8 +48,8 @@ public class Spiel {
         List<Point> möglicheZüge = new ArrayList<>(
                 s.felder[ref.x][ref.y].getFigur().möglicheZüge(
                     getFiguren(s.felder),
-                    null,
-                        null,
+                    new ArrayList<>(),
+                        new ArrayList<>(),
                         ref.x, ref.y));
 
         //markiere alle Mögliche Züge
@@ -64,7 +64,7 @@ public class Spiel {
         }
         s.mga.updateBrett(s.felder);
         System.out.println("Mögliche Züge für " + format(ref) + ": " + format(möglicheZüge));
-
+        System.out.println(möglicheZüge.size() + " mögliche Züge");
 
     }
 }

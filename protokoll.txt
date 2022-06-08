@@ -22,6 +22,11 @@
  - Methode MöglicheZüge_OhneSchach Methodenkopf geändert
  - Springer MöglicheZüge_OhneSchach fertig gestellt
  - König MöglicheZüge_OhneSchach angefangen
+8.6 - K:
+ - König Rochade fertig gestellt
+ - Zug überarbeitet
+ - Spiel angefangen
+
 
 
 

@@ -19,7 +19,7 @@ public class Springer extends Figur {
 
     @Override
     protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld) {
-        System.out.println("springer möglich " + xfeld + " | " + yfeld);
+        //System.out.println("springer möglich " + xfeld + " | " + yfeld);
         String farbe = figuren[xfeld][yfeld].getFarbe();
 
         List<Point> relativ = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Springer extends Figur {
         relativ.add(new Point(1, -2));
         relativ.add(new Point(-2, 1));
 
-        System.out.println("relativ: " + format(relativ));
+        //System.out.println("relativ: " + format(relativ));
         List<Point> möglich = new ArrayList<>();
         for (Point p : relativ) {
             if((xfeld + p.x) >= 0 && (xfeld + p.x) < 8 &&

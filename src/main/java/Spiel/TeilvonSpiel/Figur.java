@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static Spiel.TeilvonSpiel.Zug.ziehe;
 import static util.FormatPoint.format;
 import static util.ArrayPoint.get;
 import static util.StringFormat.getFormat;
@@ -75,9 +74,11 @@ public abstract class Figur {
      */
     protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         Figur f = figuren[xfeld][yfeld];
+        /*
         System.out.println("FEHLER - MÖGLICHEZÜGE_OHNESCHACH");
         System.out.println("IN DER KLASSE " + f.getClass().getSimpleName() + " NICHT DEKLARIERT");
-        return null;
+        */
+        return new ArrayList<>();
     }
 
     /**
@@ -85,10 +86,10 @@ public abstract class Figur {
      * hierbei werden alle Züge nach denen der Gegner den König schlagen kann gestrichen
      * @return diese Liste kann auf dem Spielbrett angezeigt werden
      */
-    public List<Point> möglicheZüge (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
+    public List<Point> möglicheZüge (Figur[][] figuren, List<Zug> weißZüge, List<Zug> schwarzZüge, int xfeld, int yfeld){
         //System.out.println("ausgangssituation: ");
         String farbe = figuren[xfeld][yfeld].getFarbe();
-        List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld));
+        List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, weißZüge, schwarzZüge, xfeld, yfeld));
         //System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
 
         List<Point> GegnerKoordinaten = new ArrayList<>();
@@ -103,13 +104,15 @@ public abstract class Figur {
         //System.out.println("königskordinaten: " + format(königkoordinaten));
         //System.out.println("\n\n");
         for (int i = 0; i < möglich_ohneSchach.size(); i++) {
+            List<Zug> WeißZüge = new ArrayList<>(weißZüge);
+            List<Zug> SchwarzZüge = new ArrayList<>(schwarzZüge);
             //System.out.println("möglicher zug: " + format(möglich_ohneSchach.get(i)));
             List<Point> GegnerMöglicheZüge = new ArrayList<>();
             Zug zug = new Zug(
                     new Point(xfeld, yfeld),
                     new Point(möglich_ohneSchach.get(i).x, möglich_ohneSchach.get(i).y)
             );
-            Figur[][] neuefiguren = ziehe(figuren, zug);
+            Figur[][] neuefiguren = zug.ziehe(figuren);
             Point königkoordinaten = indexOf(neuefiguren, "K", farbe);
             //System.out.println("zug: " + zug);
             //System.out.println(" -> ");
@@ -175,7 +178,7 @@ public abstract class Figur {
     public static List<Point> MöglicheZüge (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         return figuren[xfeld][yfeld].möglicheZüge(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
-    private static List<Point> MöglicheZüge_OhneSchach (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
+    static List<Point> MöglicheZüge_OhneSchach (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         return figuren[xfeld][yfeld].möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
 

@@ -22,12 +22,12 @@ public class Zug {
         this.neu = neu;
     }
 
-    public static Figur[][] ziehe(Figur[][] eingabe, Zug zug){
+    public Figur[][] ziehe(Figur[][] eingabe){
         Figur[][] ausgabe = Figur.kopieren(eingabe);
-        if(get(eingabe, zug.alt).getName().equals("K")){
+        if(get(eingabe, alt).getName().equals("K")){
             //kurze Rochade
-            if(zug.alt.x - zug.neu.x == -2){
-                if (get(eingabe, zug.alt).getFarbe().equals(WHITE)) {
+            if(alt.x - neu.x == -2){
+                if (get(eingabe, alt).getFarbe().equals(WHITE)) {
                     ausgabe[5][7] = ausgabe[7][7];
                     ausgabe[7][7] = null;
                 }
@@ -37,8 +37,8 @@ public class Zug {
                 }
             }
             //lange Rochade
-            else if(zug.alt.x - zug.neu.x == 2){
-                if (get(eingabe, zug.alt).getFarbe().equals(WHITE)) {
+            else if(alt.x - neu.x == 2){
+                if (get(eingabe, alt).getFarbe().equals(WHITE)) {
                     ausgabe[3][7] = ausgabe[0][7];
                     ausgabe[0][7] = null;
                 }
@@ -47,18 +47,14 @@ public class Zug {
                     ausgabe[0][0] = null;
                 }
             }
-            ausgabe[zug.neu.x][zug.neu.y] = ausgabe[zug.alt.x][zug.alt.y];
-            ausgabe[zug.alt.x][zug.alt.y] = null;
         }
-        else{
-            ausgabe[zug.neu.x][zug.neu.y] = ausgabe[zug.alt.x][zug.alt.y];
-            ausgabe[zug.alt.x][zug.alt.y] = null;
-        }
+        ausgabe[neu.x][neu.y] = ausgabe[alt.x][alt.y];
+        ausgabe[alt.x][alt.y] = null;
         return ausgabe;
     }
 
     @Override
     public String toString() {
-        return "[" + format(alt) + " -> " + format(neu) + "]";
+        return "{" + alt.x + "|" + alt.y + " - > " + neu.x + "|" + neu.y + "}";
     }
 }

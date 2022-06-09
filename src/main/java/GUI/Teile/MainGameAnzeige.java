@@ -1,5 +1,7 @@
-package GUI;
+package GUI.Teile;
 
+import GUI.BauernAuswahl.BauernAuswahl;
+import GUI.BauernAuswahl.BauernAuswahlMouseListener;
 import GUI.Spielfeld;
 import Spiel.TeilvonSpiel.Feld;
 
@@ -21,6 +23,7 @@ public class MainGameAnzeige {
     private JLabel spielerunten;
     private JLabel spieleroben;
     private JLabel brett;
+    private JLabel bauernAuswahl;
     private int brettx;
     private boolean gedreht;
 
@@ -68,7 +71,7 @@ public class MainGameAnzeige {
 
         this.frame.pack();
         //Vollbild
-        //this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.frame.setVisible(true);
     }
 
@@ -102,6 +105,11 @@ public class MainGameAnzeige {
         brett = new JLabel();
         brett.setIcon(new ImageIcon(new Spielfeld().getFeld()));
 
+        bauernAuswahl = new JLabel();
+        bauernAuswahl.setIcon(new ImageIcon(BauernAuswahl.getBildLeer()));
+        bauernAuswahl.setVerticalAlignment(SwingConstants.CENTER);
+        bauernAuswahl.setVisible(false);
+
         brettx = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2) - BREITE/2;
 
         gedreht = false;
@@ -114,6 +122,7 @@ public class MainGameAnzeige {
      * zeigt das Spielfeld erstmals für den Konstruktor an
      */
     private void erstellen(){
+
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
@@ -123,6 +132,8 @@ public class MainGameAnzeige {
                                         .addComponent(brett)
                                         .addComponent(spielerunten, BREITE, BREITE, BREITE)
                                 )
+                                .addGap(10)
+                                .addComponent(bauernAuswahl)
                         )
         );
         groupLayout.setVerticalGroup(
@@ -130,11 +141,16 @@ public class MainGameAnzeige {
                         .addComponent(spieleroben)
                         .addGap(10)
                         //.addComponent(spielerunten, Spielfeld.BREITE, Spielfeld.BREITE, Spielfeld.BREITE)
-                        .addComponent(brett)
+                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(brett)
+                                .addComponent(bauernAuswahl, BREITE, BREITE, BREITE)
+                        )
+                        //.addComponent(brett)
                         .addGap(10)
                         //.addComponent(spieleroben, Spielfeld.BREITE, Spielfeld.BREITE, Spielfeld.BREITE)
                         .addComponent(spielerunten)
         );
+
         System.out.println("Graphik erstellt");
     }
 
@@ -201,16 +217,39 @@ public class MainGameAnzeige {
         }
     }
 
-    public void fügeMouseListenerhinzu(MouseListener ml){
+    /**
+     * fügt einen MouseListener für das Spielbrett hinzu
+     */
+    public void fügeMouseListenerHinzu(MouseListener ml){
         brett.addMouseListener(ml);
         System.out.println("MouseListener hinzugefügt");
     }
+
     /**
-     * gibt den obersten linken Punkt des Spielbretts aus
-     * @return ein Point (x, y)
+     * fügt einen MouseListener für die BauernAuswahl hinzu
      */
-    public Point BrettKoordinaten(){
-        return new Point(brettx, 77);
+    public void fügeMouseListenerBauernAuswahlHinzu(MouseListener ml){
+        bauernAuswahl.addMouseListener(ml);
+        System.out.println("BauernAuswahlMouseListener hinzugefügt");
     }
 
+    public void zeigeBauernAuswahl(String farbe){
+        bauernAuswahl.setIcon(new ImageIcon(BauernAuswahl.getBild(farbe)));
+        bauernAuswahl.setVisible(true);
+        System.out.println("zeigeBauernAuswahl - Ende");
+    }
+
+    public void macheBauernAuswahlUnsichtbar(){
+        bauernAuswahl.setVisible(false);
+    }
+
+    public boolean BauernAuswahlSichtbar(){
+
+        return bauernAuswahl.isVisible();
+    }
+
+
+    public static void main(String[] args) {
+        new MainGameAnzeige("s1", "s2");
+    }
 }

@@ -1,7 +1,8 @@
 package Spiel;
 
-import GUI.Eingabefeld;
-import GUI.MainGameAnzeige;
+import GUI.BauernAuswahl.BauernAuswahlMouseListener;
+import GUI.Teile.Eingabefeld;
+import GUI.Teile.MainGameAnzeige;
 import GUI.MausListener;
 import Spiel.TeilvonSpiel.Feld;
 import Spiel.TeilvonSpiel.Figuren.*;
@@ -15,6 +16,7 @@ import java.util.List;
 import static Spiel.TeilvonSpiel.Feld.getFiguren;
 import static Spiel.TeilvonSpiel.Figur.MöglicheZüge;
 import static util.FormatPoint.format;
+import static util.ArrayPoint.get;
 
 public class Spiel {
     private String weißspieler;
@@ -24,9 +26,7 @@ public class Spiel {
     private List<Zug> SchwarzZüge = new ArrayList<>();
 
     private MainGameAnzeige mga;
-    private MouseListener mouseListener;
     private Point ausgewählt;
-    private boolean BauernAuswahl;
 
 
     public Spiel(){
@@ -51,6 +51,7 @@ public class Spiel {
                 felder[x][y] = new Feld();
             }
         }
+        //Setze die Figuren auf das Brett
         for (int i = 0; i <= 7; i+= 7) {
             String farbe = i==7?"w":"b";
             felder[0][i].setFigur(new Turm(farbe));
@@ -61,30 +62,61 @@ public class Spiel {
             felder[5][i].setFigur(new Läufer(farbe));
             felder[6][i].setFigur(new Springer(farbe));
             felder[7][i].setFigur(new Turm(farbe));
-            System.out.println("i: " + i);
             int ybauern = i==7?6:1;
             for (int j = 0; j < 8; j++) {
                 felder[j][ybauern].setFigur(new Bauer(farbe));
             }
         }
         mga.updateBrett(felder);
-        mga.fügeMouseListenerhinzu(new MausListener(this));
+        mga.fügeMouseListenerHinzu(new MausListener(this));
+        mga.fügeMouseListenerBauernAuswahlHinzu(new BauernAuswahlMouseListener(this));
         //mouseListener = new MausListener(this);
     }
 
     /**
      * diese Methode wird vom MouseListener ausgeführt, wenn auf das Spielfeld geklickt wird
      */
-    public void aufFeldGeklickt(int xfeld, int yfeld){
+    public void aufBrettGeklickt(int xfeld, int yfeld){
         System.out.println("Es wurde auf das Feld " + xfeld + " | " + yfeld + " geklickt");
-        ausgewählt = new Point(xfeld, yfeld);
-        felder[ausgewählt.x][ausgewählt.y].setStatus(Feld.Status.AUSGEWÄHLT());
-        zeigeMöglicheZüge();
+        Point zugehörig = new Point(xfeld, yfeld);
+        if(ausgewählt == null){
+            ausgewählt = zugehörig;
+            get(felder, ausgewählt).setStatus(Feld.Status.AUSGEWÄHLT());
+            zeigeMöglicheZüge();
+        }
+        else if(!zugehörig.equals(ausgewählt)){
+            get(felder, ausgewählt).setStatus(null);
+            clearMöglicheZüge();
+            ausgewählt = null;
+        }
+        System.out.println("ausgewählt: " + format(ausgewählt));
+        System.out.println("möglicheZüge: " + format(möglicheZüge()));
         System.out.println("figur: " + felder[xfeld][yfeld].getFigur());
     }
 
+    /**
+     * diese Methode wird vom BauernAuswahlMouseListener ausgeführt, wenn auf ihn geklickt wird
+     * und die BauernAuswahl angezeigt wird
+     */
+    public void aufBauernAuswahlGeklickt(int nummer){
+        System.out.println("Spiel - BauernAuswahl geklickt: " + nummer);
+    }
+
+    /**
+     * gibt alle Möglichen Züge aus
+     */
+    private List<Point> möglicheZüge (){
+        if(ausgewählt == null){
+            return new ArrayList<>();
+        }
+        return MöglicheZüge(getFiguren(felder), WeißZüge, SchwarzZüge, ausgewählt.x, ausgewählt.y);
+    }
+
+    /**
+     * zeigt alle Möglichen Züge an (MÖGLICH_ZUG oder MÖGLICH_SCHLAGEN)
+     */
     private void zeigeMöglicheZüge(){
-        List<Point> möglich =  MöglicheZüge(getFiguren(felder), WeißZüge, SchwarzZüge, ausgewählt.x, ausgewählt.y);
+        List<Point> möglich =  möglicheZüge();
         for (Point p : möglich) {
             if(felder[p.x][p.y].getFigur() == null){
                 felder[p.x][p.y].setStatus(Feld.Status.MÖGLICH_ZUG());
@@ -96,11 +128,33 @@ public class Spiel {
         mga.updateBrett(felder);
     }
 
+    /**
+     * entfernt die Anzeige aller Möglichen Züge (GegenMethode zu zeigeMöglicheZüge()
+     */
+    private void clearMöglicheZüge(){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(felder[i][j].getStatus() != null && (
+                        felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_ZUG())
+                        || felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_SCHLAGEN()))
+                    ){
+                    felder[i][j].setStatus(null);
+                }
+            }
+        }
+        mga.updateBrett(felder);
+    }
 
-    public boolean isGedreht() {
+    public boolean BauernAuswahl(){
+        return mga.BauernAuswahlSichtbar();
+    }
+
+    public boolean WeißDran() {
+        /*
         System.out.println("WeißZüge: " + WeißZüge);
         System.out.println("SchwarzZüge: " + SchwarzZüge);
-        return WeißZüge.size() != SchwarzZüge.size();
+               */
+        return WeißZüge.size() == SchwarzZüge.size();
     }
 
 

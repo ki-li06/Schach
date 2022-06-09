@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.Teile.MainGameAnzeige;
 import Spiel.Spiel;
 import Spiel.TeilvonSpiel.Feld;
 import Spiel.TeilvonSpiel.Figuren.*;
@@ -51,7 +52,7 @@ public class GUIMain {
         felder[4][4].setStatus(Feld.Status.ZUG());
 
         //e.getPanel().addMouseListener(new MausListener());
-        mga.fügeMouseListenerhinzu(new MausListener(new Spiel()));
+        mga.fügeMouseListenerHinzu(new MausListener(new Spiel()));
         mga.updateBrett(felder);
 
         System.out.println("ENDE GUI-MAIN");

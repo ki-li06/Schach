@@ -11,7 +11,6 @@ public class MausListener implements MouseListener {
     private Spiel spiel;
 
     public MausListener(Spiel s){
-        System.out.println("new MouseListener");
         spiel = s;
     }
 
@@ -21,11 +20,11 @@ public class MausListener implements MouseListener {
         int y = e.getY();
         x = (x-x%BreiteEinFeld())/BreiteEinFeld();
         y = (y-y%BreiteEinFeld())/BreiteEinFeld();
-        if(spiel.isGedreht()){
+        if(!spiel.WeißDran()){
             x = 7 - x;
             y = 7 - y;
         }
-        spiel.aufFeldGeklickt(x, y);
+        spiel.aufBrettGeklickt(x, y);
     }
 
     @Override

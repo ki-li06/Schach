@@ -2,6 +2,7 @@ package Spiel.TeilvonSpiel;
 
 import Spiel.TeilvonSpiel.Figuren.Turm;
 import com.sun.security.jgss.GSSUtil;
+import util.ColPrint;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static util.FormatPoint.format;
 import static util.ArrayPoint.get;
@@ -176,9 +178,17 @@ public abstract class Figur {
      * Diese Methode ist aber static, weil sie ja an sich nicht von einer Figur abhängig ist
      */
     public static List<Point> MöglicheZüge (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
+        if(figuren[xfeld][yfeld] == null){
+            ColPrint.red.println("FEHLER - Figur.MöglicheZüge: figuren[" + xfeld + "][" + yfeld + "] ist null");
+            return new ArrayList<>();
+        }
         return figuren[xfeld][yfeld].möglicheZüge(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
     static List<Point> MöglicheZüge_OhneSchach (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
+        if(figuren[xfeld][yfeld] == null){
+            ColPrint.red.println("FEHLER - Figur.MöglicheZüge_OhneSchach: figuren[" + xfeld + "][" + yfeld + "] ist null");
+            return new ArrayList<>();
+        }
         return figuren[xfeld][yfeld].möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
 
@@ -228,5 +238,11 @@ public abstract class Figur {
                 ", farbe='" + farbe + '\'' +
                 '}';
     }
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Figur figur = (Figur) o;
+        return Objects.equals(name, figur.name) && Objects.equals(farbe, figur.farbe);
+    }
 }

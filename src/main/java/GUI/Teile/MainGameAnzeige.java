@@ -4,6 +4,7 @@ import GUI.BauernAuswahl.BauernAuswahl;
 import GUI.BauernAuswahl.BauernAuswahlMouseListener;
 import GUI.Spielfeld;
 import Spiel.TeilvonSpiel.Feld;
+import util.ColPrint;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -151,7 +152,7 @@ public class MainGameAnzeige {
                         .addComponent(spielerunten)
         );
 
-        System.out.println("Graphik erstellt");
+        ColPrint.green.println("Graphik erstellt");
     }
 
     /**
@@ -222,7 +223,7 @@ public class MainGameAnzeige {
      */
     public void fügeMouseListenerHinzu(MouseListener ml){
         brett.addMouseListener(ml);
-        System.out.println("MouseListener hinzugefügt");
+        ColPrint.green.println("MouseListener hinzugefügt");
     }
 
     /**
@@ -230,7 +231,7 @@ public class MainGameAnzeige {
      */
     public void fügeMouseListenerBauernAuswahlHinzu(MouseListener ml){
         bauernAuswahl.addMouseListener(ml);
-        System.out.println("BauernAuswahlMouseListener hinzugefügt");
+        ColPrint.green.println("BauernAuswahlMouseListener hinzugefügt");
     }
 
     public void zeigeBauernAuswahl(String farbe){

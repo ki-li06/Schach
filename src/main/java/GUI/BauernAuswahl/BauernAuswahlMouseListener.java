@@ -28,7 +28,6 @@ public class BauernAuswahlMouseListener implements MouseListener {
                 ausgabe = i;
             }
         }
-        System.out.println("auf feld " + ausgabe + " geklickt");
         if(spiel.BauernAuswahl()) {
             spiel.aufBauernAuswahlGeklickt(ausgabe);
         }

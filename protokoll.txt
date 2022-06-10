@@ -26,6 +26,11 @@
  - König Rochade fertig gestellt
  - Zug überarbeitet
  - Spiel angefangen
+9.6 - K:
+ - BauernAuswahl
+10.6 - K:
+ - Spiel (FEHLER -> aufBauernAuswahlGeklickt: Schwarz
+ - BauernAuswahl
 
 
 

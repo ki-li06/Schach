@@ -3,6 +3,7 @@ package Spiel.TeilvonSpiel;
 import java.awt.*;
 
 import static Spiel.TeilvonSpiel.Figur.WHITE;
+import static Spiel.TeilvonSpiel.Figuren.Bauer.BauernUmwandlung;
 import static util.FormatPoint.format;
 import static util.ArrayPoint.get;
 
@@ -45,6 +46,17 @@ public class Zug {
                 else{
                     ausgabe[3][0] = ausgabe[0][0];
                     ausgabe[0][0] = null;
+                }
+            }
+        }
+        else if(get(eingabe, alt).getName().equals("P")){
+            if(neu.y < 0 || neu.y > 7){
+                ausgabe[alt.x][alt.y] = BauernUmwandlung(neu.y);
+                if (get(ausgabe, alt).getFarbe().equals(WHITE)) {
+                    neu.y = 0;
+                }
+                else{
+                    neu.y = 7;
                 }
             }
         }

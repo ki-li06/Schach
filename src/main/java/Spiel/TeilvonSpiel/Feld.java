@@ -52,6 +52,14 @@ public class Feld {
                 i->Arrays.stream(i).map(Feld::getFigur).toArray(Figur[]::new)
         ).toArray(Figur[][]::new);
     }
+    public static void setFiguren(Feld[][] felder, Figur[][] figuren){
+        for (int x = 0; x < felder.length; x++) {
+            for (int y = 0; y < felder[x].length; y++) {
+                felder[x][y].setFigur(figuren[x][y]);
+            }
+        }
+    }
+
     /**
      * gibt den Status des Feldes an, also ob auf diesem Feld ein Schach, ein Zug oder ähnliches ist
      */
@@ -112,6 +120,17 @@ public class Feld {
         public static Status MÖGLICH_SCHLAGEN(){
             Status ausgabe = new Status("MÖGLICH_SCHLAGEN");
             ausgabe.bild = rundeEcken(BreiteEinFeld(), MÖGLICH, 35);
+            return ausgabe;
+        }
+        public static Status BAUERNUMWANDLUNG(){
+            Status ausgabe = new Status("BAUERNUMWANDLUNG");
+            BufferedImage bi = new BufferedImage(BreiteEinFeld(), BreiteEinFeld(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = bi.createGraphics();
+            Color c = new Color(0, 110, 255, 150);
+            g2.setColor(c);
+            g2.fillRect(0, 0, BreiteEinFeld(), BreiteEinFeld());
+            g2.dispose();
+            ausgabe.bild = bi;
             return ausgabe;
         }
 

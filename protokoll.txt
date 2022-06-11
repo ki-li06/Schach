@@ -31,6 +31,12 @@
 10.6 - K:
  - Spiel (FEHLER -> aufBauernAuswahlGeklickt: Schwarz
  - BauernAuswahl
+11.6 - K:
+ - Figuren EndeErkennung
+ - Ende
+ - Spiel EndeErkennung
+
+==> version 1.0 fertig
 
 
 

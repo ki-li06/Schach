@@ -128,7 +128,7 @@ public class Eingabefeld {
         Spielername_schwarz = schwarzeingabe.getText();
 
         if(!Spielername_weiß.equals("") && !Spielername_schwarz.equals("") &&
-                Spielername_weiß.length() < 10 && Spielername_schwarz.length() < 10 &&
+                Spielername_weiß.length() <= 10 && Spielername_schwarz.length() <= 10 &&
                 !Spielername_schwarz.equals(Spielername_weiß)){
 
 
@@ -141,8 +141,8 @@ public class Eingabefeld {
 
             System.out.println("FEHLER BEI DER EINGABE");
 
-            System.out.println("Spielername_weiß: " + Spielername_weiß);
-            System.out.println("Spielername_schwarz: " + Spielername_schwarz);
+            System.out.println("Spielername_weiß: \"" + Spielername_weiß + "\" (" + Spielername_weiß.length() + ")");
+            System.out.println("Spielername_schwarz: \"" + Spielername_schwarz + "\" (" + Spielername_schwarz.length() + ")");
 
 
         }

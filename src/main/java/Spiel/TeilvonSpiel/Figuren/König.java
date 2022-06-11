@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static util.ArrayPoint.get;
 import static util.FormatPoint.format;
 
 public class König extends Figur {
@@ -53,9 +54,9 @@ public class König extends Figur {
         if(RochadeCheck) {
             //Rochade
             if (farbe.equals(WHITE)) {
-                boolean königbewegt = WeißZüge.stream()
+                boolean königbewegt = xfeld != 4 || yfeld != 7 || WeißZüge.stream()
                         .map(i -> i.alt.x == 4 && i.alt.y == 7).toList().contains(true);
-                List<Point> SchwarzMöglicheZüge = AlleMöglicheZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, BLACK);
+                List<Point> SchwarzMöglicheZüge = AlleMöglicheZüge_OhneSchach_EinerFarbe(figuren, WeißZüge, SchwarzZüge, BLACK);
                 boolean schach = SchwarzMöglicheZüge.contains(new Point(4, 7));
                 if (!königbewegt && !schach) {
                     //System.out.println("könig nicht bewegt und nicht im schach");
@@ -88,9 +89,9 @@ public class König extends Figur {
                     }
                 }
             } else {
-                boolean königbewegt = WeißZüge.stream()
+                boolean königbewegt = xfeld != 4 || yfeld != 0 || WeißZüge.stream()
                         .map(i -> i.alt.x == 4 && i.alt.y == 0).toList().contains(true);
-                List<Point> WeißMöglicheZüge = AlleMöglicheZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, WHITE);
+                List<Point> WeißMöglicheZüge = AlleMöglicheZüge_OhneSchach_EinerFarbe(figuren, WeißZüge, SchwarzZüge, WHITE);
                 boolean schach = WeißMöglicheZüge.contains(new Point(4, 0));
                 if (!königbewegt && !schach) {
                     //System.out.println("könig nicht bewegt und nicht im schach");

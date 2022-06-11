@@ -78,7 +78,7 @@ public class Feld {
         }
         public static Status SCHACH (){
             Status ausgabe = new Status("SCHACH");
-            Color FARBE_SCHACH = new Color(250, 57, 57, 128);
+            Color FARBE_SCHACH = new Color(250, 57, 57, 226);
             ausgabe.bild = circle(
                     BreiteEinFeld(),
                     FARBE_SCHACH,

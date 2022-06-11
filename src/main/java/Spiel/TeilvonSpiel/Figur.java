@@ -46,14 +46,6 @@ public abstract class Figur {
     }
 
 
-    public void setName(String name) {
-        if(List.of(figurennamen).contains(name)){
-            this.name = name;
-        }
-        else {
-            System.out.println("FEHLER - UNGÜLTIGE NAMEN-EINGABE: " +  name);
-        }
-    }
     public void setFarbe(String farbe) {
         if(List.of(farben).contains(farbe)) {
             this.farbe = farbe;
@@ -65,8 +57,9 @@ public abstract class Figur {
 
 
     /**
-     * gibt alle Koordinaten von Felder aus, auf die die angegebene Figur rein theoretisch ziehen kann
-     * Dabei wird ignoriert ob der Spieler im Schach steht oder die Figur vor dem König gefesselt ist
+     * gibt alle Koordinaten von Felder aus, auf die die angegebene Figur rein theoretisch ziehen kann.
+     * Dabei wird ignoriert, ob der Spieler im Schach steht oder die Figur vor dem König gefesselt ist.
+     * Diese Methode wird von jeder Figuren Klasse selbst bestimmt.
      * @param figuren das Spiefeld an Figuren (ein Feld[][] kann mit getFiguren(Feld[][]) umgewandelt werden)
      * @param WeißZüge alle Züge, die Weiß bisher gespielt hat
      * @param SchwarzZüge alle Züge, die Schwarz bisher gespielt hat  (beide nur für En Passant und Rochade relevant)
@@ -76,10 +69,8 @@ public abstract class Figur {
      */
     protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld){
         Figur f = figuren[xfeld][yfeld];
-        /*
-        System.out.println("FEHLER - MÖGLICHEZÜGE_OHNESCHACH");
-        System.out.println("IN DER KLASSE " + f.getClass().getSimpleName() + " NICHT DEKLARIERT");
-        */
+        ColPrint.red.println("FEHLER - MÖGLICHEZÜGE_OHNESCHACH");
+        ColPrint.red.println("IN DER KLASSE " + f.getClass().getSimpleName() + " NICHT DEKLARIERT");
         return new ArrayList<>();
     }
 
@@ -94,14 +85,6 @@ public abstract class Figur {
         List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, weißZüge, schwarzZüge, xfeld, yfeld));
         //System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
 
-        List<Point> GegnerKoordinaten = new ArrayList<>();
-        for (int x = 0; x < figuren.length; x++) {
-            for (int y = 0; y < figuren[x].length; y++) {
-                if(figuren[x][y] != null && figuren[x][y].getFarbe().equals(andereFarbe(farbe))){
-                    GegnerKoordinaten.add(new Point(x, y));
-                }
-            }
-        }
         //System.out.println("Gegner Koordinaten: \n" + format(GegnerKoordinaten));
         //System.out.println("königskordinaten: " + format(königkoordinaten));
         //System.out.println("\n\n");
@@ -109,31 +92,20 @@ public abstract class Figur {
             List<Zug> WeißZüge = new ArrayList<>(weißZüge);
             List<Zug> SchwarzZüge = new ArrayList<>(schwarzZüge);
             //System.out.println("möglicher zug: " + format(möglich_ohneSchach.get(i)));
-            List<Point> GegnerMöglicheZüge = new ArrayList<>();
             Zug zug = new Zug(
                     new Point(xfeld, yfeld),
                     new Point(möglich_ohneSchach.get(i).x, möglich_ohneSchach.get(i).y)
             );
             Figur[][] neuefiguren = zug.ziehe(figuren);
-            Point königkoordinaten = indexOf(neuefiguren, "K", farbe);
-            //System.out.println("zug: " + zug);
-            //System.out.println(" -> ");
-            //System.out.println("neuefiguren: ");
-            //ausgeben(neuefiguren);
             if(farbe.equals(WHITE)){
                 WeißZüge.add(zug);
             }
             else {
                 SchwarzZüge.add(zug);
             }
-            List<Point> alleMöglich = new ArrayList<>(
-                    AlleMöglicheZügeEinerFarbe(neuefiguren, WeißZüge, SchwarzZüge, andereFarbe(farbe))
-            );
-            //System.out.println("alle möglich: " + format(alleMöglich));
-            if(alleMöglich.contains(königkoordinaten)){
+            if(SchachAuf(neuefiguren, WeißZüge, SchwarzZüge, farbe)){
                 möglich_ohneSchach.set(i, new Point(-1, -1));
             }
-            //System.out.println("--> " + format(möglich_ohneSchach.get(i)));
         }
         möglich_ohneSchach.removeIf(i->i.x == -1 || i.y == -1);
 
@@ -145,7 +117,7 @@ public abstract class Figur {
      * Gibt die jeweils andere Farbe aus
      * @return w -> b; b -> w
      */
-    public final String andereFarbe (String farbe){
+    public static String andereFarbe (String farbe){
         if(farbe.equals(WHITE)){
             return BLACK;
         }
@@ -153,22 +125,45 @@ public abstract class Figur {
 
     }
 
+
     /**
-     * Gibt alle Punkte aus, auf die eine Farbe ziehen kann (MöglicheZüge_ohneSchach)
-     * (relevant für MöglicheZüge(...) und Rochade)
+     * gibt alle Koordinaten einer Farbe im angegebenen (2D) Array an
+     * @param figuren das Referenz-Array
+     * @param farbe die gesuchte Farbe
      */
-    protected static List<Point> AlleMöglicheZügeEinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
-        List<Point> koordinaten = new ArrayList<>();
+    public static List<Point> alleKoordinatenEinerFarbe (Figur[][] figuren, String farbe){
+        List<Point> ausgabe = new ArrayList<>();
         for (int x = 0; x < figuren.length; x++) {
             for (int y = 0; y < figuren[x].length; y++) {
                 if(figuren[x][y] != null && figuren[x][y].getFarbe().equals(farbe)){
-                    koordinaten.add(new Point(x, y));
+                    ausgabe.add(new Point(x, y));
                 }
             }
         }
+        return ausgabe;
+    }
+
+    /**
+     * Gibt alle Punkte aus, auf die eine Farbe theoretisch ziehen kann (MöglicheZüge_ohneSchach)
+     * (relevant für MöglicheZüge(...) und Rochade)
+     */
+    protected static List<Point> AlleMöglicheZüge_OhneSchach_EinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        List<Point> koordinaten = new ArrayList<>(alleKoordinatenEinerFarbe(figuren, farbe));
         List<Point> ausgabe = new ArrayList<>();
         for (Point p : koordinaten) {
             ausgabe.addAll(MöglicheZüge_OhneSchach(figuren, WeißZüge, SchwarzZüge, p.x, p.y));
+        }
+        return ausgabe;
+    }
+
+    /**
+     * Gibt alle Züge aus, auf die eine Farbe tatsächlich ziehen kann (relevant für ImPatt und ImMatt)
+     */
+    private static List<Point> AlleMöglicheZügeEinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        List<Point> koordinaten = new ArrayList<>(alleKoordinatenEinerFarbe(figuren, farbe));
+        List<Point> ausgabe = new ArrayList<>();
+        for (Point p : koordinaten) {
+            ausgabe.addAll(MöglicheZüge(figuren, WeißZüge, SchwarzZüge, p.x, p.y));
         }
         return ausgabe;
     }
@@ -192,6 +187,38 @@ public abstract class Figur {
         return figuren[xfeld][yfeld].möglicheZüge_ohneSchach(figuren, WeißZüge, SchwarzZüge, xfeld, yfeld);
     }
 
+    /**
+     * gibt aus, ob die angegebene Farbe in dem (2D) Array im Schach steht, also der König angegriffen wird
+     * @param figuren das Referenz Array
+     * @param farbe die angegriffene Farbe
+     */
+    public static boolean SchachAuf(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        Point eigenerKönig = indexOf(figuren, "K", farbe);
+        String andereFarbe = andereFarbe(farbe);
+        return AlleMöglicheZüge_OhneSchach_EinerFarbe(figuren, WeißZüge, SchwarzZüge, andereFarbe).contains(eigenerKönig);
+    }
+
+    /**
+     * gibt an ob der angegebene Spieler im Matt steht
+     * @param figuren das Spielfeld
+     * @param farbe die Farbe des verlangten Spielers
+     */
+    public static boolean ImMatt(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        Point indexOfKönig = indexOf(figuren, "K", farbe);
+        String andereFarbe = andereFarbe(farbe);
+        return SchachAuf(figuren, WeißZüge, SchwarzZüge, farbe) && AlleMöglicheZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, farbe).size() == 0;
+    }
+
+    /**
+     * gibt an ob der angegebene Spieler im Patt steht
+     * @param figuren das Spielfeld
+     * @param farbe die Farbe des verlangten Spielers
+     */
+    public static boolean ImPatt(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        Point indexOfKönig = indexOf(figuren, "K", farbe);
+        String andereFarbe = andereFarbe(farbe);
+        return !SchachAuf(figuren, WeißZüge, SchwarzZüge, farbe) && AlleMöglicheZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, farbe).size() == 0;
+    }
 
     /**
      * gibt den Index der gesuchten Figur
@@ -206,7 +233,6 @@ public abstract class Figur {
         }
         return new Point(-1, -1);
     }
-
 
     public static void ausgeben(Figur[][] figuren){
         String format = getFormat(30, true);

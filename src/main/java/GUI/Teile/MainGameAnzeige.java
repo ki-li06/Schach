@@ -1,8 +1,8 @@
 package GUI.Teile;
 
 import GUI.BauernAuswahl.BauernAuswahl;
-import GUI.BauernAuswahl.BauernAuswahlMouseListener;
 import GUI.Spielfeld;
+import Spiel.TeilvonSpiel.Ende;
 import Spiel.TeilvonSpiel.Feld;
 import util.ColPrint;
 
@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import static GUI.Spielfeld.BREITE;
+import static util.Delay.delay;
 
 public class MainGameAnzeige {
     private static Color PlayerNames_BackgroundColour = Color.blue;
@@ -21,6 +22,8 @@ public class MainGameAnzeige {
     private JFrame frame;
     private JPanel panel;
     private GroupLayout groupLayout;
+    private JLabel ende_oben;
+    private JLabel ende_unten;
     private JLabel spielerunten;
     private JLabel spieleroben;
     private JLabel brett;
@@ -86,9 +89,22 @@ public class MainGameAnzeige {
         this.panel = panel;
         this.groupLayout = groupLayout;
 
+        ende_oben = new JLabel("text");
+        ende_oben.setFont(new Font(Font.DIALOG, Font.BOLD, 40));
+        ende_oben.setHorizontalAlignment(SwingConstants.CENTER);
+        ende_oben.setForeground(frame.getBackground());
+        ende_oben.setVerticalAlignment(SwingConstants.BOTTOM);
+        ende_oben.setVisible(true);
+
+        ende_unten = new JLabel("endeunten");
+        ende_unten.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
+        ende_unten.setHorizontalAlignment(SwingConstants.CENTER);
+        ende_unten.setVerticalAlignment(SwingConstants.TOP);
+        ende_unten.setVisible(false);
+
         spielerunten = new JLabel();
         spielerunten.setText("- " + weiß + " -");
-        spielerunten.setFont(new Font("Dialog", Font.PLAIN, PlayerNames_Height));
+        spielerunten.setFont(new Font(Font.DIALOG, Font.PLAIN, PlayerNames_Height));
         spielerunten.setHorizontalAlignment(SwingConstants.CENTER);
         spielerunten.setBackground(PlayerNames_BackgroundColour);
         spielerunten.setForeground(Color.white);
@@ -96,12 +112,11 @@ public class MainGameAnzeige {
 
         spieleroben = new JLabel();
         spieleroben.setText(schwarz);
-        spieleroben.setFont(new Font("Dialog", Font.PLAIN, PlayerNames_Height));
+        spieleroben.setFont(new Font(Font.DIALOG, Font.PLAIN, PlayerNames_Height));
         spieleroben.setBackground(PlayerNames_BackgroundColour);
         spieleroben.setForeground(Color.black);
         spieleroben.setHorizontalAlignment(SwingConstants.CENTER);
         spieleroben.setOpaque(true);
-
 
         brett = new JLabel();
         brett.setIcon(new ImageIcon(new Spielfeld().getFeld()));
@@ -123,11 +138,14 @@ public class MainGameAnzeige {
      * zeigt das Spielfeld erstmals für den Konstruktor an
      */
     private void erstellen(){
-
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
-                                .addGap(brettx)
+                                //.addGap(brettx)
+                                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(ende_oben, brettx, brettx, brettx)
+                                        .addComponent(ende_unten, brettx, brettx, brettx)
+                                )
                                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(spieleroben, BREITE, BREITE, BREITE)
                                         .addComponent(brett)
@@ -143,6 +161,10 @@ public class MainGameAnzeige {
                         .addGap(10)
                         //.addComponent(spielerunten, Spielfeld.BREITE, Spielfeld.BREITE, Spielfeld.BREITE)
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(groupLayout.createSequentialGroup()
+                                        .addComponent(ende_oben, BREITE/2, BREITE/2, BREITE/2)
+                                        .addComponent(ende_unten, BREITE/2, BREITE/2, BREITE/2)
+                                )
                                 .addComponent(brett)
                                 .addComponent(bauernAuswahl, BREITE, BREITE, BREITE)
                         )
@@ -161,8 +183,8 @@ public class MainGameAnzeige {
      */
     public void updateBrett(Feld[][] felder){
         if(felder.length != 8 || felder[0].length != 8){
-            System.out.println("FEHLER - MainGameAnzeige");
-            System.out.println("Falsche Array Länge: " + felder.length + " | " + felder[0].length);
+            ColPrint.red.println("FEHLER - MainGameAnzeige");
+            ColPrint.red.println("Falsche Array Länge: " + felder.length + " | " + felder[0].length);
             return;
         }
         BufferedImage bi = Spielfeld.bild(felder, gedreht);
@@ -190,32 +212,16 @@ public class MainGameAnzeige {
 
     }
 
+
     /**
-     * Beschriftet den Sieger und den Verlierer
-     * @param winner der Sieger
+     * zeigt das Ende auf der linken Seite des Bretts an
      */
-    public void setzeSieger(String winner){
-        String winnertext = "Gewonnen: ";
-        String losertext = "Verloren: ";
-        
-        if(spieleroben.getText().equals(winner)){
-            String textoben = spieleroben.getText();
-            spieleroben.setText(winnertext + textoben);
-            String textunten = spielerunten.getText();
-            spielerunten.setText(losertext + textunten);
-        }
-        else if(spielerunten.getText().replace("- ", "").replace(" -", "")
-                .equals(winner)){
-            String textoben = spieleroben.getText();
-            spieleroben.setText(losertext + textoben);
-            String textunten = spielerunten.getText();
-            spielerunten.setText(winnertext + textunten);
-        }
-        else{
-            System.out.println("FEHLER - setSieger");
-            System.out.println("winner: " + winner);
-            System.out.println("oben: " + spieleroben.getText());
-        }
+    public void setzeEnde(Ende ende){
+        ende_oben.setText(ende.Typ());
+        ende_oben.setForeground(Color.red);
+        ende_oben.setVisible(true);
+        ende_unten.setText(ende.Text());
+        ende_unten.setVisible(true);
     }
 
     /**
@@ -251,6 +257,8 @@ public class MainGameAnzeige {
 
 
     public static void main(String[] args) {
-        new MainGameAnzeige("s1", "s2");
+        MainGameAnzeige mga = new MainGameAnzeige("s1", "s2");
+        delay(2000L);
+        mga.setzeEnde(new Ende.Patt("1234567890"));
     }
 }

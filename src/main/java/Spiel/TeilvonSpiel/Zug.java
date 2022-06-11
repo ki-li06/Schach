@@ -12,6 +12,13 @@ public class Zug {
     public Point neu;
 
     /**
+     * gibt an ob bei diesem Zug eine Figur geschlagen wurde.
+     * Das ist für das Ende eines Spiels wichtig, denn nach 50 bzw 100 Zügen in denen keine Figur geschlagen wurde, endet eine Partie matt.
+     */
+    private boolean FigurGeschlagen;
+
+
+    /**
      * @param alt Die alten Koordinaten der Figur auf dem Brett
      * @param neu Die neuen Koordinaten der Figur auf dem Brett
      *
@@ -60,13 +67,21 @@ public class Zug {
                 }
             }
         }
-        ausgabe[neu.x][neu.y] = ausgabe[alt.x][alt.y];
+        FigurGeschlagen = get(ausgabe, neu) != null;
+        ausgabe[neu.x][neu.y] = get(ausgabe, alt);
         ausgabe[alt.x][alt.y] = null;
         return ausgabe;
     }
 
+    public boolean FigurGeschlagen() {
+        return FigurGeschlagen;
+    }
+
     @Override
     public String toString() {
+        if(FigurGeschlagen){
+            return "{" + alt.x + "|" + alt.y + " - X > " + neu.x + "|" + neu.y + "}";
+        }
         return "{" + alt.x + "|" + alt.y + " - > " + neu.x + "|" + neu.y + "}";
     }
 }

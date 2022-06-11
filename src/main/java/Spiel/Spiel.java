@@ -4,24 +4,23 @@ import GUI.BauernAuswahl.BauernAuswahlMouseListener;
 import GUI.Teile.Eingabefeld;
 import GUI.Teile.MainGameAnzeige;
 import GUI.MausListener;
+import Spiel.TeilvonSpiel.Ende;
 import Spiel.TeilvonSpiel.Feld;
+import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Figuren.*;
 import Spiel.TeilvonSpiel.Zug;
 import util.ColPrint;
 
 import java.awt.*;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static Spiel.TeilvonSpiel.Feld.getFiguren;
 import static Spiel.TeilvonSpiel.Feld.setFiguren;
 import static Spiel.TeilvonSpiel.Figur.*;
-import static util.Delay.delay;
 import static util.FormatPoint.format;
 import static util.ArrayPoint.get;
+import static util.Listen.getLast;
 
 public class Spiel {
     private String weißspieler;
@@ -29,6 +28,7 @@ public class Spiel {
     private Feld[][] felder; //x - y (siehe überblick.txt)
     private List<Zug> WeißZüge = new ArrayList<>();
     private List<Zug> SchwarzZüge = new ArrayList<>();
+    private Ende ende;
 
     private MainGameAnzeige mga;
     private Point ausgewählt;
@@ -72,6 +72,7 @@ public class Spiel {
                 felder[j][ybauern].setFigur(new Bauer(farbe));
             }
         }
+
         mga.updateBrett(felder);
         mga.fügeMouseListenerHinzu(new MausListener(this));
         mga.fügeMouseListenerBauernAuswahlHinzu(new BauernAuswahlMouseListener(this));
@@ -82,47 +83,69 @@ public class Spiel {
      * diese Methode wird vom MouseListener ausgeführt, wenn auf das Spielfeld geklickt wird
      */
     public void aufBrettGeklickt(int xfeld, int yfeld){
-        ColPrint.blue.println("Es wurde auf das Feld " + xfeld + " | " + yfeld + " geklickt");
-        Point point = new Point(xfeld, yfeld);
-        if (get(felder, point).getFigur() != null && (ausgewählt == null ||
-                (get(felder, point).getFigur().getFarbe().equals(FarbeDran()) && !ausgewählt.equals(point)))){
-            if (get(felder, point).getFigur().getFarbe().equals(FarbeDran())) {
-                clearMöglicheZüge();
-                ausgewählt = point;
-                zeigeMöglicheZüge();
+        if(ende == null) {
+            ColPrint.blue.println("Es wurde auf das Feld " + xfeld + " | " + yfeld + " geklickt");
+            Point point = new Point(xfeld, yfeld);
+            if (!BauernAuswahl()) {
+                if (get(felder, point).getFigur() != null && (ausgewählt == null ||
+                        (get(felder, point).getFigur().getFarbe().equals(FarbeDran()) && !ausgewählt.equals(point)))) {
+                    if (get(felder, point).getFigur().getFarbe().equals(FarbeDran())) {
+                        clearMöglicheZüge();
+                        ausgewählt = point;
+                        zeigeMöglicheZüge();
+                    }
+                }
+                else if (möglicheZüge().contains(point)) {
+                    Zug zug = new Zug(ausgewählt, point);
+                    get(felder, ausgewählt).setStatus(null);
+                    clearMöglicheZüge();
+                    if (get(felder, zug.alt).getFigur().equals(new Bauer("w")) &&
+                            zug.neu.y == 0) {
+                        get(felder, zug.alt).setStatus(Feld.Status.AUSGEWÄHLT());
+                        get(felder, zug.neu).setStatus(Feld.Status.BAUERNUMWANDLUNG());
+                        mga.zeigeBauernAuswahl("w");
+                        mga.updateBrett(felder);
+                    } else if (get(felder, zug.alt).getFigur().equals(new Bauer("b")) &&
+                            zug.neu.y == 7) {
+                        get(felder, zug.alt).setStatus(Feld.Status.AUSGEWÄHLT());
+                        get(felder, zug.neu).setStatus(Feld.Status.BAUERNUMWANDLUNG());
+                        mga.zeigeBauernAuswahl("b");
+                        mga.updateBrett(felder);
+                    } else {
+                        ziehe(zug);
+                        if(ende != null){return;}
+                        mga.dreheBrett(felder);
+                        ausgewählt = null;
+                    }
+                }
+                else if (ausgewählt.equals(point)) {
+                    clearMöglicheZüge();
+                    ausgewählt = null;
+                }
             }
+            else {
+                Point bu = indexOfBauernUmwandlung();
+                System.out.println("BauernUmwandlung: " + format(bu));
+                if (point.equals(ausgewählt) || get(felder, point).getFigur() == null) {
+                    get(felder, bu).setStatus(null);
+                    mga.macheBauernAuswahlUnsichtbar();
+                    zeigeMöglicheZüge();
+                } else if (!point.equals(bu) &&
+                        get(felder, point).getFigur().getFarbe().equals(FarbeDran())) {
+                    System.out.println("wahl geändert");
+                    mga.macheBauernAuswahlUnsichtbar();
+                    get(felder, bu).setStatus(null);
+                    get(felder, ausgewählt).setStatus(null);
+                    mga.updateBrett(felder);
+                    ausgewählt = point;
+                    zeigeMöglicheZüge();
+                }
+            }
+
+            System.out.println("ausgewählt: " + format(ausgewählt));
+            System.out.println("möglicheZüge: " + format(möglicheZüge()));
+            System.out.println("figur: " + felder[xfeld][yfeld].getFigur());
         }
-        else if (möglicheZüge().contains(point)) {
-            Zug zug = new Zug(ausgewählt, point);
-            get(felder, ausgewählt).setStatus(null);
-            clearMöglicheZüge();
-            if(get(felder, zug.alt).getFigur().equals(new Bauer("w")) &&
-                zug.neu.y == 0){
-                get(felder, zug.alt).setStatus(Feld.Status.AUSGEWÄHLT());
-                get(felder, zug.neu).setStatus(Feld.Status.BAUERNUMWANDLUNG());
-                mga.zeigeBauernAuswahl("w");
-                mga.updateBrett(felder);
-            }
-            else if(get(felder, zug.alt).getFigur().equals(new Bauer("b")) &&
-                    zug.neu.y == 7){
-                get(felder, zug.alt).setStatus(Feld.Status.AUSGEWÄHLT());
-                get(felder, zug.neu).setStatus(Feld.Status.BAUERNUMWANDLUNG());
-                mga.zeigeBauernAuswahl("b");
-                mga.updateBrett(felder);
-            }
-            else{
-                ziehe(zug);
-                mga.dreheBrett(felder);
-                ausgewählt = null;
-            }
-        }
-        else if(ausgewählt.equals(point)){
-            clearMöglicheZüge();
-            ausgewählt = null;
-        }
-        System.out.println("ausgewählt: " + format(ausgewählt));
-        System.out.println("möglicheZüge: " + format(möglicheZüge()));
-        System.out.println("figur: " + felder[xfeld][yfeld].getFigur());
     }
 
     /**
@@ -132,24 +155,20 @@ public class Spiel {
     public void aufBauernAuswahlGeklickt(int nummer){
         ColPrint.blue.println("Spiel - BauernAuswahl geklickt: " + nummer);
         if(BauernAuswahl()){
+            int xindex = indexOfBauernUmwandlung().x;
+            int yindex;
             if(FarbeDran().equals(WHITE)) {
-                int xindex = -1;
-                xl: for (int x = 0; x < 8; x++) {
-                    for (int y = 0; y < 8; y++) {
-                        if(felder[x][y].getStatus() != null &&
-                                felder[x][y].getStatus().equals(Feld.Status.BAUERNUMWANDLUNG())){
-                            xindex = x;
-                            break xl;
-                        }
-                    }
-                }
-                int yindex = -1 - nummer;
-                System.out.println("xindex: " + xindex);
-                System.out.println("yindex: " + yindex);
-                Point neu = new Point(xindex, yindex);
-                Zug zug = new Zug(ausgewählt, neu);
-                ziehe(zug);
+                yindex = -1 - nummer;
             }
+            else{
+                yindex = 8 + nummer;
+            }
+            System.out.println("xindex: " + xindex);
+            System.out.println("yindex: " + yindex);
+            Point neu = new Point(xindex, yindex);
+            Zug zug = new Zug(ausgewählt, neu);
+            ziehe(zug);
+            mga.dreheBrett(felder);
         }
     }
 
@@ -157,7 +176,6 @@ public class Spiel {
      * zieht den angegeben Zug, löscht die Markierungen alter Züge und markiert die neuen Felder (und Schach)
      */
     public void ziehe(Zug zug){
-        System.out.println("ziehe - " + zug);
         if(get(felder, zug.alt) != null){
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
@@ -174,12 +192,41 @@ public class Spiel {
             else{
                 SchwarzZüge.add(zug);
             }
+            SchachCheck(FarbeDran());
             markiereLetztenZug();
+            EndeCheck();
         }
     }
 
     /**
-     * gibt alle Möglichen Züge aus
+     * überprüft ob ein Schach (Königsangriff) vorliegt und markiert dieses auf dem Brett
+     * @param farbe die Farbe, bei der das Schach überprüft werden soll (angegriffene Farbe)
+     */
+    private void SchachCheck(String farbe){
+        Point KönigPosition = indexOf(getFiguren(felder), "K", farbe);
+        if(SchachAuf(getFiguren(felder), WeißZüge, SchwarzZüge, farbe)){
+            get(felder, KönigPosition).setStatus(Feld.Status.SCHACH());
+            mga.updateBrett(felder);
+        }
+    }
+
+    /**
+     * überprüft ob das Ende des Spiels vorliegt und stellt es in der GUI dar
+     * Mögliche Enden sind:
+     *  - Matt
+     *  - Remis
+     */
+    private void EndeCheck(){
+        Ende e = ende(this);
+        if(e != null){
+            ende = e;
+            mga.setzeEnde(ende);
+            ColPrint.green.println("ENDE");
+        }
+    }
+
+    /**
+     * gibt alle Möglichen Züge aus;
      * SonderRegelung Bauern:
      * Wenn ein Bauer auf die Grundreihe ziehen kann, wird dies in dieser Methode hinzugefügt.
      */
@@ -300,6 +347,49 @@ public class Spiel {
         return WeißDran()?WHITE:BLACK;
     }
 
+    /**
+     * gibt, falls möglich, die Koordinaten des Feldes mit dem Status BAUERNUMWANDLUNG aus
+     */
+    private Point indexOfBauernUmwandlung(){
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if(felder[x][y].getStatus() != null &&
+                        felder[x][y].getStatus().equals(Feld.Status.BAUERNUMWANDLUNG())){
+                    return new Point(x, y);
+                }
+            }
+        }
+        return new Point(-1, -1);
+    }
+
+    /**
+     * gibt das Ende nach dem Spielstand des angegebenen Spiels aus
+     * (Standard-Ausgabe null)
+     * @param s Das zugehörige Spiel
+     */
+    public static Ende ende(Spiel s){
+        if(
+                s.WeißZüge.size() >= 50 && s.SchwarzZüge.size() >= 50 &&
+                !getLast(s.WeißZüge, 50).stream().map(Zug::FigurGeschlagen).toList().contains(true) &&
+                        !getLast(s.SchwarzZüge, 50).stream().map(Zug::FigurGeschlagen).toList().contains(true)
+        ){
+            return new Ende.Remis();
+        }
+        Figur[][] figuren = getFiguren(s.felder);
+        if(ImPatt(figuren, s.WeißZüge, s.SchwarzZüge, BLACK)){
+            return new Ende.Patt(s.schwarzspieler);
+        }
+        if(ImPatt(figuren, s.WeißZüge, s.SchwarzZüge, WHITE)){
+            return new Ende.Patt(s.weißspieler);
+        }
+        if(ImMatt(figuren, s.WeißZüge, s.SchwarzZüge, BLACK)){
+            return new Ende.Matt(s.weißspieler);
+        }
+        if(ImMatt(figuren, s.WeißZüge, s.SchwarzZüge, WHITE)){
+            return new Ende.Matt(s.schwarzspieler);
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         System.out.println("main");

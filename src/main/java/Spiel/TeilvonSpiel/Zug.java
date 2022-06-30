@@ -4,7 +4,6 @@ import java.awt.*;
 
 import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static Spiel.TeilvonSpiel.Figuren.Bauer.BauernUmwandlung;
-import static util.FormatPoint.format;
 import static util.ArrayPoint.get;
 
 public class Zug {

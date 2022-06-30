@@ -1,6 +1,7 @@
 package GUI;
 
 import Spiel.Spiel;
+import util.ColPrint;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,7 +9,7 @@ import java.awt.event.MouseListener;
 import static GUI.Spielfeld.BreiteEinFeld;
 
 public class MausListener implements MouseListener {
-    private Spiel spiel;
+    private final Spiel spiel;
 
     public MausListener(Spiel s){
         spiel = s;
@@ -16,15 +17,14 @@ public class MausListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        x = (x-x%BreiteEinFeld())/BreiteEinFeld();
-        y = (y-y%BreiteEinFeld())/BreiteEinFeld();
-        if(!spiel.WeißDran()){
-            x = 7 - x;
-            y = 7 - y;
+        System.out.println("spiel farbe dran: "  + spiel.FarbeDran());
+        if(spiel.selbstDran()) {
+            int x = e.getX();
+            int y = e.getY();
+            x = (x - x % BreiteEinFeld()) / BreiteEinFeld();
+            y = (y - y % BreiteEinFeld()) / BreiteEinFeld();
+            spiel.aufBrettGeklickt(x, y);
         }
-        spiel.aufBrettGeklickt(x, y);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Springer extends Figur {
     {
         this.farbe = farbe;
         name = "N";
+        wert = 3;
     }
 
     @Override

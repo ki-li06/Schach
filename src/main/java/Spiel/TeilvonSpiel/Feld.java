@@ -1,18 +1,12 @@
 package Spiel.TeilvonSpiel;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
-import java.util.List;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Objects;
 
-import static GUI.Spielfeld.BREITE;
 import static GUI.Spielfeld.BreiteEinFeld;
 import static util.Circle.*;
-import static util.ShowInJFrame.show;
 
 /**
  * Ein Spiel.Spiel hat ein Array 8 x 8 aus Feldern
@@ -20,10 +14,6 @@ import static util.ShowInJFrame.show;
 public class Feld {
     private Figur figur;
     private Status status;
-    /**
-     * Mögliche Stati:
-     * @return
-     */
     public Feld(){
         figur = null;
         status = null;
@@ -66,12 +56,9 @@ public class Feld {
     public static class Status{
         private static final Color MÖGLICH = new Color(22, 96, 14, 118);
         private BufferedImage bild;
-        private String name;
+        private final String name;
         public Status(String name) {
             this.name = name;
-        }
-        public String getName() {
-            return name;
         }
         public BufferedImage getBild() {
             return bild;

@@ -1,25 +1,16 @@
 package GUI;
 
 import Spiel.TeilvonSpiel.Feld;
-import Spiel.TeilvonSpiel.Figuren.Dame;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.nio.Buffer;
-
-import static util.ShowInJFrame.show;
 
 public class Spielfeld {
-    public static final int BREITE = 520;
+    public static int BREITE = breite(); //520
     public static final Color FARBE_DUNKEL = new Color(159, 101, 19);
     public static final Color FARBE_HELL = new Color(253, 204, 132);
 
-    private BufferedImage feld;
+    private final BufferedImage feld;
     public Spielfeld(){
         final int breitefeld = BREITE/8;
         feld = new BufferedImage(BREITE, BREITE, BufferedImage.TYPE_INT_ARGB);
@@ -51,8 +42,8 @@ public class Spielfeld {
         Graphics2D g2D = bi.createGraphics();
         for (int i1 = 0; i1 < felder.length; i1++) {
             for (int i2 = 0; i2 < felder[i1].length; i2++) {
-                int x = 0;
-                int y = 0;
+                int x;
+                int y;
                 if(gedreht){
                     x = BREITE - einfeldbreite * (i1 + 1);
                     y = BREITE - einfeldbreite * (i2 + 1);
@@ -81,4 +72,11 @@ public class Spielfeld {
         return bi;
     }
 
+    private static int breite(){
+        int sizeplayerbox = 62;
+        int sizescreen = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        int ergebnis = sizescreen - 35 - 30 - sizeplayerbox * 2;
+        ergebnis = ergebnis - ergebnis%8;
+        return ergebnis;
+    }
 }

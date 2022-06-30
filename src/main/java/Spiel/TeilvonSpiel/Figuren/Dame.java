@@ -12,6 +12,7 @@ public class Dame extends Figur {
     public Dame(String farbe) {
         this.farbe = farbe;
         name = "Q";
+        wert = 9;
     }
 
     @Override

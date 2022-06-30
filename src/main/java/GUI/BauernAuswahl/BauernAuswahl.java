@@ -6,12 +6,10 @@ import Spiel.TeilvonSpiel.Figuren.Läufer;
 import Spiel.TeilvonSpiel.Figuren.Springer;
 import Spiel.TeilvonSpiel.Figuren.Turm;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static GUI.Spielfeld.BreiteEinFeld;
-import static util.ShowInJFrame.show;
 
 public class BauernAuswahl {
     static final int BreiteStreifen = 2;
@@ -49,14 +47,4 @@ public class BauernAuswahl {
         return ausgabe;
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Bauern Auswahl");
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon(getBild("w")));
-        label.addMouseListener(new BauernAuswahlMouseListener(null));
-
-        frame.add(label);
-        frame.pack();
-        frame.setVisible(true);
-    }
 }

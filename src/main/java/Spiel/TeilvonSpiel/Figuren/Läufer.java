@@ -12,6 +12,7 @@ public class Läufer extends Figur {
     {
         this.farbe = farbe;
         name = "B";
+        wert = 3;
     }
 
     @Override

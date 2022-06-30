@@ -24,7 +24,7 @@ public abstract class Ende {
         }
     }
     public static class Patt extends Ende{
-        private String imPatt;
+        private final String imPatt;
         /**
          * @param betroffen Wer steht im Patt?
          */

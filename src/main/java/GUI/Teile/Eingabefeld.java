@@ -1,11 +1,11 @@
 package GUI.Teile;
 
 
+import GUI.GUI_Package;
+
 import javax.swing.*;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import static util.Delay.delay;
 
@@ -43,7 +43,6 @@ public class Eingabefeld {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         aufforderung = new JLabel("Bitte Spielernamen eingeben!", SwingConstants.CENTER);
 
@@ -54,11 +53,7 @@ public class Eingabefeld {
 
         button = new JButton();
         button.setText("Finish");
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                finish();
-            }
-        });
+        button.addActionListener(evt -> finish());
         pressedbutton = false;
 
         weißeingabe = new JTextField();
@@ -70,6 +65,7 @@ public class Eingabefeld {
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(weiß)
                                         .addComponent(schwarz))
@@ -114,8 +110,11 @@ public class Eingabefeld {
                         .addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
         frame.pack();
-
         frame.setVisible(true);
+        frame.setLocation(
+                (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() - frame.getWidth())/2,
+                (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight() - frame.getHeight())/2
+        );
 
 
     }
@@ -132,7 +131,7 @@ public class Eingabefeld {
                 !Spielername_schwarz.equals(Spielername_weiß)){
 
 
-            CleanAndFillFrame();
+            CleanFrame();
 
             pressedbutton = true;
 
@@ -152,7 +151,7 @@ public class Eingabefeld {
     /**
      * macht das Eingabefeld nicht mehr sichtbar
      */
-    private void CleanAndFillFrame (){
+    private void CleanFrame (){
         weiß.setVisible(false);
         weißeingabe.setVisible(false);
         schwarz.setVisible(false);
@@ -178,24 +177,10 @@ public class Eingabefeld {
     }
 
     /**
-     * gibt den zugehörigen JFrame (also das Fenster an sich) aus -> siehe MainGameAnzeige Konstruktor
+     * gibt das GUI_Package aus, das übergeben werden muss
      */
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    /**
-     * gibt das zugehörige GroupLayout (also eine Vorlage zur Formatierung) aus -> siehe MainGameAnzeige Konstruktor
-     */
-    public GroupLayout getGroupLayout() {
-        return groupLayout;
-    }
-
-    /**
-     * gibt das zugehörige JPanel aus (ein Teil des JFrames) aus -> siehe MainGameAnzeige Konstruktor
-     */
-    public JPanel getPanel() {
-        return panel;
+    public GUI_Package getGUI_Package(){
+        return new GUI_Package(frame, groupLayout);
     }
 
 

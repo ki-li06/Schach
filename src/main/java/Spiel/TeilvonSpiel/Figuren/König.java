@@ -14,12 +14,15 @@ import static util.ArrayPoint.get;
 import static util.FormatPoint.format;
 
 public class König extends Figur {
+    public static final int WERT = 1000;
+
     private static boolean RochadeCheck = false;
     //Nötig um nicht eine unendlich Loop in Zeile 55 bzw 91 zu erzeugen
     public König (String farbe)
     {
         this.farbe = farbe;
         name = "K";
+        wert = WERT;
     }
 
     @Override
@@ -88,30 +91,31 @@ public class König extends Figur {
                         möglich.add(new Point(6, 7));
                     }
                 }
-            } else {
+            }
+            else {
+                //lange rochade
                 boolean königbewegt = xfeld != 4 || yfeld != 0 || WeißZüge.stream()
                         .map(i -> i.alt.x == 4 && i.alt.y == 0).toList().contains(true);
                 List<Point> WeißMöglicheZüge = AlleMöglicheZüge_OhneSchach_EinerFarbe(figuren, WeißZüge, SchwarzZüge, WHITE);
                 boolean schach = WeißMöglicheZüge.contains(new Point(4, 0));
                 if (!königbewegt && !schach) {
-                    //System.out.println("könig nicht bewegt und nicht im schach");
-                    //System.out.println("lange rochade");
-                    boolean Turmbewegt = WeißZüge.stream()
+                    boolean Turmbewegt = SchwarzZüge.stream()
                             .map(i -> i.alt.x == 0 && i.alt.y == 0).toList().contains(true);
-                    boolean Turmgeschlagen = SchwarzZüge.stream()
+                    boolean Turmgeschlagen = WeißZüge.stream()
                             .map(i -> i.neu.x == 0 && i.neu.y == 0).toList().contains(true);
                     boolean WegFrei =
                             !IntStream.rangeClosed(1, 3).mapToObj(
-                                    i -> figuren[i][7] != null).toList().contains(true);
+                                    i -> figuren[i][0] != null).toList().contains(true);
                     boolean SchachAufDemWeg =
                             WeißMöglicheZüge.contains(new Point(2, 0)) ||
                                     WeißMöglicheZüge.contains(new Point(3, 0));
                     if (!Turmbewegt && !Turmgeschlagen && WegFrei && !SchachAufDemWeg) {
-                        möglich.add(new Point(2, 7));
+                        möglich.add(new Point(2, 0));
                     }
-                    Turmbewegt = WeißZüge.stream()
+                    //kurze Rochade
+                    Turmbewegt = SchwarzZüge.stream()
                             .map(i -> i.alt.x == 7 && i.alt.y == 0).toList().contains(true);
-                    Turmgeschlagen = SchwarzZüge.stream()
+                    Turmgeschlagen = WeißZüge.stream()
                             .map(i -> i.neu.x == 7 && i.neu.y == 0).toList().contains(true);
                     WegFrei =
                             !IntStream.rangeClosed(5, 6).mapToObj(

@@ -12,6 +12,7 @@ public class Turm extends Figur {
     public Turm(String farbe) {
         this.farbe = farbe;
         name = "R";
+        wert = 5;
     }
 
     @Override

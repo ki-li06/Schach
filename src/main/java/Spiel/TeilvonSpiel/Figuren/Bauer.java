@@ -19,6 +19,7 @@ public class Bauer extends Figur {
     {
         this.farbe = farbe;
         name = "P";
+        wert = 1;
     }
 
     @Override

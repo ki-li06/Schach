@@ -1,22 +1,22 @@
 package Spiel.TeilvonSpiel;
 
-import Spiel.TeilvonSpiel.Figuren.Turm;
-import com.sun.security.jgss.GSSUtil;
+import Spiel.TeilvonSpiel.Figuren.König;
 import util.ColPrint;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static util.FormatPoint.format;
-import static util.ArrayPoint.get;
+import static GUI.Spielfeld.BreiteEinFeld;
 import static util.StringFormat.getFormat;
+import static util.ArrayPoint.get;
 
 
 public abstract class Figur {
@@ -27,7 +27,7 @@ public abstract class Figur {
 
     protected String name;
     protected String farbe;
-
+    protected int wert;
 
     public String getName() {
         return name;
@@ -36,13 +36,29 @@ public abstract class Figur {
         return farbe;
     }
     public BufferedImage getBild(){
-        File file = new File("Figuren\\" + farbe + name + ".png");
+        scaleBilder();
+        File file = new File("Figuren\\ToUse\\" + farbe + name + ".png");
         try {
             return ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Figur{" +
+                "name='" + name + '\'' +
+                ", farbe='" + farbe + '\'' +
+                '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Figur figur = (Figur) o;
+        return Objects.equals(name, figur.name) && Objects.equals(farbe, figur.farbe);
     }
 
 
@@ -80,18 +96,12 @@ public abstract class Figur {
      * @return diese Liste kann auf dem Spielbrett angezeigt werden
      */
     public List<Point> möglicheZüge (Figur[][] figuren, List<Zug> weißZüge, List<Zug> schwarzZüge, int xfeld, int yfeld){
-        //System.out.println("ausgangssituation: ");
         String farbe = figuren[xfeld][yfeld].getFarbe();
         List<Point> möglich_ohneSchach = new ArrayList<>(möglicheZüge_ohneSchach(figuren, weißZüge, schwarzZüge, xfeld, yfeld));
-        //System.out.println("mögliche_ohneSchach: " + format(möglich_ohneSchach));
 
-        //System.out.println("Gegner Koordinaten: \n" + format(GegnerKoordinaten));
-        //System.out.println("königskordinaten: " + format(königkoordinaten));
-        //System.out.println("\n\n");
         for (int i = 0; i < möglich_ohneSchach.size(); i++) {
             List<Zug> WeißZüge = new ArrayList<>(weißZüge);
             List<Zug> SchwarzZüge = new ArrayList<>(schwarzZüge);
-            //System.out.println("möglicher zug: " + format(möglich_ohneSchach.get(i)));
             Zug zug = new Zug(
                     new Point(xfeld, yfeld),
                     new Point(möglich_ohneSchach.get(i).x, möglich_ohneSchach.get(i).y)
@@ -159,11 +169,18 @@ public abstract class Figur {
     /**
      * Gibt alle Züge aus, auf die eine Farbe tatsächlich ziehen kann (relevant für ImPatt und ImMatt)
      */
-    private static List<Point> AlleMöglicheZügeEinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+    protected static List<Point> AlleMöglicheZügeEinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
+        return AlleMöglichenZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, farbe).stream().map(i->i.neu).toList();
+    }
+
+    public static List<Zug> AlleMöglichenZügeEinerFarbe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
         List<Point> koordinaten = new ArrayList<>(alleKoordinatenEinerFarbe(figuren, farbe));
-        List<Point> ausgabe = new ArrayList<>();
-        for (Point p : koordinaten) {
-            ausgabe.addAll(MöglicheZüge(figuren, WeißZüge, SchwarzZüge, p.x, p.y));
+        List<Zug> ausgabe = new ArrayList<>();
+        for (Point k : koordinaten) {
+            List<Point> möglicheFelder = MöglicheZüge(figuren, WeißZüge, SchwarzZüge, k.x, k.y);
+            for (Point m : möglicheFelder) {
+                ausgabe.add(new Zug(k, m));
+            }
         }
         return ausgabe;
     }
@@ -204,8 +221,6 @@ public abstract class Figur {
      * @param farbe die Farbe des verlangten Spielers
      */
     public static boolean ImMatt(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
-        Point indexOfKönig = indexOf(figuren, "K", farbe);
-        String andereFarbe = andereFarbe(farbe);
         return SchachAuf(figuren, WeißZüge, SchwarzZüge, farbe) && AlleMöglicheZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, farbe).size() == 0;
     }
 
@@ -215,9 +230,13 @@ public abstract class Figur {
      * @param farbe die Farbe des verlangten Spielers
      */
     public static boolean ImPatt(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, String farbe){
-        Point indexOfKönig = indexOf(figuren, "K", farbe);
-        String andereFarbe = andereFarbe(farbe);
         return !SchachAuf(figuren, WeißZüge, SchwarzZüge, farbe) && AlleMöglicheZügeEinerFarbe(figuren, WeißZüge, SchwarzZüge, farbe).size() == 0;
+    }
+
+    public static boolean ToteStellung (Figur[][] figuren){
+        int schwarz_werte = alleKoordinatenEinerFarbe(figuren, BLACK).stream().mapToInt(i->get(figuren, i).wert).sum() - König.WERT;
+        int weiß_werte = alleKoordinatenEinerFarbe(figuren, WHITE).stream().mapToInt(i->get(figuren, i).wert).sum() - König.WERT;
+        return (schwarz_werte == 0 && weiß_werte == 3) || (schwarz_werte == 3 && weiß_werte == 0);
     }
 
     /**
@@ -257,18 +276,48 @@ public abstract class Figur {
         return ausgabe;
     }
 
-    @Override
-    public String toString() {
-        return "Figur{" +
-                "name='" + name + '\'' +
-                ", farbe='" + farbe + '\'' +
-                '}';
+    private static boolean scaled = false;
+    public static void scaleBilder(){
+        if(!scaled) {
+            for (String f : farben) {
+                for (String n : figurennamen) {
+                    String path = "Figuren\\ToUse\\" + f + n + ".png";
+                    //System.out.println(path);
+                    File file = new File(path);
+                    BufferedImage bi = null;
+                    try {
+                        bi = ImageIO.read(file);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    assert bi != null;
+                    //System.out.println("height: " + bi.getHeight());
+                    //System.out.println("width: " + bi.getWidth());
+
+                    double factor = (double) BreiteEinFeld() / bi.getHeight();
+                    bi = scale(bi, factor);
+                    try {
+                        ImageIO.write(bi, "png", file);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            }
+            scaled = true;
+        }
     }
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Figur figur = (Figur) o;
-        return Objects.equals(name, figur.name) && Objects.equals(farbe, figur.farbe);
+    private static BufferedImage scale (BufferedImage eingabe, double factor){
+        BufferedImage before = new BufferedImage(eingabe.getWidth(), eingabe.getHeight(), eingabe.getType());
+        Graphics2D g2 = before.createGraphics();
+        g2.drawImage(eingabe, 0, 0, null);
+        int w = (int) (before.getWidth() * factor);
+        int h = (int) (before.getHeight() * factor);
+        BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        AffineTransform at = new AffineTransform();
+        at.scale(factor, factor);
+        AffineTransformOp scaleOp =
+                new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+        return scaleOp.filter(before, after);
     }
+
 }

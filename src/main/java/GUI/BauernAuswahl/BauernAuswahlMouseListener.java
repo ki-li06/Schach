@@ -1,6 +1,6 @@
 package GUI.BauernAuswahl;
 
-import Spiel.Spiel;
+import Spiel.Spiel_Backup;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,9 +9,9 @@ import static GUI.BauernAuswahl.BauernAuswahl.BreiteStreifen;
 import static GUI.Spielfeld.BreiteEinFeld;
 
 public class BauernAuswahlMouseListener implements MouseListener {
-    private Spiel spiel;
-    public BauernAuswahlMouseListener(Spiel s){
-        spiel = s;
+    private final Spiel_Backup spielBackup;
+    public BauernAuswahlMouseListener(Spiel_Backup s){
+        spielBackup = s;
     }
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -28,8 +28,8 @@ public class BauernAuswahlMouseListener implements MouseListener {
                 ausgabe = i;
             }
         }
-        if(spiel.BauernAuswahl()) {
-            spiel.aufBauernAuswahlGeklickt(ausgabe);
+        if(spielBackup.BauernAuswahl()) {
+            spielBackup.aufBauernAuswahlGeklickt(ausgabe);
         }
     }
 

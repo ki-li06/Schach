@@ -109,13 +109,4 @@ public class Circle {
         return bi;
     }
 
-    /**
-     * ein Beispiel für ein Circle
-     */
-    public static void main(String[] args) {
-        int breite = 65;
-        Color color = new Color(201, 29, 49, 255);
-        BufferedImage bi = kreis(breite, color);
-        show(Feld.Status.MÖGLICH_SCHLAGEN().getBild());
-    }
 }

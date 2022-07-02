@@ -33,11 +33,14 @@ public abstract class Gegner {
     public String getName() {
         return name;
     }
+    public String getFarbe() {
+        return farbe;
+    }
     public boolean isWHITE(){
         return farbe.equals(WHITE);
     }
     public boolean isDran(){
-        return farbe.equals(spiel.FarbeDran());
+        return !spiel.selbstDran();
     }
 
     public String returnArt(){
@@ -54,7 +57,7 @@ public abstract class Gegner {
         NonInitializedMethodException.throwException();
     }
 
-    public Zug ziehe (Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge){
+    public Zug ziehe (){
         NonInitializedMethodException.throwException();
         return null;
     }

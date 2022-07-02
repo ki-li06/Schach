@@ -1,35 +1,31 @@
 package GUI.BauernAuswahl;
 
-import Spiel.Spiel_Backup;
+import Spiel.Spiel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import static GUI.BauernAuswahl.BauernAuswahl.BreiteStreifen;
-import static GUI.Spielfeld.BreiteEinFeld;
+import static GUI.BauernAuswahl.BauernAuswahl.*;
 
 public class BauernAuswahlMouseListener implements MouseListener {
-    private final Spiel_Backup spielBackup;
-    public BauernAuswahlMouseListener(Spiel_Backup s){
-        spielBackup = s;
+    private final Spiel spiel;
+
+    public BauernAuswahlMouseListener(Spiel s) {
+        spiel = s;
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        int ausgabe = -1;
-        int x = e.getX();
-        int[] lower = new int[4];
-        int[] higher = new int[4];
-        for (int i = 0; i < 4; i++) {
-            lower[i] = i * (BreiteStreifen + BreiteEinFeld());
-            higher[i] = lower[i] + BreiteEinFeld();
-        }
-        for (int i = 0; i < 4; i++) {
-            if(x > lower[i] && x < higher[i]){
-                ausgabe = i;
-            }
-        }
-        if(spielBackup.BauernAuswahl()) {
-            spielBackup.aufBauernAuswahlGeklickt(ausgabe);
+        if (spiel.mga.BauernAuswahlSichtbar() && spiel.selbstDran()) {
+            int finalAusgabe = indexOfClickedField(e.getPoint());
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    spiel.aufBauernAuswahlGeklickt(finalAusgabe);
+                }
+                },
+                "Class BauernAuswahlMouseListener - Method: mouseClicked");
+            t.start();
         }
     }
 

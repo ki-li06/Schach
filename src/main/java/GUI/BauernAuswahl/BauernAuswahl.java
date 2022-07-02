@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static GUI.Spielfeld.BreiteEinFeld;
+import static Spiel.TeilvonSpiel.Figur.WHITE;
 
 public class BauernAuswahl {
     static final int BreiteStreifen = 2;
@@ -46,5 +47,34 @@ public class BauernAuswahl {
         g2.dispose();
         return ausgabe;
     }
+
+    public static int indexOfClickedField (Point p){
+        int ausgabe = -1;
+        int x = p.x;
+        int[] lower = new int[4];
+        int[] higher = new int[4];
+        for (int i = 0; i < 4; i++) {
+            lower[i] = i * (BreiteStreifen + BreiteEinFeld());
+            higher[i] = lower[i] + BreiteEinFeld();
+        }
+        for (int i = 0; i < 4; i++) {
+            if (x > lower[i] && x < higher[i]) {
+                ausgabe = i;
+            }
+        }
+        return ausgabe;
+    }
+
+    /**
+     * gibt die Nummer aus, die dem Index entspricht, in den der Bauer sich dann verwandelt
+     */
+    public static int getNummer (int index, String farbe){
+        if (farbe.equals(WHITE)) {
+            return -1 - index;
+        }
+        else return 8 + index;
+    }
+
+
 
 }

@@ -16,14 +16,28 @@ public class LokalMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        ColPrint.white.println("LokalMouseListener mouseClicked");
-        int x = e.getX();
-        int y = e.getY();
-        x = (x-x%BreiteEinFeld())/BreiteEinFeld();
-        y = (y-y%BreiteEinFeld())/BreiteEinFeld();
-        System.out.println("lokal.isDran() " + lokal.isDran());
         if(lokal.isDran()) {
-            lokal.aufBrettGeklickt(x, y);
+            ColPrint.white.println("LokalMouseListener mouseClicked");
+            int x = e.getX();
+            int y = e.getY();
+            x = (x - x % BreiteEinFeld()) / BreiteEinFeld();
+            y = (y - y % BreiteEinFeld()) / BreiteEinFeld();
+            x = 7 - x;
+            y = 7 - y;
+            if (lokal.isDran()) {
+                int finalx = x;
+                int finaly = y;
+                Thread t = new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                lokal.aufBrettGeklickt(finalx, finaly);
+                            }
+                        }
+                        , "Class: LokalMouseListener - Method: mouseClicked"
+                );
+                t.start();
+            }
         }
     }
 

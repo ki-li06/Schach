@@ -5,7 +5,7 @@ import util.ColPrint;
 
 import static Spiel.TeilvonSpiel.Figur.BLACK;
 
-public class Main2_0 {
+public class Main {
     public static void main(String[] args) {
         StartInterface si = new StartInterface();
         ColPrint.red.println("Ende StartInterface");

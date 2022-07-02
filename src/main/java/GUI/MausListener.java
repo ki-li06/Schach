@@ -17,13 +17,21 @@ public class MausListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("spiel farbe dran: "  + spiel.FarbeDran());
         if(spiel.selbstDran()) {
             int x = e.getX();
             int y = e.getY();
             x = (x - x % BreiteEinFeld()) / BreiteEinFeld();
             y = (y - y % BreiteEinFeld()) / BreiteEinFeld();
-            spiel.aufBrettGeklickt(x, y);
+            int finalX = x;
+            int finalY = y;
+            Thread t = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        spiel.aufBrettGeklickt(finalX, finalY);
+                                    }
+                                },
+                    "Class: MausListener - Method: mouseClicked");
+            t.start();
         }
     }
 

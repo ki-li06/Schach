@@ -6,6 +6,8 @@ import Spiel.TeilvonSpiel.Zug;
 
 import java.util.List;
 
+import static Spiel.TeilvonSpiel.Feld.getFiguren;
+
 public class OwnBot extends Gegner {
     public static final String OwnBot = "Eigener Bot";
 
@@ -18,11 +20,13 @@ public class OwnBot extends Gegner {
      * @Dave hier code einfügen
      */
     @Override
-    public Zug ziehe(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge) {
-
+    public Zug ziehe() {
+        Figur[][] figuren = getFiguren(spiel.felder);
+        List<Zug> weißZüge = spiel.weiß.züge;
+        List<Zug> schwarzZüge = spiel.schwarz.züge;
         //Hier Zug ausgeben
 
 
-        return super.ziehe(figuren, WeißZüge, SchwarzZüge);
+        return super.ziehe();
     }
 }

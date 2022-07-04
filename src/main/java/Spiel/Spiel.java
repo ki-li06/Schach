@@ -238,7 +238,7 @@ public class Spiel {
      * - Remis
      */
     private void EndeCheck() {
-        Ende e = ende(this);
+        Ende e = ende(getFiguren(felder), weiß, schwarz);
         if (e != null) {
             ende = e;
             mga.setzeEnde(ende);
@@ -394,35 +394,60 @@ public class Spiel {
         return new Point(-1, -1);
     }
 
+    private static boolean ZugWiederholungGreift(List<Zug> weißZüge, List<Zug> schwarzZüge){
+        if(schwarzZüge.size() < 6){
+            return false;
+        }
+        List<Zug> last6BLACK = getLast(schwarzZüge, 6);
+        List<Zug> last6WHITE = getLast(weißZüge, 6);
+
+        if(last6BLACK.get(0).equals(last6BLACK.get(2))
+                && last6BLACK.get(2).equals(last6BLACK.get(4))
+                && last6BLACK.get(1).equals(last6BLACK.get(3))
+                && last6BLACK.get(3).equals(last6BLACK.get(5))){
+            return true;
+        }
+        return last6WHITE.get(0).equals(last6WHITE.get(2))
+                && last6WHITE.get(2).equals(last6WHITE.get(4))
+                && last6WHITE.get(1).equals(last6WHITE.get(3))
+                && last6WHITE.get(3).equals(last6WHITE.get(5));
+    }
+
     /**
      * gibt das Ende nach dem Spielstand des angegebenen Spiels aus
      * (Standard-Ausgabe null)
      *
-     * @param s Das zugehörige Spiel
      */
-    public static Ende ende(Spiel s) {
+    public static Ende ende(Figur[][] figuren, Spieler weiß, Spieler schwarz) {
+        if(weiß.züge.size() == 0 || schwarz.züge.size() == 0){
+            return null;
+        }
         if (
-                s.weiß.züge.size() >= 50 && s.schwarz.züge.size() >= 50 &&
-                        !getLast(s.weiß.züge, 50).stream().map(Zug::FigurGeschlagen).toList().contains(true) &&
-                        !getLast(s.schwarz.züge, 50).stream().map(Zug::FigurGeschlagen).toList().contains(true)
+                weiß.züge.size() >= 50 && schwarz.züge.size() >= 50 &&
+                        !getLast(weiß.züge, 50).stream().map(Zug::FigurGeschlagen).toList().contains(true) &&
+                        !getLast(schwarz.züge, 50).stream().map(Zug::FigurGeschlagen).toList().contains(true)
         ) {
             return new Ende.Remis();
         }
-        Figur[][] figuren = getFiguren(s.felder);
+        String farbeDran = weiß.züge.size()==schwarz.züge.size()?WHITE:BLACK;
+
+        if(ZugWiederholungGreift(weiß.züge, schwarz.züge)){
+            return new Ende.Remis();
+        }
         if (ToteStellung(figuren)) {
             return new Ende.Remis();
         }
-        if (ImPatt(figuren, s.weiß.züge, s.schwarz.züge, BLACK)) {
-            return new Ende.Patt(s.schwarz.name);
+        if (farbeDran.equals(BLACK) && ImPatt(figuren, weiß.züge, schwarz.züge, BLACK)) {
+            return new Ende.Patt(schwarz.name);
         }
-        if (ImPatt(figuren, s.weiß.züge, s.schwarz.züge, WHITE)) {
-            return new Ende.Patt(s.weiß.name);
+        if (farbeDran.equals(WHITE) && ImPatt(figuren, weiß.züge, schwarz.züge, WHITE)) {
+            return new Ende.Patt(weiß.name);
         }
-        if (ImMatt(figuren, s.weiß.züge, s.schwarz.züge, BLACK)) {
-            return new Ende.Matt(s.weiß.name);
+        if (ImMatt(figuren, weiß.züge, schwarz.züge, BLACK)) {
+            return new Ende.Matt(weiß.name);
         }
-        if (ImMatt(figuren, s.weiß.züge, s.schwarz.züge, WHITE)) {
-            return new Ende.Matt(s.schwarz.name);
+        if (ImMatt(figuren, weiß.züge, schwarz.züge, WHITE)) {
+            return new Ende.Matt(schwarz.name);
         }
         return null;
     }

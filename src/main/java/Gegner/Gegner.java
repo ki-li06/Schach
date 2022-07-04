@@ -40,7 +40,7 @@ public abstract class Gegner {
         return farbe.equals(WHITE);
     }
     public boolean isDran(){
-        return !spiel.selbstDran();
+        return spiel.FarbeDran().equals(farbe);
     }
 
     public String returnArt(){
@@ -66,7 +66,7 @@ public abstract class Gegner {
      * gibt alle möglichen Arten von Gegnern aus
      */
     public static String[] alleGegnerArten(){
-        return new String[]{LOKAL, OwnBot};
+        return new String[]{LOKAL, OwnBot, "drei", "vier"};
     }
 
     public static Gegner GegnerByString(String farbe, String art){

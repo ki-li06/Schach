@@ -28,10 +28,17 @@ public class Lokal extends Gegner {
     private Point ausgewählt;
     private Zug ziel;
 
-    private boolean pressedfield;
+    private boolean NameEingegeben = false;
+
 
     public Lokal(String farbe) {
         super(farbe);
+    }
+
+    public Lokal(String name, String farbe){
+        super(farbe);
+        this.name = name;
+        NameEingegeben = true;
     }
 
     @Override
@@ -50,6 +57,8 @@ public class Lokal extends Gegner {
         t.start();
         //super.start(gui);
     }
+
+
 
     @Override
     public String returnArt() {

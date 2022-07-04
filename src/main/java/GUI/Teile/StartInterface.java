@@ -6,6 +6,10 @@ import util.ColPrint;
 
 import javax.swing.*;
 
+import java.util.List;
+
+import static Spiel.TeilvonSpiel.Figur.BLACK;
+import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static util.Delay.delay;
 
 /**
@@ -19,12 +23,16 @@ public class StartInterface {
     private JTextField name;
     private JLabel gegner;
     private JList<String> gegnerListe;
-    private JScrollPane scrollPane;
+    private JScrollPane artenScrollPane;
+    private JLabel farbe;
+    private JList<String> farbenListe;
+    private JScrollPane farbenScrollPane;
     private JButton finish;
 
     private boolean pressedButton;
     private String name_spieler;
     private String gegner_art;
+    private String farbeSelected;
 
 
 
@@ -55,19 +63,30 @@ public class StartInterface {
         
         aufforderung = new JLabel("Bitte gebe deinen Namen ein und\n wähle die Art deines Gegners aus!");
 
-        labelName = new JLabel("Name");
+        labelName = new JLabel("Name:");
 
         name = new JTextField();
 
-        gegner = new JLabel("Gegner-Art");
+        farbe = new JLabel("Eigene Farbe: ");
+
+        farbenListe = new JList<>(new String[]{"Weiß", "Schwarz"});
+        farbenListe.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        farbenListe.setLayoutOrientation(JList.VERTICAL);
+        farbenListe.setVisibleRowCount(1);
+
+        farbenScrollPane = new JScrollPane(farbenListe);
+
+
+        gegner = new JLabel("Gegner-Art: ");
 
         gegnerListe = new JList<>(Gegner.alleGegnerArten());
         gegnerListe.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         gegnerListe.setLayoutOrientation(JList.VERTICAL);
         gegnerListe.setVisibleRowCount(3);
 
-        scrollPane = new JScrollPane(gegnerListe);
+        artenScrollPane = new JScrollPane(gegnerListe);
         //listScroller.setPreferredSize(new Dimension(600, 250));
+
 
         finish = new JButton("Fertig");
         finish.addActionListener(e -> pressedButton());
@@ -81,12 +100,14 @@ public class StartInterface {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(labelName)
+                                        .addComponent(farbe)
                                         .addComponent(gegner))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                         .addComponent(aufforderung)
                                         .addComponent(name)
-                                        .addComponent(scrollPane)
+                                        .addComponent(farbenScrollPane)
+                                        .addComponent(artenScrollPane)
                                 )
                                 .addGap(18, 18, 18)
                                 .addComponent(finish)
@@ -104,8 +125,12 @@ public class StartInterface {
                                         .addComponent(name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(farbe)
+                                        .addComponent(farbenScrollPane))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(gegner)
-                                                .addComponent(scrollPane)
+                                                .addComponent(artenScrollPane)
                                         //.addComponent(button)
                                 )
                                 .addComponent(finish)
@@ -129,18 +154,28 @@ public class StartInterface {
 
     private void pressedButton(){
         System.out.println("pressed button");
-        if(gegnerListe.getSelectedIndices().length == 1 && !name.getText().replace(" ", "").equals("")){
+        if(gegnerListe.getSelectedIndices().length == 1
+                && !name.getText().replace(" ", "").equals("")
+                && farbenListe.getSelectedIndices().length == 1){
             name_spieler = name.getText();
             gegner_art = gegnerListe.getSelectedValue();
+            if(farbenListe.getSelectedValue().equals("Weiß")){
+                farbeSelected = WHITE;
+            }
+            else{
+                farbeSelected = BLACK;
+            }
 
             pressedButton = true;
             aufforderung.setVisible(false);
             finish.setVisible(false);
+            farbe.setVisible(false);
+            farbenScrollPane.setVisible(false);
             gegner.setVisible(false);
             gegnerListe.setVisible(false);
             name.setVisible(false);
             labelName.setVisible(false);
-            scrollPane.setVisible(false);
+            artenScrollPane.setVisible(false);
         }
     }
 
@@ -150,6 +185,10 @@ public class StartInterface {
     }
     public String getGegnerArt(){
         return gegner_art;
+    }
+
+    public String getFarbe(){
+        return farbeSelected;
     }
 
     public GUI_Package getGUI_Package(){

@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import static GUI.Spielfeld.BreiteEinFeld;
+import static Spiel.TeilvonSpiel.Figur.BLACK;
 
 public class LokalMouseListener implements MouseListener {
     private Lokal lokal;
@@ -22,8 +23,10 @@ public class LokalMouseListener implements MouseListener {
             int y = e.getY();
             x = (x - x % BreiteEinFeld()) / BreiteEinFeld();
             y = (y - y % BreiteEinFeld()) / BreiteEinFeld();
-            x = 7 - x;
-            y = 7 - y;
+            if(lokal.getFarbe().equals(BLACK)) {
+                x = 7 - x;
+                y = 7 - y;
+            }
             if (lokal.isDran()) {
                 int finalx = x;
                 int finaly = y;

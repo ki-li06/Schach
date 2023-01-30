@@ -37,6 +37,14 @@ public abstract class Figur {
     public String getFarbe() {
         return farbe;
     }
+    public static String FarbeAusgeschrieben(String farbe){
+        if(farbe.equals(WHITE)){
+            return "Weiß";
+        }
+        return "Schwarz";
+    }
+
+
 
     public BufferedImage getBild() {
         scaleBilder();
@@ -87,12 +95,7 @@ public abstract class Figur {
      * @param yfeld       die y-Koordinate der Figur auf dem Brett
      * @return eine Liste an allen Möglichen Feldern
      */
-    protected List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld) {
-        Figur f = figuren[xfeld][yfeld];
-        ColPrint.red.println("FEHLER - MÖGLICHEZÜGE_OHNESCHACH");
-        ColPrint.red.println("IN DER KLASSE " + f.getClass().getSimpleName() + " NICHT DEKLARIERT");
-        return new ArrayList<>();
-    }
+    protected abstract List<Point> möglicheZüge_ohneSchach(Figur[][] figuren, List<Zug> WeißZüge, List<Zug> SchwarzZüge, int xfeld, int yfeld);
 
     /**
      * fast genau das gleiche wie möglicheZüge_ohneSchach, Unterschied:

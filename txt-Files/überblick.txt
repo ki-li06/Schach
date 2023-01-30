@@ -3,6 +3,11 @@ Spiel
    * [0][0] ist oben links, also das Feld a8
    * der erste Index steht für den eigentlichen Buchstaben, der zweite für die Zahl
       (also [2][3] ist das Feld b3)
+ - Prinzip:
+  - ein Lokaler Gegner - man selbst
+    gegen einen
+  - eine andere Art eines Gegner - diese wählt man davor aus
+
 
 
 GUI
@@ -10,9 +15,6 @@ GUI
  - verschiedene Schritte (siehe GUIMain)
 
 Schnittstellen
- - Eingabefeld (Eingabefeld der Spielernamen)
-   + new Eingabefeld() --> erstellt ein Eingabefeld und wartet auf Drücken des "Finish"-Buttons
-   + getSpielername_... --> gibt den eingegeben Spielername
  - MainGameAnzeige (Anzeige des Spielfelds)
    + new MainGameAnzeige(...) --> erstellt ein Brett mit den Namen (Parameter siehe genauere Beschreibung)
    + updateBrett() --> updated das Brett, um Stati anzuzeigen
@@ -22,3 +24,13 @@ Schnittstellen
    + new MausListener(Spiel) --> erzeugt einen MouseListener für das zugehörige Spiel
    + mouseClicked() --> ruft die Methode aufBrettgeklickt() im zugehörigen Spiel ab (Position schon überprüft)
      und übergibt die x- & y-Koordinate an die Methode
+
+Gegner
+ - verschiedene Arten an Gegnern
+   + Lokal - lokaler Modus, an einem Gerät gegeneinander
+   + OwnBot - ein selbst programmierter Bot
+   ~ Online - spiele mit Spielern im gleichen Netzwerk
+   ~ Stockfish - spiele gegen Stockfish
+ - Methoden:
+   ~ start() - gibt die Möglichkeit Einstellungen wie Spielstärke auszuwählen oder Namen einzugeben
+   ~ ziehe(-) - zieht einen Zug

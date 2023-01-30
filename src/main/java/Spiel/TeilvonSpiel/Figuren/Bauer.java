@@ -2,23 +2,24 @@ package Spiel.TeilvonSpiel.Figuren;
 
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
-import util.ColPrint;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static java.lang.Math.abs;
+import static util.Listen.getLast;
+import static util.ArrayPoint.get;
 
 public class Bauer extends Figur {
 
+    private final static String bauer = "P";
 
     public Bauer (String farbe)
     {
         this.farbe = farbe;
-        name = "P";
+        name = bauer;
         wert = 1;
     }
 
@@ -27,6 +28,7 @@ public class Bauer extends Figur {
         List<Point> ausgabe = new ArrayList<>();
         String farbe = figuren[xfeld][yfeld].getFarbe();
 
+        //BauernUmwandlung
         if(farbe.equals(WHITE) ){
             if(yfeld > 1) {
                 if (figuren[xfeld][yfeld - 1] == null) {
@@ -104,6 +106,24 @@ public class Bauer extends Figur {
                     ausgabe.addAll(
                             IntStream.rangeClosed(8, 11).boxed().map(i->new Point(xfeld + 1, i)).toList()
                     );
+                }
+            }
+        }
+
+        //En Passant
+        if(farbe.equals(WHITE) && yfeld == 3){
+            if(xfeld > 0){
+                if(getLast(SchwarzZüge).alt.equals(new Point(xfeld -1, 1))
+                        && getLast(SchwarzZüge).neu.equals(new Point(xfeld - 1, 3))
+                        && get(figuren, getLast(SchwarzZüge).neu).getName().equals(bauer)){
+                    ausgabe.add(new Point(xfeld - 1, 2));
+                }
+            }
+            if(xfeld < 7){
+                if(getLast(SchwarzZüge).alt.equals(new Point(xfeld +1, 1))
+                        && getLast(SchwarzZüge).neu.equals(new Point(xfeld + 1, 3))
+                        && get(figuren, getLast(SchwarzZüge).neu).getName().equals(bauer)){
+                    ausgabe.add(new Point(xfeld + 1, 2));
                 }
             }
         }

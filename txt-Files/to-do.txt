@@ -1,0 +1,8 @@
+To-Do List:
+
+- En Passant Zug fertig stellen
+- Clean Code
+- Lokaler Gegner:
+    * Namen-Eingabe
+    * Farbauswahl: Schwarz
+- (Kommentare)

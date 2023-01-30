@@ -1,9 +1,6 @@
 package Spiel;
 
-import GUI.BauernAuswahl.BauernAuswahlMouseListener;
 import GUI.GUI_Package;
-import GUI.MausListener;
-import GUI.Teile.Eingabefeld;
 import GUI.Teile.MainGameAnzeige;
 import Gegner.Arten.Lokal.Lokal;
 import Gegner.Gegner;
@@ -15,40 +12,57 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static GUI.BauernAuswahl.BauernAuswahl.getNummer;
 import static Spiel.TeilvonSpiel.Feld.getFiguren;
 import static Spiel.TeilvonSpiel.Feld.setFiguren;
-import static Spiel.TeilvonSpiel.Figur.*;
+import static Spiel.TeilvonSpiel.Figur.BLACK;
+import static Spiel.TeilvonSpiel.Figur.WHITE;
+import static Spiel.TeilvonSpiel.Figur.andereFarbe;
+import static Spiel.TeilvonSpiel.Figur.FarbeAusgeschrieben;
+import static Spiel.TeilvonSpiel.Figur.MöglicheZüge;
+import static Spiel.TeilvonSpiel.Figur.SchachAuf;
+import static Spiel.TeilvonSpiel.Figur.ToteStellung;
+import static Spiel.TeilvonSpiel.Figur.ImMatt;
+import static Spiel.TeilvonSpiel.Figur.ImPatt;
 import static util.ArrayPoint.get;
+import static util.ArrayPoint.indexOf;
 import static util.FormatPoint.format;
 import static util.Listen.getLast;
 
 public class Spiel {
-    public final Spieler weiß;
-    public final Spieler schwarz;
-    private Gegner gegner;
+    public final Spieler selbst;
+    public final Spieler gegner;
+    //private Gegner gegner;
     public Feld[][] felder; //x - y (siehe überblick.txt)
     private Ende ende;
+
+    private Gegner gegnerselbst;
 
     public final MainGameAnzeige mga;
     private Point ausgewählt;
 
 
     public Spiel(String spielername, Gegner g, GUI_Package gui) {
-        gegner = g;
-        gegner.setSpiel(this);
-        gegner.start(gui);
+        g.setSpiel(this);
+        g.start(gui);
 
-        weiß = new Spieler(spielername);
-        schwarz = new Spieler(g.getName());
+        Lokal lokal = new Lokal(andereFarbe(g.getFarbe()));
+        lokal.setName(spielername);
+        lokal.setSpiel(this);
+        lokal.addMouseListeners();
 
-        System.out.println("Weiß: '" + weiß.name + "'");
-        System.out.println("Schwarz: '" + schwarz.name + "'");
+        selbst = new Spieler(spielername, andereFarbe(g.getFarbe()));
+        selbst.setGegner(lokal);
+
+        gegner = new Spieler(g.getName(), g.getFarbe());
+        gegner.setGegner(g);
+
+        System.out.println("Weiß: '" + selbst.name + "'");
+        System.out.println("Schwarz: '" + gegner.name + "'");
 
 
         mga = new MainGameAnzeige(
-                weiß.name,
-                schwarz.name,
+                selbst.name,
+                gegner.name,
                 gui
         );
 
@@ -56,8 +70,17 @@ public class Spiel {
 
         updateBrett();
 
-        mga.fügeMouseListenerHinzu(new MausListener(this));
-        mga.fügeMouseListenerBauernAuswahlHinzu(new BauernAuswahlMouseListener(this));
+        while(ende == null){
+            System.out.println("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()));
+            if(selbstDran()) {
+                ColPrint.purple.println("selbst dran");
+                ziehe(selbst.getGegner().ziehe());
+            }
+            else{
+                ziehe(gegner.getGegner().ziehe());
+            }
+
+        }
         //mouseListener = new MausListener(this);
     }
 
@@ -89,98 +112,6 @@ public class Spiel {
         }
     }
 
-    /**
-     * diese Methode wird vom MouseListener ausgeführt, wenn auf das Spielfeld geklickt wird
-     */
-    public void aufBrettGeklickt(int xfeld, int yfeld) {
-        if (ende == null && selbstDran()) {
-            ColPrint.blue.println("Es wurde auf das Feld " + xfeld + " | " + yfeld + " geklickt");
-            Point point = new Point(xfeld, yfeld);
-            if (!mga.BauernAuswahlSichtbar()) {
-                if (get(felder, point).getFigur() != null && (ausgewählt == null ||
-                        (get(felder, point).getFigur().getFarbe().equals(FarbeDran()) && !ausgewählt.equals(point)))) {
-                    if (get(felder, point).getFigur().getFarbe().equals(FarbeDran())) {
-                        clearMöglicheZüge();
-                        ausgewählt = point;
-                        zeigeMöglicheZüge();
-                    }
-                } else if (möglicheZüge().contains(point)) {
-                    Zug zug = new Zug(ausgewählt, point);
-                    get(felder, ausgewählt).setStatus(null);
-                    clearMöglicheZüge();
-                    if (get(felder, ausgewählt).getFigur().equals(new Bauer("w")) &&
-                            zug.neu.y == 0) {
-                        get(felder, ausgewählt).setStatus(Feld.Status.AUSGEWÄHLT());
-                        get(felder, point).setStatus(Feld.Status.BAUERNUMWANDLUNG());
-                        mga.zeigeBauernAuswahl("w");
-                        updateBrett();
-                    } else if (get(felder, ausgewählt).getFigur().equals(new Bauer("b")) &&
-                            zug.neu.y == 7) {
-                        get(felder, ausgewählt).setStatus(Feld.Status.AUSGEWÄHLT());
-                        get(felder, point).setStatus(Feld.Status.BAUERNUMWANDLUNG());
-                        mga.zeigeBauernAuswahl("b");
-                        updateBrett();
-                    } else {
-                        clearMöglicheZüge();
-                        ausgewählt = null;
-                        ziehe(zug);
-                        if (ende != null) {
-                            return;
-                        }
-                        //mga.dreheBrett(felder);
-                        ausgewählt = null;
-                    }
-                } else if (ausgewählt.equals(point)) {
-                    clearMöglicheZüge();
-                    ausgewählt = null;
-                    SchachCheck(FarbeDran());
-                }
-            } else {
-                Point bu = indexOfBauernUmwandlung();
-                System.out.println("BauernUmwandlung: " + format(bu));
-                if (point.equals(ausgewählt) || get(felder, point).getFigur() == null) {
-                    get(felder, bu).setStatus(null);
-                    mga.macheBauernAuswahlUnsichtbar();
-                    zeigeMöglicheZüge();
-                } else if (!point.equals(bu) && get(felder, point).getFigur() != null &&
-                        get(felder, point).getFigur().getFarbe().equals(FarbeDran())) {
-                    System.out.println("wahl geändert");
-                    mga.macheBauernAuswahlUnsichtbar();
-                    get(felder, bu).setStatus(null);
-                    get(felder, ausgewählt).setStatus(null);
-                    updateBrett();
-                    ausgewählt = point;
-                    zeigeMöglicheZüge();
-                }
-            }
-
-            System.out.println("ausgewählt: " + format(ausgewählt));
-            System.out.println("möglicheZüge: " + format(möglicheZüge()));
-            System.out.println("figur: " + felder[xfeld][yfeld].getFigur());
-            if (gegner.isDran()) {
-                ziehe(gegner.ziehe());
-            }
-        }
-    }
-
-    /**
-     * diese Methode wird vom BauernAuswahlMouseListener ausgeführt, wenn auf ihn geklickt wird
-     * und die BauernAuswahl angezeigt wird
-     */
-    public void aufBauernAuswahlGeklickt(int nummer) {
-        ColPrint.blue.println("Spiel - BauernAuswahl geklickt: " + nummer);
-        int xindex = indexOfBauernUmwandlung().x;
-        int yindex = getNummer(nummer, FarbeDran());
-        System.out.println("xindex: " + xindex);
-        System.out.println("yindex: " + yindex);
-        Point neu = new Point(xindex, yindex);
-        Zug zug = new Zug(ausgewählt, neu);
-        ziehe(zug);
-        mga.macheBauernAuswahlUnsichtbar();
-        if (ende == null) {
-            ziehe(gegner.ziehe());
-        }
-    }
 
     /**
      * zieht den angegeben Zug, löscht die Markierungen alter Züge und markiert die neuen Felder (und Schach)
@@ -196,10 +127,10 @@ public class Spiel {
             }
             System.out.println("ziehe den zug : " + zug);
             setFiguren(felder, zug.ziehe(getFiguren(felder)));
-            if (WeißDran()) {
-                weiß.züge.add(zug);
+            if (selbstDran()) {
+                selbst.züge.add(zug);
             } else {
-                schwarz.züge.add(zug);
+                gegner.züge.add(zug);
             }
             SchachCheck(FarbeDran());
             markiereLetztenZug();
@@ -224,8 +155,8 @@ public class Spiel {
      * @param farbe die Farbe, bei der das Schach überprüft werden soll (angegriffene Farbe)
      */
     public void SchachCheck(String farbe) {
-        Point KönigPosition = indexOf(getFiguren(felder), "K", farbe);
-        if (SchachAuf(getFiguren(felder), weiß.züge, schwarz.züge, farbe)) {
+        Point KönigPosition = indexOf(getFiguren(felder), new König(farbe));
+        if (SchachAuf(getFiguren(felder), weiß().züge, schwarz().züge, farbe)) {
             get(felder, KönigPosition).setStatus(Feld.Status.SCHACH());
             updateBrett();
         }
@@ -238,7 +169,7 @@ public class Spiel {
      * - Remis
      */
     private void EndeCheck() {
-        Ende e = ende(getFiguren(felder), weiß, schwarz);
+        Ende e = ende(getFiguren(felder), weiß(), schwarz());
         if (e != null) {
             ende = e;
             mga.setzeEnde(ende);
@@ -284,7 +215,7 @@ public class Spiel {
                 ausgabe.add(new Point(ausgewählt.x + 1, 7));
             }
         }
-        ausgabe.addAll(MöglicheZüge(getFiguren(felder), weiß.züge, schwarz.züge, ausgewählt.x, ausgewählt.y));
+        ausgabe.addAll(MöglicheZüge(getFiguren(felder), weiß().züge, schwarz().züge, ausgewählt.x, ausgewählt.y));
         return ausgabe;
     }
 
@@ -330,11 +261,13 @@ public class Spiel {
         ColPrint.white.println("clearMöglicheZüge");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (felder[i][j].getStatus() != null && (
-                        felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_ZUG())
-                                || felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_SCHLAGEN())
-                                || felder[i][j].getStatus().equals(Feld.Status.AUSGEWÄHLT()))
-                ) {
+                if(felder[i][j].getStatus() != null && felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_ZUG())) {
+                    felder[i][j].setStatus(null);
+                }
+                else if(felder[i][j].getStatus() != null && felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_SCHLAGEN())) {
+                    felder[i][j].setStatus(null);
+                }
+                else if(felder[i][j].getStatus() != null && felder[i][j].getStatus().equals(Feld.Status.AUSGEWÄHLT())) {
                     felder[i][j].setStatus(null);
                 }
             }
@@ -347,12 +280,13 @@ public class Spiel {
      * (löst auch updateBrett() aus)
      */
     private void markiereLetztenZug() {
-        if (weiß.züge.size() > 0) {
+        if (selbst.züge.size() > 0) {
             Zug letzterZug;
-            if (WeißDran()) {
-                letzterZug = schwarz.züge.get(schwarz.züge.size() - 1);
-            } else {
-                letzterZug = weiß.züge.get(weiß.züge.size() - 1);
+            if(dran(selbst)){
+                letzterZug = getLast(gegner.züge);
+            }
+            else{
+                letzterZug = getLast(selbst.züge);
             }
             get(felder, letzterZug.neu).setStatus(Feld.Status.ZUG());
             get(felder, letzterZug.alt).setStatus(Feld.Status.ZUG());
@@ -365,11 +299,11 @@ public class Spiel {
      * gibt aus ob Spieler Weiß dran ist
      */
     public boolean WeißDran() {
-        return weiß.züge.size() == schwarz.züge.size();
+        return weiß().züge.size() == schwarz().züge.size();
     }
 
     public boolean selbstDran() {
-        return andereFarbe(gegner.getFarbe()).equals(FarbeDran());
+        return selbst.getGegner().getFarbe().equals(FarbeDran());
     }
 
     /**
@@ -377,6 +311,31 @@ public class Spiel {
      */
     public String FarbeDran() {
         return WeißDran() ? WHITE : BLACK;
+    }
+
+    public Spieler weiß(){
+        if(selbst.farbe.equals(WHITE)){
+            return selbst;
+        }
+        else{
+            return gegner;
+        }
+    }
+
+    public Spieler schwarz(){
+        if(selbst.farbe.equals(BLACK)){
+            return selbst;
+        }
+        else{
+            return gegner;
+        }
+    }
+
+    public boolean dran(Spieler g){
+        if(!g.equals(selbst) && !g.equals(gegner)){
+            return false;
+        }
+        return FarbeDran().equals(g.farbe);
     }
 
     /**

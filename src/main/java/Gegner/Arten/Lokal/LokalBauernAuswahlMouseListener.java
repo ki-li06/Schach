@@ -1,11 +1,9 @@
 package Gegner.Arten.Lokal;
 
-import GUI.BauernAuswahl.BauernAuswahl;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import static GUI.BauernAuswahl.BauernAuswahl.indexOfClickedField;
+import static GUI.BauernAuswahl.indexOfClickedField;
 
 public class LokalBauernAuswahlMouseListener implements MouseListener {
     private Lokal lokal;

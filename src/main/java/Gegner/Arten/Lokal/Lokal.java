@@ -1,22 +1,15 @@
 package Gegner.Arten.Lokal;
 
-import GUI.BauernAuswahl.BauernAuswahlMouseListener;
 import GUI.GUI_Package;
 import Gegner.Gegner;
 import Spiel.TeilvonSpiel.Feld;
-import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Figuren.Bauer;
 import Spiel.TeilvonSpiel.Zug;
 import util.ColPrint;
 
 import java.awt.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.attribute.AclEntry;
-import java.util.ArrayList;
-import java.util.List;
 
-import static GUI.BauernAuswahl.BauernAuswahl.getNummer;
-import static Spiel.TeilvonSpiel.Feld.getFiguren;
+import static GUI.BauernAuswahl.getNummer;
 import static Spiel.TeilvonSpiel.Figur.*;
 import static util.ArrayPoint.get;
 import static util.Delay.delay;
@@ -44,44 +37,57 @@ public class Lokal extends Gegner {
     @Override
     public void start(GUI_Package gui) {
         ColPrint.cyan.println("lokal start");
+        addMouseListeners();
+    }
+
+    public void addMouseListeners(){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (spiel.mga == null) {
                     delay(1);
                 }
+
                 spiel.mga.fügeMouseListenerHinzu(new LokalMouseListener(Lokal.this));
                 spiel.mga.fügeMouseListenerBauernAuswahlHinzu(new LokalBauernAuswahlMouseListener(Lokal.this));
             }
         });
         t.start();
-        //super.start(gui);
     }
-
-
 
     @Override
     public String returnArt() {
         return "Lokal";
     }
 
+    public boolean GegnerIsLokal(){
+        Gegner gegner = spiel.selbst.gegner;
+        if(spiel.selbst.getGegner().equals(this)){
+            gegner = spiel.gegner.gegner;
+        }
+        return gegner instanceof Lokal;
+    }
+
     @Override
     public Zug ziehe() {
         delay(100L);
-        spiel.dreheBrett();
-        System.out.println("wait - ");
+        if(GegnerIsLokal() && farbe.equals(BLACK) && spiel.weiß().züge.size() != 0) {
+            spiel.dreheBrett();
+        }
+        else if(!GegnerIsLokal() && farbe.equals(BLACK) && spiel.weiß().züge.size() == 1){
+            spiel.dreheBrett();
+        }
         while (ziel == null) {
             delay(1);
         }
-        spiel.dreheBrett();
+        if(!farbe.equals(WHITE) && spiel.weiß().züge.size() != 0) {
+            spiel.dreheBrett();
+        }
 
         Zug ausgabe = ziel;
         ziel = null;
 
         System.out.println("ausgabe: " + ausgabe);
-        Figur[][] figuren = getFiguren(spiel.felder);
-        List<Zug> weißZüge = spiel.weiß.züge;
-        List<Zug> schwarzZüge = spiel.schwarz.züge;
         return ausgabe;
     }
 

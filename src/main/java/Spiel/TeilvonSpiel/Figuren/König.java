@@ -5,12 +5,10 @@ import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static util.ArrayPoint.get;
 import static util.FormatPoint.format;
 
 public class König extends Figur {

@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * nicht selbst programmiert
+ */
+
 public class Listing3710
         extends JFrame
         implements ActionListener {

@@ -1,4 +1,4 @@
-package GUI.BauernAuswahl;
+package GUI;
 
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Figuren.Dame;

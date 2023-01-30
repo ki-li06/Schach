@@ -1,31 +1,27 @@
-import GUI.Spielfeld;
-import util.NonInitializedMethodException;
-
-import javax.swing.*;
-
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import static util.Listen.getLast;
 
 public class Test {
-    public static void main(String[] args){
-        long dauer = 1000L;
-        System.out.println("wait " + dauer + " milliseconds");
-        System.out.println("aktuell: " + millis());
-        delay(dauer);
-        System.out.println("ende   : " + millis());
+    public static final String FEN =
+            "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    private static final String PATH = "stockfish";
+
+
+    public static void main(String[] args) {
+        String a = " a b ";
+        String b = a.replace(" ", "");
+        System.out.println("a: '" + a + "'");
+        System.out.println("b: '" + b + "'");
     }
 
-    public static void delay (long millis){
+
+    public static void delay(long millis) {
         long davor = System.currentTimeMillis();
-        while ((System.currentTimeMillis() - davor) < millis){
+        while ((System.currentTimeMillis() - davor) < millis) {
 
         }
 
     }
 
-    public static long millis(){
+    public static long millis() {
         return System.currentTimeMillis();
     }
 }

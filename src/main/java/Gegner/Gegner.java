@@ -6,7 +6,7 @@ import Gegner.Arten.OwnBot.OwnBot;
 import Spiel.Spiel;
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
-import util.NonInitializedMethodException;
+import util.ColPrint;
 
 import java.util.List;
 
@@ -33,6 +33,10 @@ public abstract class Gegner {
     public String getName() {
         return name;
     }
+    public void setName(String name){
+        ColPrint.green.println("Name wurde von " + this.name + " zu " + name + " geändert");
+        this.name = name;
+    }
     public String getFarbe() {
         return farbe;
     }
@@ -44,8 +48,7 @@ public abstract class Gegner {
     }
 
     public String returnArt(){
-        NonInitializedMethodException.throwException();
-        return null;
+        return this.getClass().getSimpleName();
     }
 
     /**
@@ -53,20 +56,15 @@ public abstract class Gegner {
      * Dabei wird z.B. der Name des Gegners eingegeben.
      * @param gui das GUI Package des Spiels
      */
-    public void start(GUI_Package gui){
-        NonInitializedMethodException.throwException();
-    }
+    public abstract void start(GUI_Package gui);
 
-    public Zug ziehe (){
-        NonInitializedMethodException.throwException();
-        return null;
-    }
+    public abstract Zug ziehe ();
 
     /**
      * gibt alle möglichen Arten von Gegnern aus
      */
     public static String[] alleGegnerArten(){
-        return new String[]{LOKAL, OwnBot, "drei", "vier"};
+        return new String[]{OwnBot, LOKAL, "-DRITTE AUSWAHL-", "-VIERTE AUSWAHL-"};
     }
 
     public static Gegner GegnerByString(String farbe, String art){

@@ -1,6 +1,6 @@
 package GUI.Teile;
 
-import GUI.BauernAuswahl.BauernAuswahl;
+import GUI.BauernAuswahl;
 import GUI.GUI_Package;
 import GUI.Spielfeld;
 import Spiel.TeilvonSpiel.Ende;

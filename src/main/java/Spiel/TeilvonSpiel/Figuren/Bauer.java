@@ -116,6 +116,8 @@ public class Bauer extends Figur {
                 if(getLast(SchwarzZüge).alt.equals(new Point(xfeld -1, 1))
                         && getLast(SchwarzZüge).neu.equals(new Point(xfeld - 1, 3))
                         && get(figuren, getLast(SchwarzZüge).neu).getName().equals(bauer)){
+                    /*Check, ob der letzte Zug von Schwarz
+                      ein Bauern-Doppelzug rechts am Bauern selbst vorbei war*/
                     ausgabe.add(new Point(xfeld - 1, 2));
                 }
             }
@@ -123,10 +125,31 @@ public class Bauer extends Figur {
                 if(getLast(SchwarzZüge).alt.equals(new Point(xfeld +1, 1))
                         && getLast(SchwarzZüge).neu.equals(new Point(xfeld + 1, 3))
                         && get(figuren, getLast(SchwarzZüge).neu).getName().equals(bauer)){
+                    /*Check, ob der letzte Zug von Schwarz
+                      ein Bauern-Doppelzug links am Bauern selbst vorbei war*/
                     ausgabe.add(new Point(xfeld + 1, 2));
                 }
             }
         }
+        else if(farbe.equals(BLACK) && yfeld == 4){
+            if(xfeld > 0){
+                if (getLast(WeißZüge).alt.equals(new Point(xfeld - 1, 6))
+                        && getLast(WeißZüge).neu.equals(new Point(xfeld - 1, 4))
+                        && get(figuren, getLast(WeißZüge).neu).getName().equals(bauer)
+                ) {
+                    ausgabe.add(new Point(xfeld-1, 5));
+                }
+            }
+            if(xfeld < 7){
+                if (getLast(WeißZüge).alt.equals(new Point(xfeld + 1, 6))
+                        && getLast(WeißZüge).neu.equals(new Point(xfeld + 1, 4))
+                        && get(figuren, getLast(WeißZüge).neu).getName().equals(bauer)
+                ) {
+                    ausgabe.add(new Point(xfeld+1, 5));
+                }
+            }
+        }
+
 
         return ausgabe;
     }
@@ -135,10 +158,10 @@ public class Bauer extends Figur {
      * gibt eine Figur bei einer BauernUmwandlung aus
      * @param nummer die Nummer der Neuen Figur
      *               Weiß / Schwarz -> Figur
-     *               -1 / 8         -> Dame
-     *               -2 / 9         -> Springer
-     *               -3 / 10        -> Turm
-     *               -4 / 11        -> Läufer
+     *               -1   / 8        -> Dame
+     *               -2   / 9        -> Springer
+     *               -3   / 10       -> Turm
+     *               -4   / 11       -> Läufer
      */
     public static Figur BauernUmwandlung (int nummer){
         String farbe = nummer>0?BLACK:WHITE;

@@ -64,7 +64,7 @@ public abstract class Gegner {
      * gibt alle möglichen Arten von Gegnern aus
      */
     public static String[] alleGegnerArten(){
-        return new String[]{OwnBot, LOKAL, "-DRITTE AUSWAHL-", "-VIERTE AUSWAHL-"};
+        return new String[]{LOKAL, OwnBot, "-DRITTE AUSWAHL-", "-VIERTE AUSWAHL-"};
     }
 
     public static Gegner GegnerByString(String farbe, String art){

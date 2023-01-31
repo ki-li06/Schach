@@ -2,6 +2,7 @@ package Spiel.TeilvonSpiel;
 
 import java.awt.*;
 
+import static Spiel.TeilvonSpiel.Figur.BLACK;
 import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static Spiel.TeilvonSpiel.Figuren.Bauer.BauernUmwandlung;
 import static util.ArrayPoint.get;
@@ -63,6 +64,18 @@ public class Zug {
                 }
                 else{
                     neu.y = 7;
+                }
+            }                                         //Bauernumwandlung
+            else if(alt.x != neu.x && get(eingabe, neu) == null) {                  //En Passant Check
+                if(get(eingabe, alt).getFarbe().equals(WHITE)
+                        && neu.y == 2 && alt.y == 3){                                      //Weiß
+                    ausgabe[neu.x][neu.y] = get(eingabe, alt);
+                    ausgabe[neu.x][3] = null;
+                }
+                else if(get(eingabe, alt).getFarbe().equals(BLACK)
+                        && neu.y == 5 && alt.y == 4){                                      //Schwarz
+                    ausgabe[neu.x][neu.y] = get(eingabe,alt);
+                    ausgabe[neu.x][4] = null;
                 }
             }
         }

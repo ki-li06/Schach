@@ -1,8 +1,12 @@
 To-Do List:
 
-- En Passant Zug fertig stellen
+- En Passant Zug fertig stellen     --> done
 - Clean Code
 - Lokaler Gegner:
     * Namen-Eingabe
     * Farbauswahl: Schwarz
 - (Kommentare)
+
+BugFixes
+- En Passant Anzeigen Schwarz       --> done
+- Fehler Anzeige letzter Zug        --> Fehler tritt nicht mehr auf, Ursache ungeklärt

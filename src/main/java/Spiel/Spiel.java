@@ -25,20 +25,18 @@ import static Spiel.TeilvonSpiel.Figur.ImMatt;
 import static Spiel.TeilvonSpiel.Figur.ImPatt;
 import static util.ArrayPoint.get;
 import static util.ArrayPoint.indexOf;
+import static util.Delay.delay;
 import static util.FormatPoint.format;
 import static util.Listen.getLast;
 
 public class Spiel {
     public final Spieler selbst;
     public final Spieler gegner;
-    //private Gegner gegner;
     public Feld[][] felder; //x - y (siehe überblick.txt)
     private Ende ende;
 
-    private Gegner gegnerselbst;
 
     public final MainGameAnzeige mga;
-    private Point ausgewählt;
 
 
     public Spiel(String spielername, Gegner g, GUI_Package gui) {
@@ -72,16 +70,18 @@ public class Spiel {
 
         while(ende == null){
             System.out.println("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()));
+            Zug zug;
             if(selbstDran()) {
                 ColPrint.purple.println("selbst dran");
-                ziehe(selbst.getGegner().ziehe());
+                zug = selbst.getGegner().ziehe();
             }
             else{
-                ziehe(gegner.getGegner().ziehe());
+                ColPrint.purple.println("gegner dran");
+                zug = gegner.getGegner().ziehe();
             }
+            ziehe(zug);
 
         }
-        //mouseListener = new MausListener(this);
     }
 
     /**
@@ -120,21 +120,24 @@ public class Spiel {
         if (get(felder, zug.alt) != null) {
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
-                    if (felder[x][y].getStatus() != null) {
-                        felder[x][y].setStatus(null);
-                    }
+                    felder[x][y].setStatus(null);
                 }
             }
-            System.out.println("ziehe den zug : " + zug);
+            updateBrett();
+            ColPrint.blue.println("ziehe den zug : " + zug);
             setFiguren(felder, zug.ziehe(getFiguren(felder)));
             if (selbstDran()) {
                 selbst.züge.add(zug);
             } else {
                 gegner.züge.add(zug);
             }
+            System.out.println("Zug gezogen");
             SchachCheck(FarbeDran());
             markiereLetztenZug();
             EndeCheck();
+        }
+        else{
+            ColPrint.red.println("FEHLER - UNGÜLTIGER ZUG: " + zug);
         }
     }
 
@@ -220,22 +223,6 @@ public class Spiel {
     }
 
     /**
-     * eigener ausgewählter Punkt
-     *
-     * @return
-     */
-    private List<Point> möglicheZüge() {
-        return möglicheZüge(ausgewählt);
-    }
-
-    /**
-     * zeigt alle Möglichen Züge an (MÖGLICH_ZUG oder MÖGLICH_SCHLAGEN)
-     */
-    private void zeigeMöglicheZüge() {
-        zeigeMöglicheZüge(ausgewählt);
-    }
-
-    /**
      * zeige alle Mögliche Züge für den ausgewählten Punkt aus
      */
     public void zeigeMöglicheZüge(Point ausgewählt) {
@@ -261,13 +248,11 @@ public class Spiel {
         ColPrint.white.println("clearMöglicheZüge");
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if(felder[i][j].getStatus() != null && felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_ZUG())) {
-                    felder[i][j].setStatus(null);
-                }
-                else if(felder[i][j].getStatus() != null && felder[i][j].getStatus().equals(Feld.Status.MÖGLICH_SCHLAGEN())) {
-                    felder[i][j].setStatus(null);
-                }
-                else if(felder[i][j].getStatus() != null && felder[i][j].getStatus().equals(Feld.Status.AUSGEWÄHLT())) {
+                Feld.Status status = felder[i][j].getStatus();
+                if(status != null &&
+                            (status.equals(Feld.Status.MÖGLICH_ZUG())
+                         ||  status.equals(Feld.Status.MÖGLICH_SCHLAGEN())
+                         ||  status.equals(Feld.Status.AUSGEWÄHLT()))) {
                     felder[i][j].setStatus(null);
                 }
             }
@@ -281,6 +266,14 @@ public class Spiel {
      */
     private void markiereLetztenZug() {
         if (selbst.züge.size() > 0) {
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    if (felder[x][y].getStatus() != null &&
+                            felder[x][y].getStatus().equals(Feld.Status.ZUG()))
+                    felder[x][y].setStatus(null);
+                }
+            }
+            updateBrett();
             Zug letzterZug;
             if(dran(selbst)){
                 letzterZug = getLast(gegner.züge);

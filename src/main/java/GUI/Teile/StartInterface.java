@@ -153,7 +153,7 @@ public class StartInterface {
     }
 
     private void pressedButton(){
-        System.out.println("pressed button");
+        ColPrint.white.println("StartInterface: pressed button 'Fertig'");
         if(gegnerListe.getSelectedIndices().length == 1
                 && !name.getText().replace(" ", "").equals("")
                 && farbenListe.getSelectedIndices().length == 1){

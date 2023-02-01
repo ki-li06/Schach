@@ -4,6 +4,7 @@ import GUI.GUI_Package;
 import Gegner.Gegner;
 import Spiel.TeilvonSpiel.Feld;
 import Spiel.TeilvonSpiel.Figuren.Bauer;
+import Spiel.TeilvonSpiel.Spieler;
 import Spiel.TeilvonSpiel.Zug;
 import util.ColPrint;
 
@@ -36,13 +37,18 @@ public class Lokal extends Gegner {
 
     @Override
     public void start(GUI_Package gui) {
-        ColPrint.cyan.println("lokal start");
+        ColPrint.cyan.println("Lokal start");
 
-
-        if(!GegnerIsLokal() && farbe.equals(BLACK)){
-            System.out.println("lokal startbedingung");
-            spiel.dreheBrett();
+        Spieler gegeben;
+        if(farbe.equals(WHITE)){
+            gegeben = spiel.SpielerSchwarz();
         }
+        else{
+            gegeben = spiel.SpielerWeiß();
+        }
+        LokalNamenEingabe lne = new LokalNamenEingabe(gui, gegeben);
+        setName(lne.getEingabe());
+
         addMouseListeners();
     }
 
@@ -67,9 +73,9 @@ public class Lokal extends Gegner {
     }
 
     public boolean GegnerIsLokal(){
-        Gegner gegner = spiel.selbst.gegner;
+        Gegner gegner = spiel.selbst.getGegner();
         if(spiel.selbst.getGegner().equals(this)){
-            gegner = spiel.gegner.gegner;
+            gegner = spiel.gegner.getGegner();
         }
         return gegner instanceof Lokal;
     }

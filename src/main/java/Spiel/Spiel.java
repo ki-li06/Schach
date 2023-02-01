@@ -47,28 +47,34 @@ public class Spiel {
         lokal.setSpiel(this);
         lokal.addMouseListeners();
 
-        selbst = new Spieler(spielername, g.getFarbe());
+        selbst = new Spieler(spielername);
         selbst.setGegner(lokal);
 
-        gegner = new Spieler(g.getName(), andereFarbe(g.getFarbe()));
+        gegner = new Spieler(g.getName());
         gegner.setGegner(g);
 
-        g.start(gui);
+        gegner.getGegner().start(gui);
 
 
-        System.out.println("Weiß: '" + selbst.name + "'");
-        System.out.println("Schwarz: '" + gegner.name + "'");
+        System.out.println("Weiß: '" + SpielerWeiß().name + "'");
+        System.out.println("Schwarz: '" + SpielerSchwarz().name + "'");
 
 
         mga = new MainGameAnzeige(
-                selbst.name,
-                gegner.name,
+                SpielerWeiß().name,
+                SpielerSchwarz().name,
                 gui
         );
 
         erstelleFelder();
 
-        updateBrett();
+        if(selbst.getGegner().getFarbe().equals(BLACK)
+            && !(gegner.getGegner() instanceof Lokal)){
+            dreheBrett();
+        }
+        {
+            updateBrett();
+        }
 
         while(ende == null){
             System.out.println("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()));
@@ -98,7 +104,7 @@ public class Spiel {
         }
         //Setze die Figuren auf das Brett
         for (int i = 0; i <= 7; i += 7) {
-            String farbe = i == 7 ? "w" : "b";
+            String farbe = i == 7 ? WHITE : BLACK;
             felder[0][i].setFigur(new Turm(farbe));
             felder[1][i].setFigur(new Springer(farbe));
             felder[2][i].setFigur(new Läufer(farbe));
@@ -120,12 +126,6 @@ public class Spiel {
      */
     public void ziehe(Zug zug) {
         if (get(felder, zug.alt) != null) {
-            for (int x = 0; x < 8; x++) {
-                for (int y = 0; y < 8; y++) {
-                    felder[x][y].setStatus(null);
-                }
-            }
-            updateBrett();
             ColPrint.blue.println("ziehe den zug : " + zug);
             setFiguren(felder, zug.ziehe(getFiguren(felder)));
             if (selbstDran()) {
@@ -134,6 +134,7 @@ public class Spiel {
                 gegner.züge.add(zug);
             }
             System.out.println("Zug gezogen");
+            cleanStatusFelder();
             SchachCheck(FarbeDran());
             markiereLetztenZug();
             EndeCheck();
@@ -150,7 +151,8 @@ public class Spiel {
         mga.dreheBrett(felder);
     }
 
-    public void updateBrett(){
+    public void updateBrett() {
+
         mga.updateBrett(felder);
     }
 
@@ -161,7 +163,7 @@ public class Spiel {
      */
     public void SchachCheck(String farbe) {
         Point KönigPosition = indexOf(getFiguren(felder), new König(farbe));
-        if (SchachAuf(getFiguren(felder), weiß().züge, schwarz().züge, farbe)) {
+        if (SchachAuf(getFiguren(felder), SpielerWeiß().züge, SpielerSchwarz().züge, farbe)) {
             get(felder, KönigPosition).setStatus(Feld.Status.SCHACH());
             updateBrett();
         }
@@ -174,7 +176,7 @@ public class Spiel {
      * - Remis
      */
     private void EndeCheck() {
-        Ende e = ende(getFiguren(felder), weiß(), schwarz());
+        Ende e = ende(getFiguren(felder), SpielerWeiß(), SpielerSchwarz());
         if (e != null) {
             ende = e;
             mga.setzeEnde(ende);
@@ -220,7 +222,7 @@ public class Spiel {
                 ausgabe.add(new Point(ausgewählt.x + 1, 7));
             }
         }
-        ausgabe.addAll(MöglicheZüge(getFiguren(felder), weiß().züge, schwarz().züge, ausgewählt.x, ausgewählt.y));
+        ausgabe.addAll(MöglicheZüge(getFiguren(felder), SpielerWeiß().züge, SpielerSchwarz().züge, ausgewählt.x, ausgewählt.y));
         return ausgabe;
     }
 
@@ -289,12 +291,23 @@ public class Spiel {
         updateBrett();
     }
 
+    /**
+     * nimmt allen Feldern einen Status
+     */
+    private void cleanStatusFelder(){
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                felder[x][y].setStatus(null);
+            }
+        }
+    }
+
 
     /**
      * gibt aus ob Spieler Weiß dran ist
      */
     public boolean WeißDran() {
-        return weiß().züge.size() == schwarz().züge.size();
+        return SpielerWeiß().züge.size() == SpielerSchwarz().züge.size();
     }
 
     public boolean selbstDran() {
@@ -308,8 +321,8 @@ public class Spiel {
         return WeißDran() ? WHITE : BLACK;
     }
 
-    public Spieler weiß(){
-        if(selbst.farbe.equals(WHITE)){
+    public Spieler SpielerWeiß(){
+        if(selbst.getGegner().getFarbe().equals(WHITE)){
             return selbst;
         }
         else{
@@ -317,8 +330,8 @@ public class Spiel {
         }
     }
 
-    public Spieler schwarz(){
-        if(selbst.farbe.equals(BLACK)){
+    public Spieler SpielerSchwarz(){
+        if(selbst.getGegner().getFarbe().equals(BLACK)){
             return selbst;
         }
         else{
@@ -330,7 +343,7 @@ public class Spiel {
         if(!g.equals(selbst) && !g.equals(gegner)){
             return false;
         }
-        return FarbeDran().equals(g.farbe);
+        return FarbeDran().equals(g.getGegner().getFarbe());
     }
 
     /**

@@ -4,10 +4,12 @@ To-Do List:
 - Clean Code
 - Lokaler Gegner:
     * Namen-Eingabe
+        + in edit
     * Farbauswahl: Schwarz
 - (Kommentare)
 
 BugFixes
 - En Passant Anzeigen Schwarz       --> done
-- Fehler Anzeige letzter Zug        --> Fehler tritt nicht mehr auf, Ursache ungeklärt
-- Drehen des Spielbretts Fehler
+- Drehen des Spielbretts Fehler     --> done
+- Fehler Anzeige letzter Zug
+- Fehler Zug nicht möglich

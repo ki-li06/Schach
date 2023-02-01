@@ -16,7 +16,7 @@ public abstract class ColPrint {
         System.out.println(farbe() + s + RESET);
     }
     public void printf(String format, String s){
-        System.out.printf(format, s);
+        System.out.printf(format, farbe() + s + RESET);
     }
 
     public static ColPrint black = new BLACK();

@@ -16,6 +16,7 @@ public class Eingabefeld {
     private JFrame frame;
     private JPanel panel;
     private GroupLayout groupLayout;
+
     private JLabel aufforderung;
     private JLabel weiß;
     private JTextField weißeingabe;
@@ -183,5 +184,10 @@ public class Eingabefeld {
         return new GUI_Package(frame, groupLayout);
     }
 
-
+    public static void main(String[] args) {
+        Eingabefeld eb = new Eingabefeld();
+        System.out.println("-------------");
+        System.out.println("Weiß   : " + eb.Spielername_weiß);
+        System.out.println("Schwarz: " + eb.Spielername_schwarz);
+    }
 }

@@ -10,7 +10,9 @@ public class Main {
     public static void main(String[] args) {
         StartInterface si = new StartInterface();
         ColPrint.red.println("Ende StartInterface");
-        Gegner gegner = Gegner.GegnerByString(andereFarbe(si.getFarbe()), si.getGegnerArt());
+        Gegner gegner = Gegner.GegnerByString(
+                andereFarbe(si.getFarbe()),
+                si.getGegnerArt());
         System.out.println("Name: " + si.getSpielerName());
         System.out.println("Art: " + gegner.returnArt());
         ColPrint.red.println("Erstelle Spiel");

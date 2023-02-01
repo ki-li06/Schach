@@ -4,11 +4,13 @@ import GUI.GUI_Package;
 import Gegner.Gegner;
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
+import util.ColPrint;
 
 import java.util.List;
 
 import static Spiel.TeilvonSpiel.Feld.getFiguren;
 import static Spiel.TeilvonSpiel.Figur.AlleMöglichenZügeEinerFarbe;
+import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static util.Delay.delay;
 
 /**
@@ -30,18 +32,19 @@ public class OwnBot extends Gegner {
 
     @Override
     public void start(GUI_Package gui) {
+        ColPrint.cyan.println("OwnBot start");
 
+        setName(farbe + "_OwnBot");
     }
 
-    /**
-     * @Dave hier code einfügen
-     */
+
     @Override
     public Zug ziehe() {
-        delay(1000);
+
+        delay(500);
         Figur[][] figuren = getFiguren(spiel.felder);
-        List<Zug> weißZüge = spiel.weiß().züge;
-        List<Zug> schwarzZüge = spiel.schwarz().züge;
+        List<Zug> weißZüge = spiel.SpielerWeiß().züge;
+        List<Zug> schwarzZüge = spiel.SpielerSchwarz().züge;
         //Hier Zug ausgeben
         Berechnung berechnung = new Berechnung(farbe, figuren, weißZüge, schwarzZüge);
 

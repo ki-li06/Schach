@@ -23,7 +23,7 @@ public abstract class Gegner {
 
     public Gegner(String farbe){
         this.farbe = farbe;
-        name += "_" + farbe;
+        name = farbe + "_" + name;
     }
 
     public void setSpiel(Spiel spiel) {
@@ -34,6 +34,7 @@ public abstract class Gegner {
     public String getName() {
         return name;
     }
+
     public void setName(String name){
         ColPrint.green.println("Name wurde von " + this.name + " zu " + name + " geändert");
         this.name = name;

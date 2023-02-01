@@ -16,8 +16,4 @@ public class GUI_Package {
         this.layout = layout;
     }
 
-
-    public static void main(String[] args) {
-        new MainGameAnzeige("s1", "s2");
-    }
 }

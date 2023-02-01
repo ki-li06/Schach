@@ -10,3 +10,4 @@ To-Do List:
 BugFixes
 - En Passant Anzeigen Schwarz       --> done
 - Fehler Anzeige letzter Zug        --> Fehler tritt nicht mehr auf, Ursache ungeklärt
+- Drehen des Spielbretts Fehler

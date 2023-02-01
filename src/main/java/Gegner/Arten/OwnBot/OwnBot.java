@@ -43,8 +43,10 @@ public class OwnBot extends Gegner {
         List<Zug> weißZüge = spiel.weiß().züge;
         List<Zug> schwarzZüge = spiel.schwarz().züge;
         //Hier Zug ausgeben
+        Berechnung berechnung = new Berechnung(farbe, figuren, weißZüge, schwarzZüge);
 
 
-        return AlleMöglichenZügeEinerFarbe(figuren, weißZüge, schwarzZüge, farbe).get(0);
+
+        return berechnung.getBesterZug();
     }
 }

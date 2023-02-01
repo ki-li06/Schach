@@ -37,6 +37,12 @@ public class Lokal extends Gegner {
     @Override
     public void start(GUI_Package gui) {
         ColPrint.cyan.println("lokal start");
+
+
+        if(!GegnerIsLokal() && farbe.equals(BLACK)){
+            System.out.println("lokal startbedingung");
+            spiel.dreheBrett();
+        }
         addMouseListeners();
     }
 
@@ -70,17 +76,16 @@ public class Lokal extends Gegner {
 
     @Override
     public Zug ziehe() {
-        delay(100L);
-        if(GegnerIsLokal() && farbe.equals(BLACK) && spiel.weiß().züge.size() != 0) {
+        if(GegnerIsLokal() && farbe.equals(BLACK)) {
             spiel.dreheBrett();
         }
-        else if(!GegnerIsLokal() && farbe.equals(BLACK) && spiel.weiß().züge.size() == 1){
-            spiel.dreheBrett();
-        }
-        while (ziel == null) {
+
+        while (ziel == null) {  //Warte auf Eingabe
             delay(1);
         }
-        if(!farbe.equals(WHITE) && spiel.weiß().züge.size() != 0) {
+
+
+        if(GegnerIsLokal() && farbe.equals(BLACK)) {
             spiel.dreheBrett();
         }
 

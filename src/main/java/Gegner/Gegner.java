@@ -23,6 +23,7 @@ public abstract class Gegner {
 
     public Gegner(String farbe){
         this.farbe = farbe;
+        name += "_" + farbe;
     }
 
     public void setSpiel(Spiel spiel) {
@@ -54,7 +55,7 @@ public abstract class Gegner {
     /**
      * Diese Methode wird ausgeführt, nachdem die Art des Gegner ausgewählt wurde und bevor das Brett angezeigt wird.
      * Dabei wird z.B. der Name des Gegners eingegeben.
-     * @param gui das GUI Package des Spiels
+     * @param gui das GUI Package des Spiels (bspw. zur Eingabe von Spielernamen)
      */
     public abstract void start(GUI_Package gui);
 

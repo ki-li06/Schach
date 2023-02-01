@@ -41,18 +41,20 @@ public class Spiel {
 
     public Spiel(String spielername, Gegner g, GUI_Package gui) {
         g.setSpiel(this);
-        g.start(gui);
 
         Lokal lokal = new Lokal(andereFarbe(g.getFarbe()));
         lokal.setName(spielername);
         lokal.setSpiel(this);
         lokal.addMouseListeners();
 
-        selbst = new Spieler(spielername, andereFarbe(g.getFarbe()));
+        selbst = new Spieler(spielername, g.getFarbe());
         selbst.setGegner(lokal);
 
-        gegner = new Spieler(g.getName(), g.getFarbe());
+        gegner = new Spieler(g.getName(), andereFarbe(g.getFarbe()));
         gegner.setGegner(g);
+
+        g.start(gui);
+
 
         System.out.println("Weiß: '" + selbst.name + "'");
         System.out.println("Schwarz: '" + gegner.name + "'");

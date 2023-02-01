@@ -72,7 +72,7 @@ public class StartInterface {
         farbenListe = new JList<>(new String[]{"Weiß", "Schwarz"});
         farbenListe.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         farbenListe.setLayoutOrientation(JList.VERTICAL);
-        farbenListe.setVisibleRowCount(1);
+        farbenListe.setVisibleRowCount(2);
 
         farbenScrollPane = new JScrollPane(farbenListe);
 

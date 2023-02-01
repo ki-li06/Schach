@@ -3,7 +3,7 @@
 
 **Geschichte**
 
-Anfang 2022 war ich ein Anfänger in der Projekt-Programmierung, hatte jedoch schon Erfahrung und im Programmieren und Lust ein eigens Projekt zu programmieren. Dabei zeigte sich meine Interesse für Schach und ich wählte [1D3W](https://github.com/1D3W), ebenfalls Schach-Interessiert, als Unterstützung. Aufgrund Überlegenheiten in Motivation und Kenntnissen der Programmierung, hielt sich seine Unterstützung jedoch in Grenzen und dieses Projekt wurde annähernd zum Soloprojekt. Dabei wurde das Ziel, eines lokalen Spielmodus gegen einen andere Person schnell erreicht. Es gibt Pläne für eine Weiterentwicklung.
+Anfang 2022 war ich ein Anfänger in der Projekt-Programmierung, hatte jedoch schon Erfahrung und im Programmieren und Lust ein eigenes Projekt zu programmieren. Dabei zeigte sich meine Interesse für Schach als ideal und ich wählte [1D3W](https://github.com/1D3W), ebenfalls Schach-Interessiert, als Unterstützung. Aufgrund Überlegenheiten in Motivation und Kenntnissen der Programmierung, hielt sich seine Unterstützung jedoch in Grenzen und dieses Projekt wurde annähernd zum Soloprojekt. Dabei wurde das Ziel, eines lokalen Spielmodus gegen einen andere Person schnell erreicht. Es gibt Pläne für eine Weiterentwicklung.
 
 
 **Prinzip**

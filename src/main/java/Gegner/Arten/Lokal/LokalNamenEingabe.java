@@ -17,7 +17,7 @@ public class LokalNamenEingabe {
     private JLabel weiß;
     private JLabel schwarz;
     private JTextField eingabefeld;
-    private JTextField gegeben;
+    private JLabel gegeben;
     private JButton button;
 
     private boolean pressedbutton;
@@ -45,7 +45,7 @@ public class LokalNamenEingabe {
         button.addActionListener(evt -> finish());
         pressedbutton = false;
 
-        gegeben = new JTextField(gegebenSpieler.getGegner().getName());
+        gegeben = new JLabel(gegebenSpieler.getGegner().getName());
 
         eingabefeld = new JTextField();
 
@@ -112,7 +112,8 @@ public class LokalNamenEingabe {
                                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-
+        frame.pack();
+        frame.setLocation(0,5);
 
 
     }

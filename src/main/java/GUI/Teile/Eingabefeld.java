@@ -9,8 +9,12 @@ import java.awt.*;
 
 import static util.Delay.delay;
 
+
 /**
+ *      WIRD NICHT MEHR GENUTZT
+ *
  * Das Eingabefeld sorgt für die Eingabefläche der Spielernamen
+ *
  */
 public class Eingabefeld {
     private JFrame frame;

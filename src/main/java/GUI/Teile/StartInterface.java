@@ -6,6 +6,7 @@ import util.ColPrint;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.util.List;
 
 import static Spiel.TeilvonSpiel.Figur.BLACK;
@@ -48,9 +49,6 @@ public class StartInterface {
 
         erstellen(frame);
 
-        this.frame.pack();
-        //Vollbild
-        this.frame.setVisible(true);
 
         while (!pressedButton){
             delay(1);
@@ -147,9 +145,10 @@ public class StartInterface {
                 groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
+
         frame.pack();
         frame.setVisible(true);
-
+        frame.setLocation(0,5);
     }
 
     private void pressedButton(){

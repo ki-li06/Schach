@@ -18,4 +18,13 @@ public class StringFormat {
         ausgabe += "s";
         return ausgabe;
     }
+
+    /**
+     * entfernt alle dopppelten Leerzeichen "x   a  b" -> "xab"
+     * @param string eingabe-String
+     * @return
+     */
+    public static String clearDoubleSpaces (String string){
+        return string.trim().replaceAll(" +", " ");
+    }
 }

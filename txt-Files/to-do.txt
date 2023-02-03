@@ -1,15 +1,16 @@
 To-Do List:
 
-- En Passant Zug fertig stellen     --> done
-- Clean Code
+- En Passant Zug fertig stellen         --> done
+- Code-Refactoring
+    (cleaner, verständlicher, besser)
+
 - Lokaler Gegner:
-    * Namen-Eingabe
-        + in edit
-    * Farbauswahl: Schwarz
+    * Namen-Eingabe                     --> done
+    * Farbauswahl: Schwarz              --> done
 - (Kommentare)
 
 BugFixes
-- En Passant Anzeigen Schwarz       --> done
-- Drehen des Spielbretts Fehler     --> done
+- En Passant Anzeigen Schwarz           --> done
+- Drehen des Spielbretts Fehler         --> done
 - Fehler Anzeige letzter Zug
 - Fehler Zug nicht möglich

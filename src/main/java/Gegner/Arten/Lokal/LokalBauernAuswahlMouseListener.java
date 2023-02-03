@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import static GUI.BauernAuswahl.indexOfClickedField;
 
 public class LokalBauernAuswahlMouseListener implements MouseListener {
-    private Lokal lokal;
+    private final Lokal lokal;
 
     public LokalBauernAuswahlMouseListener(Lokal l){
         lokal = l;

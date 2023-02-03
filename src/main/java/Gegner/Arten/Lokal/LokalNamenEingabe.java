@@ -3,11 +3,16 @@ package Gegner.Arten.Lokal;
 import GUI.GUI_Package;
 import Spiel.Spiel;
 import Spiel.TeilvonSpiel.Spieler;
+import util.ColPrint;
 
 import javax.swing.*;
 
+import java.util.Objects;
+
 import static Spiel.TeilvonSpiel.Figur.WHITE;
+import static Spiel.TeilvonSpiel.Figur.andereFarbe;
 import static util.Delay.delay;
+import static util.StringFormat.clearDoubleSpaces;
 
 public class LokalNamenEingabe {
     private JFrame frame;
@@ -31,6 +36,9 @@ public class LokalNamenEingabe {
         while (!pressedbutton) {
             delay(1);
         }
+
+        System.out.println("Spieler Gegeben - " + gegeben.getGegner().getFarbe() + ": "+ gegeben.getGegner().getName());
+        System.out.println("Spieler Eingabe - " + andereFarbe(gegeben.getGegner().getFarbe()) + ": " + eingabe);
     }
     public void erstellen(Spieler gegebenSpieler){
         aufforderung = new JLabel("Bitte zweiten Spielernamen eingeben!");
@@ -75,7 +83,7 @@ public class LokalNamenEingabe {
                             .addGroup(pg_middle_horizontal)
                             .addGap(18, 18, 18)
                             .addComponent(button)
-                            .addGap(0, 60, Short.MAX_VALUE)
+                            .addContainerGap(15, Short.MAX_VALUE)
                     )
         );
 
@@ -109,20 +117,40 @@ public class LokalNamenEingabe {
                                 .addGroup(pg_unten)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(button)
-                                .addContainerGap(15, Short.MAX_VALUE))
+                                .addContainerGap(15, Short.MAX_VALUE)
+                        )
         );
 
         frame.pack();
         frame.setLocation(0,5);
 
-
     }
 
     private void finish(){
+        ColPrint.white.println("LokalNameEingabe: pressed button 'Bestätigen'");
 
+        String string = eingabefeld.getText();
+        string = clearDoubleSpaces(string.trim());
+
+        if(!string.equals("") &&
+                !string.equals(gegeben.getText())
+            ){
+            System.out.println("Zweiten Namen Bestätigt");
+
+            eingabe = string;
+
+            aufforderung.setVisible(false);
+            weiß.setVisible(false);
+            schwarz.setVisible(false);
+            eingabefeld.setVisible(false);
+            gegeben.setVisible(false);
+            button.setVisible(false);
+
+            pressedbutton = true;
+        }
     }
 
     public String getEingabe(){
-        return null;
+        return eingabe;
     }
 }

@@ -48,6 +48,7 @@ public class Lokal extends Gegner {
         }
         LokalNamenEingabe lne = new LokalNamenEingabe(gui, gegeben);
         setName(lne.getEingabe());
+        System.out.println("Name gesetzt -> " + name);
 
         addMouseListeners();
     }

@@ -1,13 +1,20 @@
 package Gegner.Arten.OwnBot;
 
+import Spiel.TeilvonSpiel.Ende;
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
 import util.Tree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static Spiel.TeilvonSpiel.Feld.getFiguren;
-import static Spiel.TeilvonSpiel.Figur.AlleMöglichenZügeEinerFarbe;
+import static Spiel.TeilvonSpiel.Figur.*;
+import static Spiel.Spiel.EndeBerechnen;
+
+/**
+ * BERECHNET AKTUELL NUR ZÜGE MIT DEM EIN MATT ABGEWEHRT WIRD
+ */
 
 public class Berechnung extends Tree<Berechnung> {
     private String farbe;
@@ -26,4 +33,6 @@ public class Berechnung extends Tree<Berechnung> {
         List<Zug> alleMöglichenZüge = AlleMöglichenZügeEinerFarbe(figuren, weißZüge, schwarzZüge, farbe);
         return alleMöglichenZüge.get(0);
     }
+
+
 }

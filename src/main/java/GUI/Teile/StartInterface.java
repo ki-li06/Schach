@@ -12,6 +12,7 @@ import java.util.List;
 import static Spiel.TeilvonSpiel.Figur.BLACK;
 import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static util.Delay.delay;
+import static util.StringFormat.clearDoubleSpaces;
 
 /**
  * Hier muss der Spielername eingeben und die Art des Gegners auswählen
@@ -153,10 +154,12 @@ public class StartInterface {
 
     private void pressedButton(){
         ColPrint.white.println("StartInterface: pressed button 'Fertig'");
+        String nameString = name.getText();
+        nameString = clearDoubleSpaces(nameString.trim());
         if(gegnerListe.getSelectedIndices().length == 1
-                && !name.getText().replace(" ", "").equals("")
+                && !nameString.equals("")
                 && farbenListe.getSelectedIndices().length == 1){
-            name_spieler = name.getText();
+            name_spieler = nameString;
             gegner_art = gegnerListe.getSelectedValue();
             if(farbenListe.getSelectedValue().equals("Weiß")){
                 farbeSelected = WHITE;

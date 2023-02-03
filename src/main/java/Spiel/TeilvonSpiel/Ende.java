@@ -4,9 +4,19 @@ public abstract class Ende {
     public String Typ(){
         return this.getClass().getSimpleName();
     }
-    public String Text(){
-        return null;
-    }
+
+    public abstract String Text();
+
+    /**
+     * gibt einen Sieger aus, falls einen gibt - als int
+     * dabei steht
+     *  ~ 1 für Sieg
+     *  ~ 0 für Unentschieden
+     *  ~ -1 für Niederlage
+     * @return
+     */
+    public abstract int Punkte(String farbe);
+
 
     @Override
     public String toString() {
@@ -14,13 +24,18 @@ public abstract class Ende {
     }
 
     public static class Matt extends Ende{
-        private final String sieger;
-        public Matt(String sieger){
+        private final Spieler sieger;
+        public Matt(Spieler sieger){
              this.sieger = sieger;
         }
-        @Override
         public String Text() {
-            return sieger + " hat gewonnen!";
+            return sieger.getGegner().getName() + " hat gewonnen!";
+        }
+        public int Punkte(String farbe){
+            if(farbe.equals(sieger.getGegner().getFarbe())){
+                return 1;
+            }
+            return -1;
         }
     }
     public static class Patt extends Ende{
@@ -28,18 +43,23 @@ public abstract class Ende {
         /**
          * @param betroffen Wer steht im Patt?
          */
-        public Patt(String betroffen){
-            imPatt = betroffen;
+        public Patt(Spieler betroffen){
+            imPatt = betroffen.getGegner().getName();
         }
-        @Override
         public String Text() {
             return imPatt + " steht im Patt";
+        }
+        public int Punkte(String farbe){
+            return 0;
         }
     }
     public static class Remis extends Ende{
         @Override
         public String Text() {
             return "Unentschieden";
+        }
+        public int Punkte(String farbe){
+            return 0;
         }
     }
 }

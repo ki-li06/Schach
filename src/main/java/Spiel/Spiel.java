@@ -25,7 +25,6 @@ import static Spiel.TeilvonSpiel.Figur.ImMatt;
 import static Spiel.TeilvonSpiel.Figur.ImPatt;
 import static util.ArrayPoint.get;
 import static util.ArrayPoint.indexOf;
-import static util.Delay.delay;
 import static util.FormatPoint.format;
 import static util.Listen.getLast;
 
@@ -47,22 +46,20 @@ public class Spiel {
         lokal.setSpiel(this);
         lokal.addMouseListeners();
 
-        selbst = new Spieler(spielername);
-        selbst.setGegner(lokal);
+        selbst = new Spieler(lokal);
 
-        gegner = new Spieler(g.getName());
-        gegner.setGegner(g);
+        gegner = new Spieler(g);
 
         gegner.getGegner().start(gui);
 
 
-        System.out.println("Weiß: '" + SpielerWeiß().name + "'");
-        System.out.println("Schwarz: '" + SpielerSchwarz().name + "'");
+        System.out.println("Weiß: '" + SpielerWeiß().getGegner().getName() + "'");
+        System.out.println("Schwarz: '" + SpielerSchwarz().getGegner().getName() + "'");
 
 
         mga = new MainGameAnzeige(
-                SpielerWeiß().name,
-                SpielerSchwarz().name,
+                SpielerWeiß().getGegner().getName(),
+                SpielerSchwarz().getGegner().getName(),
                 gui
         );
 
@@ -176,7 +173,7 @@ public class Spiel {
      * - Remis
      */
     private void EndeCheck() {
-        Ende e = ende(getFiguren(felder), SpielerWeiß(), SpielerSchwarz());
+        Ende e = EndeBerechnen(getFiguren(felder), SpielerWeiß(), SpielerSchwarz());
         if (e != null) {
             ende = e;
             mga.setzeEnde(ende);
@@ -382,10 +379,11 @@ public class Spiel {
 
     /**
      * gibt das Ende nach dem Spielstand des angegebenen Spiels aus
-     * (Standard-Ausgabe null)
+     * liegt kein Ende vor: null
+     * Standard-Ausgabe: null
      *
      */
-    public static Ende ende(Figur[][] figuren, Spieler weiß, Spieler schwarz) {
+    public static Ende EndeBerechnen(Figur[][] figuren, Spieler weiß, Spieler schwarz) {
         if(weiß.züge.size() == 0 || schwarz.züge.size() == 0){
             return null;
         }
@@ -405,16 +403,16 @@ public class Spiel {
             return new Ende.Remis();
         }
         if (farbeDran.equals(BLACK) && ImPatt(figuren, weiß.züge, schwarz.züge, BLACK)) {
-            return new Ende.Patt(schwarz.name);
+            return new Ende.Patt(schwarz);
         }
         if (farbeDran.equals(WHITE) && ImPatt(figuren, weiß.züge, schwarz.züge, WHITE)) {
-            return new Ende.Patt(weiß.name);
+            return new Ende.Patt(weiß);
         }
         if (ImMatt(figuren, weiß.züge, schwarz.züge, BLACK)) {
-            return new Ende.Matt(weiß.name);
+            return new Ende.Matt(weiß);
         }
         if (ImMatt(figuren, weiß.züge, schwarz.züge, WHITE)) {
-            return new Ende.Matt(schwarz.name);
+            return new Ende.Matt(schwarz);
         }
         return null;
     }

@@ -3,7 +3,7 @@
 
 **Geschichte**
 
-Anfang 2022 war ich ein Anfänger in der Projekt-Programmierung, hatte jedoch schon Erfahrung und im Programmieren und Lust ein eigenes Projekt zu programmieren. Dabei zeigte sich meine Interesse für Schach als ideal und ich wählte [1D3W](https://github.com/1D3W), ebenfalls Schach-Interessiert, als Unterstützung. Aufgrund Überlegenheiten in Motivation und Kenntnissen der Programmierung, hielt sich seine Unterstützung jedoch in Grenzen und dieses Projekt wurde annähernd zum Soloprojekt. Dabei wurde das Ziel, eines lokalen Spielmodus gegen einen andere Person schnell erreicht. Es gibt Pläne für eine Weiterentwicklung.
+Anfang 2022 war ich Anfänger in der Projekt-Programmierung, hatte jedoch schon Erfahrung im Programmieren und Lust ein eigenes Projekt zu programmieren. Dabei zeigte sich meine Interesse für das Spiel Schach als ideal und ich wählte [1D3W](https://github.com/1D3W) - ebenfalls mit Interesse am Spiel Schach - als Unterstützung. Aufgrund Überlegenheiten in Motivation und Kenntnissen der Programmierung hielt sich seine Unterstützung jedoch in Grenzen und dieses Projekt wurde annähernd zum Soloprojekt. Dabei wurde das Ziel, eines lokalen Spielmodus gegen einen andere Person schnell erreicht. Es gibt Pläne für eine Weiterentwicklung.
 
 
 **Prinzip**
@@ -16,10 +16,10 @@ ACHTUNG: AKTUELL FUNKTIONIERT NUR DER SPIELMODUS "LOKALE GEGNER"
 
 **Erwähnungen**
 
-Als offizieller Contributor besitzt auch 1D3W Ansprüche an diesem Projekt. Ebenfalls leistete [Juoper](https://github.com/Juoper) bei kleineren Problemen Unterstützunge. Das Portal [lichess](https://lichess.org) ist die größte Grund meiner Interesse am Schach. Hiervon stammen auch die Bilder der Schachfiguren, die im Projekt verwendet werden bzw [von hier](https://github.com/lichess-org/lila/tree/master/public/piece/cburnett).
+Programmiert wurde diese Projekt mithilfe von IntelliJ. Als offizieller Contributor besitzt auch 1D3W Ansprüche an diesem Projekt. Ebenfalls leistete [Juoper](https://github.com/Juoper) bei kleineren Problemen Unterstützung. Das Portal [lichess](https://lichess.org) ist die größte Grund meiner Interesse am Schach. Hiervon stammen auch die Bilder der Schachfiguren, die im Projekt verwendet werden bzw [von hier](https://github.com/lichess-org/lila/tree/master/public/piece/cburnett). 
 
 
-**Mögliche Erweiterung**
+**Mögliche Erweiterungen**
 
 - Entwicklung der Gegner-Modi
     - Bot (Selbst-programmiert)

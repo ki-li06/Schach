@@ -12,5 +12,7 @@ To-Do List:
 BugFixes
 - En Passant Anzeigen Schwarz           --> done
 - Drehen des Spielbretts Fehler         --> done
-- Fehler Anzeige letzter Zug
-- Fehler Zug nicht möglich
+- Fehler Anzeige letzter Zug            --> Issues
+- Fehler Zug nicht möglich              --> Issues
+
+==> Github Issues: https://github.com/ki-li06/Schach/issues

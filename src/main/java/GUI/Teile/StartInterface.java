@@ -1,13 +1,10 @@
 package GUI.Teile;
 
 import GUI.GUI_Package;
-import Gegner.Gegner;
+import Gegner.Spielertyp;
 import util.ColPrint;
 
 import javax.swing.*;
-
-import java.awt.*;
-import java.util.List;
 
 import static Spiel.TeilvonSpiel.Figur.BLACK;
 import static Spiel.TeilvonSpiel.Figur.WHITE;
@@ -54,13 +51,16 @@ public class StartInterface {
         while (!pressedButton){
             delay(1);
         }
+        ColPrint.red.println("Ende StartInterface");
+
 
     }
 
     public void erstellen(JFrame Frame){
         frame = Frame;
         
-        aufforderung = new JLabel("Bitte gebe deinen Namen ein und\n wähle die Art deines Gegners aus!");
+        aufforderung = new JLabel(
+                "Bitte gebe deinen Namen ein und wähle die Art deines Gegners aus!");
 
         labelName = new JLabel("Name:");
 
@@ -78,7 +78,7 @@ public class StartInterface {
 
         gegner = new JLabel("Gegner-Art: ");
 
-        gegnerListe = new JList<>(Gegner.alleGegnerArten());
+        gegnerListe = new JList<>(Spielertyp.alleGegnerArten());
         gegnerListe.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         gegnerListe.setLayoutOrientation(JList.VERTICAL);
         gegnerListe.setVisibleRowCount(3);
@@ -90,12 +90,13 @@ public class StartInterface {
         finish = new JButton("Fertig");
         finish.addActionListener(e -> pressedButton());
 
+        final int BREITE = 300;
+
         JPanel panel = new JPanel();
         layout = new GroupLayout(panel);
         panel.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
+                layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(labelName)
@@ -108,13 +109,12 @@ public class StartInterface {
                                         .addComponent(farbenScrollPane)
                                         .addComponent(artenScrollPane)
                                 )
-                                .addGap(18, 18, 18)
+                                .addGap(30)
                                 .addComponent(finish)
-                                .addGap(0, 60, Short.MAX_VALUE))
+                                .addGap(30)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
+                layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                         .addComponent(aufforderung))
@@ -130,10 +130,10 @@ public class StartInterface {
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                                 .addComponent(gegner)
                                                 .addComponent(artenScrollPane)
-                                        //.addComponent(button)
                                 )
+                                .addGap(20)
                                 .addComponent(finish)
-                                .addContainerGap(15, Short.MAX_VALUE))
+                                .addContainerGap(15, Short.MAX_VALUE)
         );
 
         GroupLayout groupLayout = new GroupLayout(frame.getContentPane());

@@ -1,7 +1,7 @@
 package Gegner.Arten.Lokal;
 
 import GUI.GUI_Package;
-import Gegner.Gegner;
+import Gegner.Spielertyp;
 import Spiel.TeilvonSpiel.Feld;
 import Spiel.TeilvonSpiel.Figuren.Bauer;
 import Spiel.TeilvonSpiel.Spieler;
@@ -16,7 +16,14 @@ import static util.ArrayPoint.get;
 import static util.Delay.delay;
 import static util.FormatPoint.format;
 
-public class Lokal extends Gegner {
+/**
+ * Dies ist ein Lokaler Gegner.
+ * Dies bedeutet, dass der Gegner am PC selbst auf die Figuren klicken muss, um sie zu bewegen.
+ *
+ *
+ */
+
+public class Lokal extends Spielertyp {
     public static final String LOKAL = "Lokal";
 
     private Point ausgewählt;
@@ -74,8 +81,8 @@ public class Lokal extends Gegner {
     }
 
     public boolean GegnerIsLokal(){
-        Gegner gegner = spiel.selbst.getGegner();
-        if(spiel.selbst.getGegner().equals(this)){
+        Spielertyp gegner = spiel.host.getGegner();
+        if(spiel.host.getGegner().equals(this)){
             gegner = spiel.gegner.getGegner();
         }
         return gegner instanceof Lokal;

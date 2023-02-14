@@ -155,18 +155,17 @@ public class MainGameAnzeige {
                 layout.createSequentialGroup()
                         .addComponent(spieleroben)
                         .addGap(10)
-                        //.addComponent(spielerunten, Spielfeld.BREITE, Spielfeld.BREITE, Spielfeld.BREITE)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                        .addComponent(ende_oben, BREITE / 2, BREITE / 2, BREITE / 2)
-                                        .addComponent(ende_unten, BREITE / 2, BREITE / 2, BREITE / 2)
-                                )
+                        .addGroup(
+                                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addGroup(
+                                            layout.createSequentialGroup()
+                                                .addComponent(ende_oben, BREITE / 2, BREITE / 2, BREITE / 2)
+                                                .addComponent(ende_unten, BREITE / 2, BREITE / 2, BREITE / 2)
+                                    )
                                 .addComponent(brett)
                                 .addComponent(bauernAuswahl, BREITE, BREITE, BREITE)
                         )
-                        //.addComponent(brett)
                         .addGap(10)
-                        //.addComponent(spieleroben, Spielfeld.BREITE, Spielfeld.BREITE, Spielfeld.BREITE)
                         .addComponent(spielerunten)
         );
 

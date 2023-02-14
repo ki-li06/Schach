@@ -1,7 +1,7 @@
 package Gegner.Arten.OwnBot;
 
 import GUI.GUI_Package;
-import Gegner.Gegner;
+import Gegner.Spielertyp;
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
 import util.ColPrint;
@@ -9,8 +9,6 @@ import util.ColPrint;
 import java.util.List;
 
 import static Spiel.TeilvonSpiel.Feld.getFiguren;
-import static Spiel.TeilvonSpiel.Figur.AlleMöglichenZügeEinerFarbe;
-import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static util.Delay.delay;
 
 /**
@@ -18,7 +16,7 @@ import static util.Delay.delay;
  * wählt Züge aus, ist somit ein Gegner, berechnet aber noch keine eigenen Züge
  */
 
-public class OwnBot extends Gegner {
+public class OwnBot extends Spielertyp {
     public static final String OwnBot = "Eigener Bot";
 
     public OwnBot (String farbe){

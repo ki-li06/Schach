@@ -3,7 +3,7 @@ package Spiel;
 import GUI.GUI_Package;
 import GUI.Teile.MainGameAnzeige;
 import Gegner.Arten.Lokal.Lokal;
-import Gegner.Gegner;
+import Gegner.Spielertyp;
 import Spiel.TeilvonSpiel.*;
 import Spiel.TeilvonSpiel.Figuren.*;
 import util.ColPrint;
@@ -29,7 +29,7 @@ import static util.FormatPoint.format;
 import static util.Listen.getLast;
 
 public class Spiel {
-    public final Spieler selbst;
+    public final Spieler host;
     public final Spieler gegner;
     public Feld[][] felder; //x - y (siehe überblick.txt)
     private Ende ende;
@@ -38,19 +38,33 @@ public class Spiel {
     public final MainGameAnzeige mga;
 
 
-    public Spiel(String spielername, Gegner g, GUI_Package gui) {
-        g.setSpiel(this);
+    public Spiel(String spielername, Spielertyp geg, GUI_Package gui) {
+        ColPrint.red.println("Erstelle Spiel");
 
-        Lokal lokal = new Lokal(andereFarbe(g.getFarbe()));
+        geg.setSpiel(this);
+        
+        Lokal lokal = new Lokal(andereFarbe(geg.getFarbe()));
         lokal.setName(spielername);
         lokal.setSpiel(this);
         lokal.addMouseListeners();
+        /*
+            Dies ist das Spielertyp-Objekt des Hosts.
+            Da dieser nicht direkt in der Klasse Spiel programmiert wird, wird ein LokalerGegner benutzt.
+            Dies ermöglicht die Eingabe von Zügen per Klicken auf das Spielfeld.
+            Jedoch darf hier nicht die Methode .start(...) eines jeden Gegners ausgeführt werden;
+             dies macht einerseits keinen Sinn, weil hier der Spielername des Hosts schon im StartInterface eingegeben wurde
+             und andererseits würde ein solcher Aufruf zu Abrufen von noch nicht initialisierten Objekten führen
+             (-> NullPointerException)
+         */
 
-        selbst = new Spieler(lokal);
+        host = new Spieler(lokal);
 
-        gegner = new Spieler(g);
+        gegner = new Spieler(geg);
 
         gegner.getGegner().start(gui);
+        /*
+            Hier muss die Methode start(...) des Gegners ausgeführt werden
+         */
 
 
         System.out.println("Weiß: '" + SpielerWeiß().getGegner().getName() + "'");
@@ -65,7 +79,7 @@ public class Spiel {
 
         erstelleFelder();
 
-        if(selbst.getGegner().getFarbe().equals(BLACK)
+        if(host.getGegner().getFarbe().equals(BLACK)
             && !(gegner.getGegner() instanceof Lokal)){
             dreheBrett();
         }
@@ -73,12 +87,18 @@ public class Spiel {
             updateBrett();
         }
 
+
         while(ende == null){
+            /*
+             * spiele solange bis ein Ende existiert -> EndeCheck() -> bspw. hat jemand gewonnen
+             * dabei wird der Spieler der dran ist, immer abgewechselt, weil der letzte Zug
+             * entweder zu den Zügen des Hosts oder des Gegners hinzugefügt wird
+             */
             System.out.println("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()));
             Zug zug;
-            if(selbstDran()) {
+            if(HostDran()) {
                 ColPrint.purple.println("selbst dran");
-                zug = selbst.getGegner().ziehe();
+                zug = host.getGegner().ziehe();
             }
             else{
                 ColPrint.purple.println("gegner dran");
@@ -91,6 +111,7 @@ public class Spiel {
 
     /**
      * In dieser Methode wird das Attribut felder initialisiert.
+     * -> Die Figuren werden auf ihre Position gesetzt
      */
     private void erstelleFelder() {
         felder = new Feld[8][8];
@@ -125,8 +146,8 @@ public class Spiel {
         if (get(felder, zug.alt) != null) {
             ColPrint.blue.println("ziehe den zug : " + zug);
             setFiguren(felder, zug.ziehe(getFiguren(felder)));
-            if (selbstDran()) {
-                selbst.züge.add(zug);
+            if (HostDran()) {
+                host.züge.add(zug);
             } else {
                 gegner.züge.add(zug);
             }
@@ -167,7 +188,9 @@ public class Spiel {
     }
 
     /**
-     * überprüft ob das Ende des Spiels vorliegt und stellt es in der GUI dar
+     * überprüft ob das Ende des Spiels vorliegt,
+     *  setzt das Attribut Ende auf das passende Ende ein und
+     *  stellt es in der GUI dar
      * Mögliche Enden sind:
      * - Matt
      * - Remis
@@ -266,7 +289,7 @@ public class Spiel {
      * (löst auch updateBrett() aus)
      */
     private void markiereLetztenZug() {
-        if (selbst.züge.size() > 0) {
+        if (host.züge.size() > 0) {
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
                     if (felder[x][y].getStatus() != null &&
@@ -276,11 +299,11 @@ public class Spiel {
             }
             updateBrett();
             Zug letzterZug;
-            if(dran(selbst)){
+            if(dran(host)){
                 letzterZug = getLast(gegner.züge);
             }
             else{
-                letzterZug = getLast(selbst.züge);
+                letzterZug = getLast(host.züge);
             }
             get(felder, letzterZug.neu).setStatus(Feld.Status.ZUG());
             get(felder, letzterZug.alt).setStatus(Feld.Status.ZUG());
@@ -302,13 +325,19 @@ public class Spiel {
 
     /**
      * gibt aus ob Spieler Weiß dran ist
+     * hierbei wird überprüft,
+     * ob der Spieler weiß mehr Züge als schwarz hat (-> true)
+     * oder beide gleich viele Züge haben (-> false) hat
      */
     public boolean WeißDran() {
         return SpielerWeiß().züge.size() == SpielerSchwarz().züge.size();
     }
 
-    public boolean selbstDran() {
-        return selbst.getGegner().getFarbe().equals(FarbeDran());
+    /**
+     * gibt an ob der Spieler host dran ist
+     */
+    public boolean HostDran() {
+        return host.getGegner().getFarbe().equals(FarbeDran());
     }
 
     /**
@@ -319,8 +348,8 @@ public class Spiel {
     }
 
     public Spieler SpielerWeiß(){
-        if(selbst.getGegner().getFarbe().equals(WHITE)){
-            return selbst;
+        if(host.getGegner().getFarbe().equals(WHITE)){
+            return host;
         }
         else{
             return gegner;
@@ -328,8 +357,8 @@ public class Spiel {
     }
 
     public Spieler SpielerSchwarz(){
-        if(selbst.getGegner().getFarbe().equals(BLACK)){
-            return selbst;
+        if(host.getGegner().getFarbe().equals(BLACK)){
+            return host;
         }
         else{
             return gegner;
@@ -337,7 +366,7 @@ public class Spiel {
     }
 
     public boolean dran(Spieler g){
-        if(!g.equals(selbst) && !g.equals(gegner)){
+        if(!g.equals(host) && !g.equals(gegner)){
             return false;
         }
         return FarbeDran().equals(g.getGegner().getFarbe());

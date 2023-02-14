@@ -1,23 +1,23 @@
 package Spiel.TeilvonSpiel;
 
-import Gegner.Gegner;
+import Gegner.Spielertyp;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Spieler {
     public List<Zug> züge = new ArrayList<>();
-    private Gegner gegner;
+    private Spielertyp gegner;
 
-    public Spieler (Gegner gegner){
+    public Spieler (Spielertyp gegner){
         this.gegner = gegner;
     }
 
-    public void setGegner(Gegner gegner) {
+    public void setGegner(Spielertyp gegner) {
         this.gegner = gegner;
     }
 
-    public Gegner getGegner() {
+    public Spielertyp getGegner() {
         return gegner;
     }
 

@@ -1,7 +1,7 @@
 package Gegner.Arten.Stockfish;
 
 import GUI.GUI_Package;
-import Gegner.Gegner;
+import Gegner.Spielertyp;
 import Spiel.TeilvonSpiel.Zug;
 
 /**
@@ -9,7 +9,7 @@ import Spiel.TeilvonSpiel.Zug;
  */
 
 
-public class StockfishGegner extends Gegner {
+public class StockfishGegner extends Spielertyp {
 
 
     public StockfishGegner(String farbe) {

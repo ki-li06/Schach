@@ -60,17 +60,18 @@ public class Lokal extends Spielertyp {
         addMouseListeners();
     }
 
+    /**
+     * Diese Methode wird entweder durch .start(...) ausgelöst
+     * oder durch einen separaten Aufruf um den Spielertypen des Hosts einzustellen
+     */
     public void addMouseListeners(){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (spiel.mga == null) {
-                    delay(1);
-                }
-
-                spiel.mga.fügeMouseListenerHinzu(new LokalMouseListener(Lokal.this));
-                spiel.mga.fügeMouseListenerBauernAuswahlHinzu(new LokalBauernAuswahlMouseListener(Lokal.this));
+        Thread t = new Thread(() -> {
+            while (spiel.mga == null) {
+                delay(1);
             }
+
+            spiel.mga.fügeMouseListenerHinzu(new LokalMouseListener(Lokal.this));
+            spiel.mga.fügeMouseListenerBauernAuswahlHinzu(new LokalBauernAuswahlMouseListener(Lokal.this));
         });
         t.start();
     }
@@ -94,7 +95,11 @@ public class Lokal extends Spielertyp {
             spiel.dreheBrett();
         }
 
-        while (ziel == null) {  //Warte auf Eingabe
+        while (ziel == null) {
+            /*
+             * warte auf eine Eingabe
+             * diese wird durch einen zweiten Thread - den MouseListener - verwaltet.
+             */
             delay(1);
         }
 
@@ -103,7 +108,7 @@ public class Lokal extends Spielertyp {
             spiel.dreheBrett();
         }
 
-        Zug ausgabe = ziel;
+        Zug ausgabe = new Zug(ziel.alt, ziel.neu);
         ziel = null;
 
         System.out.println("ausgabe: " + ausgabe);

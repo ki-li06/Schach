@@ -27,6 +27,13 @@ public abstract class Spielertyp {
         name = farbe + "_" + name;
     }
 
+    /**
+     * initialisieren des Attributs Spiel
+     * Warum nicht im Konstruktor? In der Main.Main Methode wird erst ein Spielertyp
+     * und dann das Spiel erzeugt
+     * @param spiel hier wird eine wechselseitige Referenz auf das zugehörige Spiel erzeugt
+     *              (die Spieler des Spiels haben schon einen Spielertyp)
+     */
     public void setSpiel(Spiel spiel) {
         this.spiel = spiel;
 
@@ -43,13 +50,14 @@ public abstract class Spielertyp {
     public String getFarbe() {
         return farbe;
     }
-    public boolean isWHITE(){
-        return farbe.equals(WHITE);
-    }
     public boolean isDran(){
         return spiel.FarbeDran().equals(farbe);
     }
 
+    /**
+     *
+     * @return der Subklassenname des Spielertyp
+     */
     public String returnArt(){
         return this.getClass().getSimpleName();
     }
@@ -61,6 +69,14 @@ public abstract class Spielertyp {
      */
     public abstract void start(GUI_Package gui);
 
+
+    /**
+     * Diese Methode ist das Herzstück des Spielertyp.
+     * Der Spielertyp gibt einen Zug - seine Antwort - auf das Spielfeld, das er durch die
+     * Referenz Spiel abrufen kann
+     *
+     * @return der Zug, den dieser Spielertyp spielt
+     */
     public abstract Zug ziehe ();
 
     /**

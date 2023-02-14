@@ -86,7 +86,7 @@ public abstract class Figur {
     /**
      * gibt alle Koordinaten von Felder aus, auf die die angegebene Figur rein theoretisch ziehen kann.
      * Dabei wird ignoriert, ob der Spieler im Schach steht oder die Figur vor dem König gefesselt ist.
-     * Diese Methode wird von jeder Figuren Klasse selbst bestimmt.
+     * Diese Methode wird von jeder Figuren Subklasse selbst bestimmt.
      *
      * @param figuren     das Spiefeld an Figuren (ein Feld[][] kann mit getFiguren(Feld[][]) umgewandelt werden)
      * @param WeißZüge    alle Züge, die Weiß bisher gespielt hat
@@ -325,7 +325,6 @@ public abstract class Figur {
             for (String f : farben) {
                 for (String n : figurennamen) {
                     String path = "Figuren\\ToUse\\" + f + n + ".png";
-                    //System.out.println(path);
                     File file = new File(path);
                     BufferedImage bi = null;
                     try {
@@ -334,9 +333,6 @@ public abstract class Figur {
                         ioException.printStackTrace();
                     }
                     assert bi != null;
-                    //System.out.println("height: " + bi.getHeight());
-                    //System.out.println("width: " + bi.getWidth());
-
                     double factor = (double) BreiteEinFeld() / bi.getHeight();
                     bi = scale(bi, factor);
                     try {

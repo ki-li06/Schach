@@ -97,7 +97,7 @@ public class Spiel {
             System.out.println("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()));
             Zug zug;
             if(HostDran()) {
-                ColPrint.purple.println("selbst dran");
+                ColPrint.purple.println("host dran");
                 zug = host.getGegner().ziehe();
             }
             else{
@@ -155,22 +155,26 @@ public class Spiel {
             cleanStatusFelder();
             SchachCheck(FarbeDran());
             markiereLetztenZug();
+            updateBrett();
             EndeCheck();
         }
         else{
-            ColPrint.red.println("FEHLER - UNGÜLTIGER ZUG: " + zug);
+            ColPrint.red.println("FEHLER - UNGÜLTIGER ZUG: " + zug + " - Auf dem alten Feld befindet sich keine Figur");
         }
     }
 
     /**
      * dreht das Brett in der MainGameAnzeige
+     * ZEIGT DAS BRETT NICHT NEU AN
      */
     public void dreheBrett() {
         mga.dreheBrett(felder);
     }
 
+    /**
+     * updated das Brett in der MainGameAnzeige
+     */
     public void updateBrett() {
-
         mga.updateBrett(felder);
     }
 
@@ -181,6 +185,10 @@ public class Spiel {
      */
     public void SchachCheck(String farbe) {
         Point KönigPosition = indexOf(getFiguren(felder), new König(farbe));
+        if(KönigPosition == null){
+            ColPrint.red.println("FEHLER - SchachCheck - KönigPosition = null");
+            return;
+        }
         if (SchachAuf(getFiguren(felder), SpielerWeiß().züge, SpielerSchwarz().züge, farbe)) {
             get(felder, KönigPosition).setStatus(Feld.Status.SCHACH());
             updateBrett();
@@ -286,7 +294,7 @@ public class Spiel {
 
     /**
      * Markiert den letzten Zug des Spieles mit dem entsprechenden Status
-     * (löst auch updateBrett() aus)
+     * LÖST NICHT updateBrett() AUS
      */
     private void markiereLetztenZug() {
         if (host.züge.size() > 0) {
@@ -297,7 +305,6 @@ public class Spiel {
                     felder[x][y].setStatus(null);
                 }
             }
-            updateBrett();
             Zug letzterZug;
             if(dran(host)){
                 letzterZug = getLast(gegner.züge);
@@ -308,11 +315,11 @@ public class Spiel {
             get(felder, letzterZug.neu).setStatus(Feld.Status.ZUG());
             get(felder, letzterZug.alt).setStatus(Feld.Status.ZUG());
         }
-        updateBrett();
     }
 
     /**
-     * nimmt allen Feldern einen Status
+     * nimmt allen Feldern den Status weg, d.h. keine Felder werden irgendwie mehr markiert
+     * DIE ANZEIGE WIRD NICHT AKTUALISIERT
      */
     private void cleanStatusFelder(){
         for (int x = 0; x < 8; x++) {

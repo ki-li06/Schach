@@ -1,16 +1,19 @@
 To-Do List:
 
 - En Passant Zug fertig stellen         --> done
-- Code-Refactoring
+- Code-Refactoring                      --> Issues
     (cleaner, verständlicher, besser)
 
 - Lokaler Gegner:
     * Namen-Eingabe                     --> done
     * Farbauswahl: Schwarz              --> done
-- (Kommentare)
+- (Kommentare)                          --> Issues
 
 BugFixes
 - En Passant Anzeigen Schwarz           --> done
 - Drehen des Spielbretts Fehler         --> done
-- Fehler Anzeige letzter Zug
-- Fehler Zug nicht möglich
+- Fehler Anzeige letzter Zug            --> Issues
+- Fehler Zug nicht möglich              --> Issues
+
+neue Probleme/To-Dos:
+==> Github Issues: https://github.com/ki-li06/Schach/issues

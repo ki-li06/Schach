@@ -39,7 +39,7 @@ public class Spiel {
 
 
     public Spiel(String spielername, Spielertyp geg, GUI_Package gui) {
-        ColPrint.red.println("Erstelle Spiel");
+        ColPrint.cyan.println("Erstelle Spiel");
 
         geg.setSpiel(this);
         
@@ -94,7 +94,7 @@ public class Spiel {
              * dabei wird der Spieler der dran ist, immer abgewechselt, weil der letzte Zug
              * entweder zu den Zügen des Hosts oder des Gegners hinzugefügt wird
              */
-            System.out.println("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()));
+            System.out.print("FarbeDran: " + FarbeAusgeschrieben(FarbeDran()) + " -> ");
             Zug zug;
             if(HostDran()) {
                 ColPrint.purple.println("host dran");
@@ -144,19 +144,20 @@ public class Spiel {
      */
     public void ziehe(Zug zug) {
         if (get(felder, zug.alt) != null) {
-            ColPrint.blue.println("ziehe den zug : " + zug);
+            System.out.println("ziehe den zug : " + zug);
             setFiguren(felder, zug.ziehe(getFiguren(felder)));
             if (HostDran()) {
                 host.züge.add(zug);
             } else {
                 gegner.züge.add(zug);
             }
-            System.out.println("Zug gezogen");
             cleanStatusFelder();
             SchachCheck(FarbeDran());
             markiereLetztenZug();
             updateBrett();
             EndeCheck();
+            ColPrint.blue.println("zug " + zug + " wurde gezogen");
+
         }
         else{
             ColPrint.red.println("FEHLER - UNGÜLTIGER ZUG: " + zug + " - Auf dem alten Feld befindet sich keine Figur");
@@ -396,21 +397,33 @@ public class Spiel {
 
     private static boolean ZugWiederholungGreift(List<Zug> weißZüge, List<Zug> schwarzZüge){
         if(schwarzZüge.size() < 6){
+            //System.out.println("zugwiederholung kann noch nicht greifen: schwarzZüge.size() = " + schwarzZüge.size());
             return false;
         }
         List<Zug> last6BLACK = getLast(schwarzZüge, 6);
+        //System.out.println("last 6 Black: " + last6BLACK);
         List<Zug> last6WHITE = getLast(weißZüge, 6);
+        //System.out.println("last 6 White: " + last6WHITE);
 
-        if(last6BLACK.get(0).equals(last6BLACK.get(2))
-                && last6BLACK.get(2).equals(last6BLACK.get(4))
-                && last6BLACK.get(1).equals(last6BLACK.get(3))
-                && last6BLACK.get(3).equals(last6BLACK.get(5))){
+        boolean b0g2 = last6BLACK.get(0).equals(last6BLACK.get(2));
+        //System.out.println("b0g2: " + b0g2);
+        boolean b2g4 = last6BLACK.get(2).equals(last6BLACK.get(4));
+        //System.out.println("b2g4: " + b2g4);
+        boolean b1g3 = last6BLACK.get(1).equals(last6BLACK.get(3));
+        //System.out.println("b1g3: " + b1g3);
+        boolean b3g5 = last6BLACK.get(3).equals(last6BLACK.get(5));
+        //System.out.println("b3g5: " + b3g5);
+
+        if(b0g2 && b2g4 && b1g3 && b3g5){
             return true;
         }
-        return last6WHITE.get(0).equals(last6WHITE.get(2))
-                && last6WHITE.get(2).equals(last6WHITE.get(4))
-                && last6WHITE.get(1).equals(last6WHITE.get(3))
-                && last6WHITE.get(3).equals(last6WHITE.get(5));
+
+        boolean w0g2 = last6WHITE.get(0).equals(last6WHITE.get(2));
+        boolean w2g4 = last6WHITE.get(2).equals(last6WHITE.get(4));
+        boolean w1g3 = last6WHITE.get(1).equals(last6WHITE.get(3));
+        boolean w3g5 = last6WHITE.get(3).equals(last6WHITE.get(5));
+
+        return w0g2 && w2g4 && w1g3 && w3g5;
     }
 
     /**

@@ -36,6 +36,7 @@ public class StartInterface {
 
 
     public StartInterface(){
+        ColPrint.cyan.println("Erstelle StartInterface");
         JFrame frame = new JFrame("Schach");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,7 +52,7 @@ public class StartInterface {
         while (!pressedButton){
             delay(1);
         }
-        ColPrint.red.println("Ende StartInterface");
+        ColPrint.cyan.println("Ende StartInterface");
 
 
     }

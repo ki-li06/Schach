@@ -1,6 +1,7 @@
 package Spiel.TeilvonSpiel;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static Spiel.TeilvonSpiel.Figur.BLACK;
 import static Spiel.TeilvonSpiel.Figur.WHITE;
@@ -13,7 +14,11 @@ public class Zug {
 
     /**
      * gibt an ob bei diesem Zug eine Figur geschlagen wurde.
-     * Das ist für das Ende eines Spiels wichtig, denn nach 50 bzw 100 Zügen in denen keine Figur geschlagen wurde, endet eine Partie matt.
+     * Das ist nur für das Ende eines Spiels wichtig,
+     * denn nach 50 bzw 100 Zügen in denen keine Figur geschlagen wurde,
+     * endet eine Partie Unentschieden/Patt.
+     * ACHTUNG: dieses Attribut wird nicht beim Vergleichen von zwei Zug Objekten verglichen
+     *
      */
     private boolean FigurGeschlagen;
 
@@ -30,6 +35,11 @@ public class Zug {
         this.neu = neu;
     }
 
+    /**
+     * wendet den Zug an
+     * @param eingabe das alte Spielfeld
+     * @return das neue Spielfeld, jedoch mit dem Zug angewandt
+     */
     public Figur[][] ziehe(Figur[][] eingabe){
         Figur[][] ausgabe = Figur.kopieren(eingabe);
         if(get(eingabe, alt).getName().equals("K")){
@@ -85,6 +95,10 @@ public class Zug {
         return ausgabe;
     }
 
+    /**
+     * nur für das Berechnen des Endes eines Spiels wichtig, siehe Attribut
+     * @return das Attribut FigurGeschlagen
+     */
     public boolean FigurGeschlagen() {
         return FigurGeschlagen;
     }
@@ -95,5 +109,18 @@ public class Zug {
             return "{" + alt.x + "|" + alt.y + " - X > " + neu.x + "|" + neu.y + "}";
         }
         return "{" + alt.x + "|" + alt.y + " - > " + neu.x + "|" + neu.y + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Zug zug = (Zug) o;
+        return Objects.equals(alt, zug.alt) && Objects.equals(neu, zug.neu);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(alt, neu, FigurGeschlagen);
     }
 }

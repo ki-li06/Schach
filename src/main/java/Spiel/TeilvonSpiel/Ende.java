@@ -13,14 +13,13 @@ public abstract class Ende {
      *  ~ 1 für Sieg
      *  ~ 0 für Unentschieden
      *  ~ -1 für Niederlage
-     * @return
      */
     public abstract int Punkte(String farbe);
 
 
     @Override
     public String toString() {
-        return "Ende{" + Typ() + ": " + Text().substring(0, 13) + "}";
+        return "Ende{" + this.getClass().getSimpleName() + ": " + Text().substring(0, 13) + "}";
     }
 
     public static class Matt extends Ende{
@@ -28,6 +27,12 @@ public abstract class Ende {
         public Matt(Spieler sieger){
              this.sieger = sieger;
         }
+
+        @Override
+        public String Typ() {
+            return "Schach Matt";
+        }
+
         public String Text() {
             return sieger.getGegner().getName() + " hat gewonnen!";
         }

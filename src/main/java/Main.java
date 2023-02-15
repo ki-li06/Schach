@@ -1,5 +1,5 @@
 import GUI.Teile.StartInterface;
-import Gegner.Spielertyp;
+import Spielertypen.Spielertyp;
 import Spiel.Spiel;
 
 import static Spiel.TeilvonSpiel.Figur.andereFarbe;

@@ -1,13 +1,10 @@
-package Gegner.Arten.Lokal;
+package Spielertypen.Arten.Lokal;
 
 import GUI.GUI_Package;
-import Spiel.Spiel;
 import Spiel.TeilvonSpiel.Spieler;
 import util.ColPrint;
 
 import javax.swing.*;
-
-import java.util.Objects;
 
 import static Spiel.TeilvonSpiel.Figur.WHITE;
 import static Spiel.TeilvonSpiel.Figur.andereFarbe;

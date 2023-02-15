@@ -8,9 +8,9 @@ Anfang 2022 war ich Anfänger in der Projekt-Programmierung, hatte jedoch schon 
 
 **Prinzip**
 
-Ein Spieler kann anfangs seinen Namen und die eigene Spielfarbe eingeben/auswählen. Auch lässt sich die Art des Gegners auswählen. So lässt sich gegen einen lokalen Gegner, einen Bot oder online spielen.
+Ein Spieler kann anfangs seinen Namen und die eigene Spielfarbe eingeben/auswählen. Auch lässt sich die Art des Gegners auswählen. So lässt sich gegen einen lokalen Spielertypen, einen Bot oder online spielen.
 
-ACHTUNG: Aktuell funktioniert nur der Modus "Lokaler Gegner" richtig. Der Modus "Eigener Bot" funktioniert nur bedingt (Spiel möglich, aber noch keine Zug-Berechnung).
+ACHTUNG: Aktuell funktioniert nur der Modus "Lokaler Spielertypen" richtig. Der Modus "Eigener Bot" funktioniert nur bedingt (Spiel möglich, aber noch keine Zug-Berechnung).
 
 
 
@@ -21,7 +21,7 @@ Programmiert wurde diese Projekt mithilfe von IntelliJ. Als offizieller Contribu
 
 **Mögliche Erweiterungen**
 
-- Entwicklung der Gegner-Modi
+- Entwicklung der Spielertypen-Modi
     - Eigener Bot (Selbst-programmiert)
     - Bot (schon existieriende Schach-Bots wie z.B. [Stockfish](https://de.wikipedia.org/wiki/Stockfish))
     - Online (auf lokale Netzwerke beschränkt)

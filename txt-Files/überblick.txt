@@ -4,9 +4,9 @@ Spiel
    * der erste Index steht für den eigentlichen Buchstaben, der zweite für die Zahl
       (also [2][3] ist das Feld b3)
  - Prinzip:
-  - ein Lokaler Gegner - man selbst
+  - ein Lokaler Spielertypen - man selbst
     gegen einen
-  - eine andere Art eines Gegner - diese wählt man davor aus
+  - eine andere Art eines Spielertypen - diese wählt man davor aus
 
 
 
@@ -25,7 +25,7 @@ Schnittstellen
    + mouseClicked() --> ruft die Methode aufBrettgeklickt() im zugehörigen Spiel ab (Position schon überprüft)
      und übergibt die x- & y-Koordinate an die Methode
 
-Gegner
+Spielertypen
  - verschiedene Arten an Gegnern
    + Lokal - lokaler Modus, an einem Gerät gegeneinander
    + OwnBot - ein selbst programmierter Bot

@@ -1,7 +1,7 @@
 package GUI.Teile;
 
 import GUI.GUI_Package;
-import Gegner.Spielertyp;
+import Spielertypen.Spielertyp;
 import util.ColPrint;
 
 import javax.swing.*;

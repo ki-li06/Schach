@@ -1,6 +1,6 @@
 package Spiel.TeilvonSpiel;
 
-import Gegner.Spielertyp;
+import Spielertypen.Spielertyp;
 
 import java.util.ArrayList;
 import java.util.List;

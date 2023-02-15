@@ -1,4 +1,4 @@
-package Gegner.Arten.Lokal;
+package Spielertypen.Arten.Lokal;
 
 import util.ColPrint;
 

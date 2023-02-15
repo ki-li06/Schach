@@ -1,7 +1,7 @@
-package Gegner.Arten.Stockfish;
+package Spielertypen.Arten.Stockfish;
 
 import GUI.GUI_Package;
-import Gegner.Spielertyp;
+import Spielertypen.Spielertyp;
 import Spiel.TeilvonSpiel.Zug;
 
 /**

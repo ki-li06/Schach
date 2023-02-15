@@ -1,7 +1,7 @@
-package Gegner.Arten.OwnBot;
+package Spielertypen.Arten.OwnBot;
 
 import GUI.GUI_Package;
-import Gegner.Spielertyp;
+import Spielertypen.Spielertyp;
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
 import util.ColPrint;

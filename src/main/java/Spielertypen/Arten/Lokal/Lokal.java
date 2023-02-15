@@ -1,7 +1,7 @@
-package Gegner.Arten.Lokal;
+package Spielertypen.Arten.Lokal;
 
 import GUI.GUI_Package;
-import Gegner.Spielertyp;
+import Spielertypen.Spielertyp;
 import Spiel.TeilvonSpiel.Feld;
 import Spiel.TeilvonSpiel.Figuren.Bauer;
 import Spiel.TeilvonSpiel.Spieler;

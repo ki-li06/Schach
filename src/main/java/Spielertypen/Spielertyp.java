@@ -1,15 +1,14 @@
-package Gegner;
+package Spielertypen;
 
 import GUI.GUI_Package;
-import Gegner.Arten.Lokal.Lokal;
-import Gegner.Arten.OwnBot.OwnBot;
+import Spielertypen.Arten.Lokal.Lokal;
+import Spielertypen.Arten.OwnBot.OwnBot;
 import Spiel.Spiel;
 import Spiel.TeilvonSpiel.Zug;
 import util.ColPrint;
 
-import static Gegner.Arten.Lokal.Lokal.LOKAL;
-import static Gegner.Arten.OwnBot.OwnBot.OwnBot;
-import static Spiel.TeilvonSpiel.Figur.WHITE;
+import static Spielertypen.Arten.Lokal.Lokal.LOKAL;
+import static Spielertypen.Arten.OwnBot.OwnBot.OwnBot;
 
 /**
  * Diese Klasse steht für einen Spielertyp wie zum Beispiel LokalerGegner oder Bot.

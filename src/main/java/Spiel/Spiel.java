@@ -2,8 +2,8 @@ package Spiel;
 
 import GUI.GUI_Package;
 import GUI.Teile.MainGameAnzeige;
-import Gegner.Arten.Lokal.Lokal;
-import Gegner.Spielertyp;
+import Spielertypen.Arten.Lokal.Lokal;
+import Spielertypen.Spielertyp;
 import Spiel.TeilvonSpiel.*;
 import Spiel.TeilvonSpiel.Figuren.*;
 import util.ColPrint;

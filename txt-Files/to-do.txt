@@ -4,7 +4,7 @@ To-Do List:
 - Code-Refactoring                      --> Issues
     (cleaner, verständlicher, besser)
 
-- Lokaler Gegner:
+- Lokaler Spielertypen:
     * Namen-Eingabe                     --> done
     * Farbauswahl: Schwarz              --> done
 - (Kommentare)                          --> Issues

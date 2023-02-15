@@ -1,16 +1,14 @@
-package Gegner.Arten.OwnBot;
+package Spielertypen.Arten.OwnBot;
 
-import Spiel.TeilvonSpiel.Ende;
 import Spiel.TeilvonSpiel.Figur;
 import Spiel.TeilvonSpiel.Zug;
 import util.Tree;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static Spiel.TeilvonSpiel.Feld.getFiguren;
 import static Spiel.TeilvonSpiel.Figur.*;
-import static Spiel.Spiel.EndeBerechnen;
+import static util.Delay.delay;
+import static util.Random.randomValue;
 
 /**
  * BERECHNET AKTUELL NUR ZÜGE MIT DEM EIN MATT ABGEWEHRT WIRD
@@ -31,7 +29,7 @@ public class Berechnung extends Tree<Berechnung> {
 
     public Zug getBesterZug(){
         List<Zug> alleMöglichenZüge = AlleMöglichenZügeEinerFarbe(figuren, weißZüge, schwarzZüge, farbe);
-        return alleMöglichenZüge.get(0);
+        return randomValue(alleMöglichenZüge);
     }
 
 
